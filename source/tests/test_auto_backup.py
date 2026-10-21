@@ -215,11 +215,11 @@ def test_restore_rolls_back_after_replacement_and_registers_safety(tmp_path, mon
     backup = source.backup_to(tmp_path/'incoming.db')
     original_init = Store.__init__
     attempted = []
-    def fail_once(store, path):
+    def fail_once(store, path, **kwargs):
         if Path(path) == m.store.path and not attempted:
             attempted.append(True)
             raise RuntimeError('migration failure')
-        return original_init(store, path)
+        return original_init(store, path, **kwargs)
     monkeypatch.setattr(Store, '__init__', fail_once)
     with pytest.raises(RuntimeError): m.store.restore_from(backup)
     assert m.store.get_setting('fixture') == 'original data'

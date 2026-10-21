@@ -32,6 +32,16 @@ def question_plan(question):
         'version':0,'status':'待复习','due_date':'','tags':[]}
 
 
+def plan_projection(question):
+    """Derived (status, due date) written with ``data`` in the same statement."""
+    plan = question.get('review_plan')
+    if not isinstance(plan, dict):
+        return '待复习', ''
+    status = plan.get('status')
+    due = plan.get('due_date')
+    return (status if status in STATUSES else '待复习', due if isinstance(due, str) else '')
+
+
 class ReviewPlanStoreMixin:
     def _write_review_plan(self, conn, question_id, plan, expected_version, *, append_goals=None):
         if type(expected_version) is not int or expected_version < 0: raise ValueError('请先载入复习计划版本。')
@@ -53,8 +63,10 @@ class ReviewPlanStoreMixin:
         question['needs_retry'] = plan['status']!='已解决'
         timestamp = datetime.now(timezone.utc).isoformat()
         question['updated_at'] = timestamp
-        conn.execute('UPDATE question_bank SET updated_at=?,data=? WHERE id=?',
-                     (timestamp,json.dumps(question,ensure_ascii=False,allow_nan=False,separators=(',',':')),question_id))
+        status, due = plan_projection(question)
+        conn.execute('UPDATE question_bank SET updated_at=?,data=?,needs_retry=?,plan_status=?,plan_due=? WHERE id=?',
+                     (timestamp,json.dumps(question,ensure_ascii=False,allow_nan=False,separators=(',',':')),
+                      1 if question['needs_retry'] else 0, status, due, question_id))
         return plan
 
     def save_review_plan(self, question_id, value, *, expected_version, expected_generation=None):
@@ -91,18 +103,29 @@ class ReviewPlanStoreMixin:
         if status and status not in STATUSES: raise ValueError('复习筛选状态不正确。')
         if due not in ('','due','unscheduled'): raise ValueError('复习日期筛选不正确。')
         today = date.fromisoformat(today).isoformat() if today is not None else date.today().isoformat()
+        # Status and due date are projected columns written with the question JSON,
+        # so filtering and ordering happen in SQL and only matches are parsed.
+        clauses = ["json_valid(data) AND (json_type(data,'$.review_plan')='object' OR needs_retry=1)"]
+        params = []
+        if status:
+            clauses.append('plan_status=?'); params.append(status)
+        if due=='due':
+            clauses.append("plan_due<>'' AND plan_due<=? AND plan_status<>'已解决'")
+            params.append(today)
+        if due=='unscheduled':
+            clauses.append("plan_due=''")
+        sql = ('SELECT data FROM question_bank WHERE ' + ' AND '.join(clauses) +
+               " ORDER BY (plan_status='已解决'),"
+               " (CASE WHEN plan_due='' THEN '9999-12-31' ELSE plan_due END), title, id")
         results = []
         with self._connection() as conn:
-            rows = conn.execute('SELECT data FROM question_bank').fetchall()
-            for row in rows:
+            counts = dict(conn.execute('SELECT question_id,count(*) FROM review_questions '
+                                       'WHERE question_id IS NOT NULL GROUP BY question_id'))
+            for row in conn.execute(sql, params):
                 question = json.loads(row[0])
-                if 'review_plan' not in question and not question.get('needs_retry'): continue
                 plan = question_plan(question)
-                if status and plan['status']!=status: continue
-                if due=='due' and (not plan['due_date'] or plan['due_date']>today or plan['status']=='已解决'): continue
-                if due=='unscheduled' and plan['due_date']: continue
                 if query and str(query) not in '\n'.join([question['title'],question.get('source',''),
                     question['submission'].get('question',''),*plan['tags']]): continue
                 question['review_plan'] = plan
-                results.append(self._decorate_question(conn,question))
-        return sorted(results,key=lambda q:(q['review_plan']['status']=='已解决',q['review_plan']['due_date'] or '9999-12-31',q['title'],q['id']))
+                results.append(self._decorate_question(conn,question,counts.get(question['id'],0)))
+        return results

@@ -157,7 +157,8 @@ def test_malformed_legacy_assessment_does_not_break_saving_or_summary(store):
     'DROP TABLE human_scores; CREATE TABLE human_scores(review_id TEXT,data TEXT);',
     'DROP TABLE human_scores; CREATE TABLE human_scores(data TEXT,review_id TEXT PRIMARY KEY);',
     "INSERT INTO practice_workspace VALUES('current','now','[]');",
-    "INSERT INTO question_bank VALUES('bad','bad','bad','','now','now','{}');",
+    "INSERT INTO question_bank(id,fingerprint,title,search_text,created_at,updated_at,data)"
+    " VALUES('bad','bad','bad','','now','now','{}');",
 ])
 def test_restore_rejects_malformed_practice_tables_before_replacing_data(store,tmp_path,damage):
     store.set_setting('probe','keep');backup=tmp_path/'malformed.db';store.backup_to(backup)

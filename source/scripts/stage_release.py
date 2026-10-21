@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from shenlun.storage import upgrade_article_columns
+from shenlun.storage import Store
 
 NAME = 'ShenlunStudio'
 EXE = NAME + '.exe'
@@ -200,14 +200,16 @@ def stage(raw_folder, dest, root, version):
     dest.mkdir(parents=True)
     shutil.copy2(raw_folder / EXE, dest / EXE)
     shutil.copytree(raw_folder / '_internal', dest / '_internal', dirs_exist_ok=True)
+    # Materialise every table at the current shape and stamp the schema version,
+    # so a fresh install neither creates nor upgrades tables on first launch.
+    # No migration backup: the build copy is reproducible and never user data.
+    seed_copy = dest / '_internal' / 'assets' / 'seed.db'
+    Store(seed_copy, migrate_backup=False)
     # Read-only installation directories must not require SQLite WAL sidecars.
-    bundled = sqlite3.connect(dest / '_internal' / 'assets' / 'seed.db')
+    bundled = sqlite3.connect(seed_copy)
     try:
         bundled.execute('PRAGMA wal_checkpoint(TRUNCATE)')
         bundled.execute('PRAGMA journal_mode=DELETE')
-        # Bake the derived article columns so a fresh install does not pay the
-        # one-time upgrade while the first window is opening.
-        upgrade_article_columns(bundled)
         bundled.commit()
     finally:
         bundled.close()

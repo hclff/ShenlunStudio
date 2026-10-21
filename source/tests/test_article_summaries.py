@@ -118,6 +118,7 @@ def strip_derived_columns(path):
         conn.execute('DROP INDEX IF EXISTS article_year')
         conn.execute('ALTER TABLE articles DROP COLUMN has_body')
         conn.execute('ALTER TABLE articles DROP COLUMN year')
+        conn.execute('PRAGMA user_version=0')
 
 
 def test_restore_accepts_legacy_and_current_article_columns(tmp_path):

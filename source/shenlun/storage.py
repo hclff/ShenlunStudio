@@ -15,6 +15,7 @@ from .teaching_store import TeachingStoreMixin
 from .preset_store import MethodPresetStoreMixin
 from .practice_deletion import PracticeDeletionStoreMixin
 from .method_library import MethodConflictError
+from .migrations import ensure_schema
 from .task_store import AssessmentTaskStoreMixin
 from .rubric_library import RubricLibraryStoreMixin
 
@@ -47,39 +48,6 @@ def insert_article_row(conn, value, search_text):
                     1 if str(value.get('body') or '').strip() else 0))
 
 
-def upgrade_article_columns(conn):
-    """Add the derived ``year``/``has_body`` columns and backfill them once.
-
-    Idempotent: safe on a database that already has them. The ordered migration
-    framework takes over this upgrade so the step keeps a single definition.
-    Returns True when a backfill was performed.
-    """
-    existing = {row[1] for row in conn.execute('PRAGMA table_info(articles)')}
-    if not existing:
-        return False
-    added = [name for name in ('year', 'has_body') if name not in existing]
-    if added:
-        for name in added:
-            conn.execute('ALTER TABLE articles ADD COLUMN ' + name + ' INTEGER NOT NULL DEFAULT 0')
-        if 'data' in existing:
-            # One SQL pass; SQLite parses each stored JSON once in C.
-            conn.execute("""UPDATE articles SET
-                year=CAST(coalesce(json_extract(data,'$.year'),0) AS INTEGER),
-                has_body=CASE WHEN length(trim(coalesce(json_extract(data,'$.body'),'')))>0
-                    THEN 1 ELSE 0 END""")
-    columns = existing | set(added)
-    if 'year' in columns:
-        conn.execute('CREATE INDEX IF NOT EXISTS article_year ON articles(year)')
-    summary_columns = {'id', 'title', 'journal', 'kind', 'status', 'publication',
-                       'year', 'has_body'}
-    if summary_columns <= columns:
-        # Covering index for the list view: scanning it avoids walking each
-        # row's body blob (60-80 ms versus 4 ms for the same 2151 rows).
-        conn.execute("""CREATE INDEX IF NOT EXISTS article_summary_scan ON articles(
-            publication DESC,title ASC,id ASC,journal,kind,status,year,has_body)""")
-    return bool(added)
-
-
 def normalize_article(article):
     """Return a serializable canonical record, preserving all source extras."""
     value = dict(article)
@@ -104,7 +72,7 @@ def normalize_article(article):
 
 
 class Store(RubricLibraryStoreMixin,AssessmentTaskStoreMixin,PracticeStoreMixin,EvaluationStoreMixin,ReferenceStoreMixin,TeachingStoreMixin,MethodPresetStoreMixin,PracticeDeletionStoreMixin):
-    def __init__(self, path: Path):
+    def __init__(self, path: Path, *, migrate_backup: bool = True):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self._connection() as conn:
@@ -113,7 +81,8 @@ class Store(RubricLibraryStoreMixin,AssessmentTaskStoreMixin,PracticeStoreMixin,
                 CREATE TABLE IF NOT EXISTS articles (
                     id TEXT PRIMARY KEY, title TEXT NOT NULL, journal TEXT NOT NULL,
                     kind TEXT NOT NULL, status TEXT NOT NULL, fingerprint TEXT NOT NULL,
-                    publication TEXT NOT NULL, search_text TEXT NOT NULL, data TEXT NOT NULL);
+                    publication TEXT NOT NULL, search_text TEXT NOT NULL, data TEXT NOT NULL,
+                    year INTEGER NOT NULL DEFAULT 0, has_body INTEGER NOT NULL DEFAULT 0);
                 CREATE INDEX IF NOT EXISTS article_filters ON articles(journal,kind);
                 CREATE INDEX IF NOT EXISTS article_fingerprints ON articles(fingerprint);
                 CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, data TEXT NOT NULL);
@@ -124,7 +93,6 @@ class Store(RubricLibraryStoreMixin,AssessmentTaskStoreMixin,PracticeStoreMixin,
                 CREATE TABLE IF NOT EXISTS usage (id INTEGER PRIMARY KEY, input_tokens INTEGER NOT NULL,
                     output_tokens INTEGER NOT NULL, total_tokens INTEGER NOT NULL, data TEXT NOT NULL);
             ''')
-            upgrade_article_columns(conn)
             self.fts_available = False
             try:
                 conn.execute("CREATE VIRTUAL TABLE IF NOT EXISTS article_search USING fts5(article_id UNINDEXED, text, tokenize='trigram')")
@@ -143,6 +111,13 @@ class Store(RubricLibraryStoreMixin,AssessmentTaskStoreMixin,PracticeStoreMixin,
             self._init_teaching(conn)
             self._init_assessment_tasks(conn)
             self._init_rubric_library(conn)
+        # Structural tables exist now; derived columns, indexes and the version
+        # stamp are applied in their own transaction, with a pre-migration backup.
+        upgraded = ensure_schema(self.path, backup=migrate_backup)
+        if upgraded['applied']:
+            # Only an upgraded database can hold reviews that predate the link
+            # table; a current database links every review when it is saved.
+            self._link_legacy_reviews()
 
     @contextmanager
     def _connection(self):
@@ -299,6 +274,34 @@ class Store(RubricLibraryStoreMixin,AssessmentTaskStoreMixin,PracticeStoreMixin,
     def list_reviews(self, limit=100):
         with self._connection() as conn:
             return [json.loads(row[0]) for row in conn.execute('SELECT data FROM reviews ORDER BY created_at DESC,id DESC LIMIT ?', (max(0, int(limit)),))]
+
+    def list_reviews_page(self, limit=100, offset=0):
+        """Newest first; identical ordering to ``list_reviews``."""
+        limit = max(0, min(10000, int(limit)))
+        offset = max(0, int(offset))
+        if not limit:
+            return []
+        with self._connection() as conn:
+            return [json.loads(row[0]) for row in conn.execute(
+                'SELECT data FROM reviews ORDER BY created_at DESC,id DESC LIMIT ? OFFSET ?',
+                (limit, offset))]
+
+    def count_reviews(self):
+        with self._connection() as conn:
+            return conn.execute('SELECT count(*) FROM reviews').fetchone()[0]
+
+    def usage_details(self, limit=100, offset=0):
+        """Recorded model usage, newest first; ``data`` keeps the original payload."""
+        limit = max(0, min(10000, int(limit)))
+        offset = max(0, int(offset))
+        if not limit:
+            return []
+        with self._connection() as conn:
+            rows = conn.execute('SELECT id,input_tokens,output_tokens,total_tokens,data '
+                                'FROM usage ORDER BY id DESC LIMIT ? OFFSET ?',
+                                (limit, offset)).fetchall()
+        return [{'id': row[0], 'input_tokens': row[1], 'output_tokens': row[2],
+                 'total_tokens': row[3], 'data': json.loads(row[4])} for row in rows]
 
     def save_analysis(self, article_id, analysis, version='1'):
         with self._connection() as conn:

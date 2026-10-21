@@ -106,7 +106,7 @@ def test_concurrent_question_metadata_save_cannot_erase_new_plan(store, monkeypa
     def traced():
         with original() as conn:
             def trace(sql):
-                if 'INSERT INTO question_bank VALUES' in sql and not threads:
+                if 'INSERT INTO question_bank(' in sql and not threads:
                     thread = threading.Thread(target=write_plan); threads.append(thread); thread.start()
                     assert attempted.wait(2)
                     finished.wait(.25)  # Old code permits this commit before its stale JSON overwrite.

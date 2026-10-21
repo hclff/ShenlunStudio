@@ -37,6 +37,26 @@ def create_store(data_dir, seed=None, method_catalog=None):
     return store
 
 
+def _report_startup_error(message):
+    """A windowed build has no console, so surface the reason before exiting."""
+    try:
+        import ctypes
+        ctypes.windll.user32.MessageBoxW(None, str(message), '申论研习', 0x10)
+    except Exception:
+        print(message, file=sys.stderr)
+
+
+def open_store(data_dir, report=None):
+    """Open the local store, turning a newer database into a readable message."""
+    from .migrations import MigrationTooNewError
+    try:
+        return create_store(data_dir), None
+    except MigrationTooNewError as exc:
+        message = str(exc)
+        (report or _report_startup_error)(message)
+        return None, message
+
+
 def probe_intake(window, paths, screenshot=None):
     """Offline release check, confined by main() to an explicit smoke data directory."""
     from PySide6.QtWidgets import QApplication
@@ -95,7 +115,9 @@ def main(argv=None):
     from PySide6.QtWidgets import QApplication
     from .ui import MainWindow
     data_dir = args.data_dir or Path(os.environ.get('LOCALAPPDATA', str(Path.home() / 'AppData' / 'Local'))) / 'ShenlunStudio'
-    store = create_store(data_dir)
+    store, error = open_store(data_dir)
+    if error:
+        return 2
     app = QApplication.instance() or QApplication(sys.argv[:1])
     app.setApplicationName('申论研习')
     app.setOrganizationName('ShenlunStudio')

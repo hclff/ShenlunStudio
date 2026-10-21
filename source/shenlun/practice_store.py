@@ -28,7 +28,7 @@ def human_basis(record):
                  'conditions':condition,'ai_score':score_value(record)})
 
 
-from .review_plans import ReviewPlanStoreMixin, normalize_review_plan
+from .review_plans import ReviewPlanStoreMixin, normalize_review_plan, plan_projection
 
 
 class PracticeStoreMixin(ReviewPlanStoreMixin):
@@ -36,7 +36,9 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
         conn.executescript('''
             CREATE TABLE IF NOT EXISTS question_bank(
                 id TEXT PRIMARY KEY,fingerprint TEXT NOT NULL UNIQUE,title TEXT NOT NULL,
-                search_text TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,data TEXT NOT NULL);
+                search_text TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,data TEXT NOT NULL,
+                question_type TEXT NOT NULL DEFAULT '',needs_retry INTEGER NOT NULL DEFAULT 0,
+                plan_status TEXT NOT NULL DEFAULT '待复习',plan_due TEXT NOT NULL DEFAULT '');
             CREATE TABLE IF NOT EXISTS review_questions(review_id TEXT PRIMARY KEY,question_id TEXT);
             CREATE INDEX IF NOT EXISTS question_attempts ON review_questions(question_id);
             CREATE TABLE IF NOT EXISTS practice_workspace(id TEXT PRIMARY KEY,updated_at TEXT NOT NULL,data TEXT NOT NULL);
@@ -44,10 +46,6 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
             CREATE TABLE IF NOT EXISTS workspace_history(id TEXT PRIMARY KEY,updated_at TEXT NOT NULL,data TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS human_scores(review_id TEXT PRIMARY KEY,data TEXT NOT NULL);
         ''')
-        rows=conn.execute('SELECT r.data FROM reviews r LEFT JOIN review_questions q ON r.id=q.review_id WHERE q.review_id IS NULL').fetchall()
-        for row in rows:
-            try:self._link_practice_review(conn,json.loads(row[0]))
-            except (ValueError,TypeError,OverflowError,KeyError):continue
         if not conn.execute("SELECT 1 FROM practice_workspace WHERE id='current'").fetchone():
             legacy=conn.execute("SELECT data FROM settings WHERE key='draft'").fetchone()
             if legacy:
@@ -58,6 +56,14 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
                         if value.get('rubric') is not None:value['rubric_text']=json.dumps(value.pop('rubric'),ensure_ascii=False,indent=2)
                         self._save_workspace(conn,{'submission':value,'question_id':None},False)
                 except (ValueError,TypeError,OverflowError):pass
+
+    def _link_legacy_reviews(self):
+        """Backfill review→question links once tables and projection columns exist."""
+        with self._connection() as conn:
+            rows=conn.execute('SELECT r.data FROM reviews r LEFT JOIN review_questions q ON r.id=q.review_id WHERE q.review_id IS NULL').fetchall()
+            for row in rows:
+                try:self._link_practice_review(conn,json.loads(row[0]))
+                except (ValueError,TypeError,OverflowError,KeyError):continue
 
     def _save_question(self,conn,submission,title='',tags=None,source='',needs_retry=None):
         if not conn.in_transaction: conn.execute('BEGIN IMMEDIATE')
@@ -85,10 +91,16 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
         searchable='\n'.join([value['title'],*fields.values()] if all(isinstance(v,str) for v in fields.values()) else
                               [value['title'],*[fields.get(k,'') for k in ('question','materials','exam','year','category')]])
         searchable+='\n'+' '.join(value['tags'])+'\n'+value['source']
-        conn.execute('''INSERT INTO question_bank VALUES(?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET
+        plan_status,plan_due=plan_projection(value)
+        conn.execute('''INSERT INTO question_bank(id,fingerprint,title,search_text,created_at,
+                        updated_at,data,question_type,needs_retry,plan_status,plan_due)
+                        VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET
                         fingerprint=excluded.fingerprint,title=excluded.title,search_text=excluded.search_text,
-                        updated_at=excluded.updated_at,data=excluded.data''',
-                     (value['id'],fingerprint,value['title'],searchable,value['created_at'],value['updated_at'],dump(value)))
+                        updated_at=excluded.updated_at,data=excluded.data,
+                        question_type=excluded.question_type,needs_retry=excluded.needs_retry,
+                        plan_status=excluded.plan_status,plan_due=excluded.plan_due''',
+                     (value['id'],fingerprint,value['title'],searchable,value['created_at'],value['updated_at'],dump(value),
+                      text(fields.get('question_type')),1 if value.get('needs_retry') else 0,plan_status,plan_due))
         return value['id']
 
     def save_question(self,submission,title='',tags=None,source='',needs_retry=None):
@@ -106,24 +118,43 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
             row=conn.execute('SELECT data FROM question_bank WHERE id=?',(id,)).fetchone()
             return self._decorate_question(conn,json.loads(row[0])) if row else None
 
-    def list_questions(self,query='',status='',question_type='',limit=1000):
-        if status and status not in ('未练','已练','待重练'):raise ValueError('题目状态不受支持。')
-        sql='SELECT data FROM question_bank'+(' WHERE instr(search_text,?)>0' if query else '')+' ORDER BY updated_at DESC,id DESC'
-        params=(str(query),) if query else ()
-        limit=max(0,min(10000,int(limit)));result=[]
-        if not limit:return result
+    def _question_clauses(self,query='',status='',question_type=''):
+        clauses,params=[],[]
+        if query:
+            clauses.append('instr(search_text,?)>0');params.append(str(query))
+        if status:
+            if status not in ('未练','已练','待重练'):raise ValueError('题目状态不受支持。')
+            attempts='EXISTS (SELECT 1 FROM review_questions rq WHERE rq.question_id=question_bank.id)'
+            clauses.append({'待重练':'needs_retry=1','已练':'needs_retry=0 AND '+attempts,
+                            '未练':'needs_retry=0 AND NOT '+attempts}[status])
+        if question_type:
+            clauses.append('question_type=?');params.append(str(question_type))
+        return clauses,params
+
+    def list_questions_page(self,query='',status='',question_type='',limit=100,offset=0):
+        limit=max(0,min(10000,int(limit)));offset=max(0,int(offset))
+        if not limit:return []
+        clauses,params=self._question_clauses(query,status,question_type)
+        sql=('SELECT data FROM question_bank'+(' WHERE '+' AND '.join(clauses) if clauses else '')
+             +' ORDER BY updated_at DESC,id DESC LIMIT ? OFFSET ?')
         with self._connection() as conn:
             # One aggregate instead of a count per question.
             counts=dict(conn.execute('SELECT question_id,count(*) FROM review_questions '
                                      'WHERE question_id IS NOT NULL GROUP BY question_id'))
-            for row in conn.execute(sql,params):
+            result=[]
+            for row in conn.execute(sql,params+[limit,offset]):
                 value=json.loads(row[0])
-                value=self._decorate_question(conn,value,counts.get(value['id'],0))
-                if status and value['status']!=status:continue
-                if question_type and value['submission'].get('question_type')!=question_type:continue
-                result.append(value)
-                if len(result)>=limit:break
-        return result
+                result.append(self._decorate_question(conn,value,counts.get(value['id'],0)))
+            return result
+
+    def count_questions(self,query='',status='',question_type=''):
+        clauses,params=self._question_clauses(query,status,question_type)
+        sql='SELECT count(*) FROM question_bank'+(' WHERE '+' AND '.join(clauses) if clauses else '')
+        with self._connection() as conn:
+            return conn.execute(sql,params).fetchone()[0]
+
+    def list_questions(self,query='',status='',question_type='',limit=1000):
+        return self.list_questions_page(query,status,question_type,limit,0)
 
     def mark_question_retry(self,id,value):
         with self._connection() as conn:
@@ -360,7 +391,8 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
             tables={row[0] for row in source.execute("SELECT name FROM sqlite_master WHERE type='table'")}
             # Additive trailing columns; a backup either lacks them (upgraded in
             # place after the copy) or carries them in this exact order.
-            derived={'articles':('year','has_body')}
+            derived={'articles':('year','has_body'),
+                     'question_bank':('question_type','needs_retry','plan_status','plan_due')}
             for table,columns in {**required,**{k:v for k,v in optional.items() if k in tables}}.items():
                 if table not in tables:raise ValueError('这不是兼容的申论研习数据库。')
                 schema=list(source.execute('PRAGMA table_xinfo('+table+')'))
@@ -464,13 +496,14 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
             self.backup_to(safety,backup_kind='safety')
             try:
                 with closing(sqlite3.connect(self.path,timeout=30)) as destination:source.backup(destination)
-                self.__init__(self.path)
+                # A safety copy already exists, so no extra pre-migration backup.
+                self.__init__(self.path, migrate_backup=False)
                 with self._connection() as conn:
                     self._invalidate_assessment_claims(conn)
             except Exception:
                 with closing(sqlite3.connect(safety)) as original:
                     with closing(sqlite3.connect(self.path,timeout=30)) as destination:original.backup(destination)
-                self.__init__(self.path)
+                self.__init__(self.path, migrate_backup=False)
                 with self._connection() as conn:
                     self._invalidate_assessment_claims(conn)
                 raise

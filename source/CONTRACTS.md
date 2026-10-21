@@ -8,11 +8,19 @@ All modules import under package `shenlun`. Python 3.13. All public data is JSON
 
 ## Article list summaries (0.9.6 additive)
 
-`upgrade_article_columns(conn)` adds derived `articles.year`/`has_body` columns, backfills them once from the stored JSON and creates `article_year` plus the covering `article_summary_scan` index. It is idempotent, runs on `Store.__init__`, and `scripts/stage_release.py` bakes it into the bundled seed so a new installation does not pay the upgrade while the first window opens. The ordered migration framework replaces this ad-hoc step.
+Migration step 1 adds the derived `articles.year`/`has_body` columns, backfills them once from the stored JSON and creates `article_year` plus the covering `article_summary_scan` index. `scripts/stage_release.py` runs the migration on the bundled seed (without a backup) so a new installation does not pay the upgrade while the first window opens.
 
 `Store.list_article_summaries(query='',journal='',kind='',year='',limit=200,offset=0)` returns only `{id,title,journal,year,kind,status,publication,has_body}`; `data`, `body` and `paragraphs` are never read. `Store.count_articles(...)` applies the same filters. `list_articles` accepts the optional `year`/`offset` keywords and keeps its previous semantics. `Store.get_articles(ids)` and `Store.article_titles(ids)` resolve ids in chunks of 400 and preserve caller order, skipping unknown ids. `stats()` adds `text_bearing` (rows with a non-empty body).
 
 List surfaces must read summaries and load a body only for the selected id. `ui/table_models.ArticleSummaryModel` with `ui/widgets.ModelTable` gives a virtualized, read-only table that reuses the `QTableWidget` styling. `MainWindow.start_job(..., domains=...)` declares what a job can change (`corpus`, `methods`, `history`, `usage`, `questions`, `calibration`); `finish_job` refreshes only those domains, while `domains=None` keeps refreshing everything.
+
+## Schema migrations and paged lists (1.0 additive)
+
+`PRAGMA user_version` carries the schema version (`shenlun.migrations.SCHEMA_VERSION`, currently 3). `ensure_schema(path, backup=True)` runs after the structural tables exist, writes `<db>-迁移前备份-v<from>-<timestamp>.db` when the database already holds user data, applies every pending step inside one `BEGIN IMMEDIATE` transaction, stamps the version and rolls back on any failure. A database stamped with a higher version raises `MigrationTooNewError` before any write; `open_store()` converts that into a startup message and exit code 2 instead of a traceback. Steps only add columns, indexes and backfilled values, so they stay idempotent; `migrate(conn)` may join an existing transaction.
+
+Projected columns live in the same row as their authoritative JSON and are written by the same statement: `articles.year/has_body` and `question_bank.question_type/needs_retry/plan_status/plan_due`. `question_bank` rows are inserted through the explicit column list in `_save_question`; `_write_review_plan` updates all four projections together with `data`; backup restore accepts either the legacy shape (upgraded in place afterwards) or the legacy shape plus these trailing columns.
+
+Paged list APIs keep the ordering of their unpaged counterparts: `list_reviews_page`, `count_reviews`, `usage_details`, `list_questions_page`, `count_questions`. `list_questions` delegates to `list_questions_page`. `list_review_plans` filters and sorts in SQL on the plan projections and batches attempt counts; `query` still matches title, source, question text and tags only.
 
 ## Store(path: Path)
 
