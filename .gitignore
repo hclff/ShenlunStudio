@@ -12,6 +12,7 @@ venv/
 dist/
 build/
 build-tmp/
+output/
 *.spec
 
 # --- Validation / audit artifacts (large, machine specific) ---

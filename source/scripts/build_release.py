@@ -1,6 +1,9 @@
-"""Build a complete Windows portable folder, preserving dynamically linked Qt."""
-import importlib.metadata
-import json
+"""Build a complete Windows portable folder, preserving dynamically linked Qt.
+
+PyInstaller writes its raw output into a scratch directory; ``stage_release``
+then assembles ``dist/ShenlunStudio`` from an explicit whitelist, so the
+installer never receives application source, tests or build leftovers.
+"""
 import os
 from pathlib import Path
 import shutil
@@ -9,7 +12,8 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0,str(ROOT))
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / 'scripts'))
 from shenlun import __version__
 NAME = 'ShenlunStudio'
 
@@ -29,6 +33,9 @@ def main():
     db.close()
     temp = ROOT / 'build-tmp'
     temp.mkdir(exist_ok=True)
+    scratch = temp / 'pyi-dist'
+    if scratch.exists():
+        shutil.rmtree(scratch)
     env = {**os.environ, 'TEMP':str(temp), 'TMP':str(temp)}
     os.environ.setdefault('QT_QPA_PLATFORM','offscreen')
     from PySide6.QtWidgets import QApplication
@@ -49,7 +56,7 @@ def main():
         'StringStruct("OriginalFilename","ShenlunStudio.exe")])]),'
         'VarFileInfo([VarStruct("Translation",[2052,1200])])])',encoding='utf8')
     command = [sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean', '--windowed',
-               '--onedir', '--name', NAME, '--distpath', str(ROOT/'dist'),
+               '--onedir', '--name', NAME, '--distpath', str(scratch),
                '--workpath', str(ROOT/'build'), '--specpath', str(ROOT/'build'),
                '--paths', str(ROOT), '--icon',str(app_icon_path),'--version-file',str(version_file),'--add-data', str(seed)+os.pathsep+'assets',
                '--add-data',str(ROOT/'assets'/'ui')+os.pathsep+'assets/ui',
@@ -63,77 +70,12 @@ def main():
     print('Building Windows folder; log: '+str(log), flush=True)
     with log.open('w', encoding='utf8') as output:
         subprocess.run(command, cwd=ROOT, env=env, stdout=output, stderr=subprocess.STDOUT, check=True)
-    folder = ROOT/'dist'/NAME
-    # Read-only installation directories must not require SQLite WAL sidecars.
-    with sqlite3.connect(folder/'_internal'/'assets'/'seed.db') as bundled_db:
-        bundled_db.execute('PRAGMA wal_checkpoint(TRUNCATE)')
-        bundled_db.execute('PRAGMA journal_mode=DELETE')
-    bundled_db.close()
-    shutil.copy2(ROOT/'README.md', folder/'使用说明.md')
-    shutil.copy2(ROOT/'assets'/'community_teaching_sources.md', folder/'GitHub社区方法来源与许可.md')
-    article_handbook=ROOT.parent/'output'/'文章写法研习_2026-10-17'/'方法手册.md'
-    if article_handbook.is_file():shutil.copy2(article_handbook,folder/'内置文章方法手册.md')
-    teaching_sources=ROOT.parent/'方法研究'/'名师方法_2026-10-16'
-    if teaching_sources.is_dir():
-        shutil.copytree(teaching_sources,folder/'名师方法来源与边界',dirs_exist_ok=True)
-    public_sources=ROOT.parent/'评测'/'真实样本_v0.7'
-    if public_sources.is_dir():
-        shutil.copytree(public_sources,folder/'公开作答来源索引',dirs_exist_ok=True,
-                        ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
-    evidence=folder/'验证资料'
-    evidence.mkdir(exist_ok=True)
-    for filename in (f'tests-v{__version__}.xml',f'ocr-benchmark-v{__version__}.json'):
-        if (ROOT/'validation'/filename).is_file():shutil.copy2(ROOT/'validation'/filename,evidence/filename)
-    source = folder/'source'
-    for dirname in ('shenlun','scripts','tests'):
-        shutil.copytree(ROOT/dirname, source/dirname, dirs_exist_ok=True,
-                        ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
-    for filename in ('run_app.py','pyproject.toml','requirements-build.txt','CONTRACTS.md','README.md'):
-        shutil.copy2(ROOT/filename, source/filename)
-    shutil.copytree(ROOT/'assets'/'ui',source/'assets'/'ui',dirs_exist_ok=True)
-    shutil.copy2(article_methods,source/'assets'/'builtin_article_methods.json')
-    shutil.copy2(ROOT/'assets'/'community_teaching_sources.md',source/'assets'/'community_teaching_sources.md')
-    shutil.copytree(ROOT/'assets'/'community-licenses',source/'assets'/'community-licenses',dirs_exist_ok=True)
-    licenses = folder/'THIRD_PARTY_LICENSES'
-    licenses.mkdir(exist_ok=True)
-    shutil.copytree(ROOT/'assets'/'community-licenses',licenses/'community-methods',dirs_exist_ok=True)
-    packages = ('PyInstaller','PySide6','shiboken6','lxml','pypdf','keyring','pywin32-ctypes','jaraco.classes',
-                'jaraco.context','jaraco.functools','more-itertools','packaging','python-docx','typing_extensions','Pillow')
-    versions = {}
-    for package in packages:
-        try:
-            dist = importlib.metadata.distribution(package)
-        except importlib.metadata.PackageNotFoundError:
-            continue
-        versions[package] = dist.version
-        target = licenses/package
-        target.mkdir(exist_ok=True)
-        (target/'METADATA.txt').write_text(dist.read_text('METADATA') or '', encoding='utf8')
-        for item in dist.files or ():
-            if any('license' in part.lower() or 'copying' in part.lower() or 'notice' in part.lower() for part in item.parts):
-                path = Path(dist.locate_file(item))
-                if path.is_file():
-                    destination = target/Path(*item.parts[-3:])
-                    destination.parent.mkdir(parents=True,exist_ok=True)
-                    shutil.copy2(path,destination)
-    # Conda distributions keep license texts outside the Python dist-info.
-    cache = Path(sys.base_prefix)/'pkgs'
-    if cache.is_dir():
-        for pattern in ('pyside6-*','qtbase-*','qtsvg-*','qtwebengine-*','lxml-*','python-[0-9]*','libxml2-*','libxslt-*','openssl-*'):
-            for package in cache.glob(pattern):
-                path = package/'info'/'licenses'
-                if path.is_dir():
-                    shutil.copytree(path,licenses/('conda-'+package.name),dirs_exist_ok=True)
-    (licenses/'README.txt').write_text(
-        'This distribution includes Python, Qt/PySide6/Shiboken, lxml, pypdf, python-docx, Pillow and keyring.\n'
-        'Qt/PySide6 are dynamically linked and distributed under LGPLv3 terms; see bundled license.\n'
-        'Corresponding upstream source: https://download.qt.io/official_releases/QtForPython/pyside6/\n'
-        'Qt source: https://download.qt.io/official_releases/qt/6.9/6.9.2/\n'
-        'The adjacent source directory contains this application source and build instructions.\n'
-        'Libraries remain separate and replaceable. Reverse engineering for debugging modifications is permitted.\n'
-        'Publication article content retains its original publisher rights.\n',encoding='utf8')
-    (folder/'build-info.json').write_text(json.dumps({'app':__version__,'python':sys.version,'dependencies':versions},indent=2),encoding='utf8')
-    print('Built: '+str(folder/ (NAME+'.exe')), flush=True)
+    dist = ROOT / 'dist'
+    if dist.exists():
+        shutil.rmtree(dist)
+    from stage_release import stage
+    folder = stage(scratch / NAME, dist / NAME, root=ROOT, version=__version__)
+    print('Built: ' + str(folder / (NAME + '.exe')), flush=True)
 
 
 if __name__ == '__main__':

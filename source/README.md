@@ -232,9 +232,13 @@ exercise-001,14,14.5,20,custom-model-v1
 
 可选 AI 图像转写也使用上述模型配置与密钥管理；它只转写可见文字，无法辨认处应标记，不用于直接解题、评分或润色。用量与 token 预算是辅助控制，服务端未返回用量时以估算值记录。取消阻止后续处理，但已经发出的请求可能继续在服务端执行和计费。
 
-## 源码与重建
+## 发行内容与重建
 
-源码随包位于 `source`，依赖许可证位于 `THIRD_PARTY_LICENSES`。开发环境使用 Python 3.13；源码支持 Python 3.11 以上。
+发行包**不包含应用源码**：安装目录只有可执行程序、运行库、第三方许可证、使用说明、方法手册与界面预览。依赖许可证位于 `THIRD_PARTY_LICENSES`；Qt/PySide6 以 LGPLv3 动态链接方式分发，附上游源码地址，这些库保持可替换。本应用自身源码不在安装包内。
+
+可执行程序由打包工具把编译后的字节码封入程序归档，因此安装目录里没有明文 `.py` 文件；这不等于"不可反编译"，专用工具仍可解析归档内容。
+
+重建需要向发布者获取源码与 `assets/seed.db`（语料另有出版方权利，不在发行包内提供）。开发环境使用 Python 3.13；源码支持 Python 3.11 以上。
 
 ```powershell
 python -m venv .venv
@@ -243,7 +247,9 @@ python -m venv .venv
 .venv/Scripts/python.exe scripts/build_release.py
 ```
 
-原始期刊清单可通过 `scripts/seed_corpus.py --help` 导入。`scripts/seed_people.py` 可重新导入上述人民日报采样日。重建发布包需要先将 `assets/seed.db` 放入源码目录；便携包内位于 `_internal/assets/seed.db`。
+`scripts/build_release.py` 先在 `build-tmp/pyi-dist` 生成打包器的原始输出，再由 `scripts/stage_release.py` 按白名单装配 `dist/ShenlunStudio`；白名单之外的文件（源码、测试、构建残留、审计资料）不会进入发行目录。`scripts/verify_release.py` 会反向断言发行目录不含 `*.py`、测试目录与多余数据库，并核对 `build-info.json` 记录的源文件哈希。
+
+原始期刊清单可通过 `scripts/seed_corpus.py --help` 导入。`scripts/seed_people.py` 可重新导入上述人民日报采样日。
 
 ## 已验证与尚待验证
 

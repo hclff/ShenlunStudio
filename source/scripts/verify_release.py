@@ -15,8 +15,10 @@ from xml.etree import ElementTree
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
+sys.path.insert(0,str(ROOT/'scripts'))
 from shenlun.storage import Store
 from shenlun import __version__
+from stage_release import assert_release_clean, source_hashes
 
 
 def intake_fixtures(work):
@@ -110,13 +112,15 @@ def main():
         raise RuntimeError('打包版本不一致，请重新构建')
     if (folder/'_internal/assets/builtin_article_methods.json').read_bytes()!=(ROOT/'assets/builtin_article_methods.json').read_bytes():
         raise RuntimeError('打包的内置方法数据不一致，请重新构建')
+    clean=assert_release_clean(folder)
+    info=json.loads((folder/'build-info.json').read_text(encoding='utf8'))
+    if info.get('contains_application_source'):
+        raise RuntimeError('发行包声明包含应用源码，请重新构建')
+    if info.get('source_sha256')!=source_hashes(ROOT):
+        raise RuntimeError('发行包记录的源文件哈希与当前源码不一致，请重新构建')
     evidence=folder/'验证资料'
     evidence.mkdir(exist_ok=True)
     shutil.copy2(args.test_report,evidence/args.test_report.name)
-    source_files={path.relative_to(ROOT/'shenlun'):path for path in (ROOT/'shenlun').rglob('*.py')}
-    bundled_files={path.relative_to(folder/'source'/'shenlun'):path for path in (folder/'source'/'shenlun').rglob('*.py')}
-    if source_files.keys()!=bundled_files.keys() or any(source_files[key].read_bytes()!=bundled_files[key].read_bytes() for key in source_files):
-        raise RuntimeError('发布包源码与当前源码不一致，请重新构建')
     work=ROOT/'build-tmp'/('release-'+datetime.now().strftime('%Y%m%d-%H%M%S'))
     work.mkdir(parents=True)
     fixtures=intake_fixtures(work)
@@ -253,7 +257,8 @@ def main():
             'packaged_launches':reports,'existing_data_preserved':True,'sqlite_integrity':integrity,
             'normal_main_exe_launch':normal_launch,
             'paid_model_semantics_tested':False,
-            'source_python_files_verified':len(source_files),
+            'source_python_files_excluded':True,'release_clean':clean,
+            'source_hashes_match':True,
             'archive':str(archive),'bytes':archive.stat().st_size,'sha256':digest,'zip_crc_ok':True,
             'source':str(ROOT),'executable':str(exe)}
     validation=ROOT/'validation'/f'release-verification-v{__version__}.json'
