@@ -93,6 +93,15 @@ def test_only_the_bundled_corpus_may_ship(tmp_path):
     assert 'probe.db' in str(error.value)
 
 
+def test_raw_test_report_in_evidence_is_rejected(tmp_path):
+    folder = clean_release(tmp_path)
+    (folder / '验证资料').mkdir()
+    (folder / '验证资料' / 'tests-v9.9.9.xml').write_text('<testsuite/>', encoding='utf8')
+    with pytest.raises(RuntimeError) as error:
+        assert_release_clean(folder)
+    assert 'tests-v9.9.9.xml' in str(error.value)
+
+
 def test_missing_required_entry_is_rejected(tmp_path):
     folder = clean_release(tmp_path)
     (folder / 'build-info.json').unlink()
@@ -120,6 +129,22 @@ def test_stage_drops_raw_leftovers_and_records_source_hashes(tmp_path):
     # The shipped manifest must not disclose build-machine paths.
     assert all('/' not in item and '\\' not in item for item in info['missing_optional_assets'])
     assert_release_clean(dest)
+
+
+def test_stage_ships_a_summary_instead_of_the_raw_report(tmp_path):
+    root, raw = source_root(tmp_path), raw_build(tmp_path)
+    (root / 'validation').mkdir()
+    (root / 'validation' / 'tests-v9.9.9.xml').write_text(
+        '<?xml version="1.0"?><testsuites><testsuite tests="12" failures="0" errors="0" '
+        'skipped="1" time="7.5" hostname="buildbox">'
+        '<testcase classname="tests.test_secret" name="test_internal_flag" time="0.2"/>'
+        '</testsuite></testsuites>', encoding='utf8')
+    dest = stage(raw, tmp_path / 'dist' / 'ShenlunStudio', root=root, version='9.9.9')
+    evidence = dest / '验证资料'
+    assert sorted(path.name for path in evidence.iterdir()) == ['验证摘要.md']
+    summary = (evidence / '验证摘要.md').read_text(encoding='utf8')
+    assert '共 12 项，通过 11，失败 0，错误 0，跳过 1' in summary
+    assert 'buildbox' not in summary and 'test_internal_flag' not in summary
 
 
 def test_stage_aborts_when_a_required_publisher_asset_is_missing(tmp_path):

@@ -34,11 +34,12 @@
 
 | 产物 | 大小 | SHA256 |
 | --- | --- | --- |
-| `output/软件/申论研习_Windows_0.9.5.zip` | 191,007,181 B | `94916767d79a97a85dbb4dd6dac832e45d4310dfb1920152c6232fab88177a1c` |
-| `output/installer/ShenlunStudio-0.9.5-Setup.exe` | 139,758,526 B | `43462C6DD73A6EA2BAD7212E1CFABC5E1EDD712A5089F3832D9A669AB4F5D5BB` |
-| `dist/ShenlunStudio`（staging） | 282 文件 / 420.1 MB | 0 个 `.py`/`.pyc`/`.spec` |
+| `output/软件/申论研习_Windows_0.9.5.zip` | 190,978,293 B | `2275b12429ab74d426bdea901727fd284b12a7c44d9697bdf2129ca34a154dc4` |
+| `output/installer/ShenlunStudio-0.9.5-Setup.exe` | 139,740,221 B | `D633CC9424473D749AF1A08F3F99438BF17AF245FEF0A87BFE25E4C036CDD54E` |
+| `dist/ShenlunStudio`（打包目录，含预览图） | 307 文件 / 422,973,841 B | 0 个 `.py`/`.pyc`/`.spec` |
 
-- 安装包体积对比 0.9.5：139,662,486 → 139,758,526 B（+96 KB），差异来自新增迁移模块与 `ui/common`；源码目录与构建残留已消失（0.9.5 含 `source` 2.11 MB + 残留 4.4 MB）。
+- 安装包体积对比 0.9.5：139,662,486 → 139,740,221 B（+76 KB），差异来自新增迁移模块与 `ui/common`；源码目录与构建残留已消失（0.9.5 含 `source` 2.11 MB + 残留 4.4 MB）。
+- `验证资料/` 只放一份脚本生成的 `验证摘要.md`（用例总数、通过数、耗时）。原始 JUnit 报告含 1157 条用例名与构建机主机名，属内部信息，不再随包分发；`assert_release_clean` 对 `验证资料/` 采用文件名白名单，回填原始报告会直接构建失败。
 - `build-info.json` 记录 86 个源文件 SHA256、Python/PySide6/PyInstaller 版本、构建命令、`contains_application_source: false`。
 - 统计口径修正后：文章 2151 篇，其中有正文 2080 篇（`text_bearing`，与 `unique_bodies` 一致；此前 UI 显示口径不一致）。
 

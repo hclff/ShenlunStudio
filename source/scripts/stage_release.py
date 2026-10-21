@@ -15,6 +15,7 @@ import shutil
 import sqlite3
 import sys
 from pathlib import Path
+from xml.etree import ElementTree
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from shenlun.storage import Store
@@ -29,6 +30,10 @@ FORBIDDEN_DIRS = ('source', 'tests', 'scripts', 'validation', 'validation-artifa
 FORBIDDEN_SUFFIXES = ('.py', '.pyc', '.pyo', '.spec', '.pdb', '.pyi')
 # Databases are user data or probe residue; only the bundled corpus may ship.
 ALLOWED_DATABASES = ('_internal/assets/seed.db',)
+# ``验证资料`` ships a generated summary only: a raw JUnit report names every test
+# case and the build host, which is internal detail, not release evidence.
+EVIDENCE_DIR = '验证资料'
+EVIDENCE_FILES = ('验证摘要.md',)
 
 LICENSE_PACKAGES = ('PyInstaller', 'PySide6', 'shiboken6', 'lxml', 'pypdf', 'keyring',
                     'pywin32-ctypes', 'jaraco.classes', 'jaraco.context',
@@ -170,6 +175,45 @@ def write_build_info(folder, *, version, dependencies, missing, root):
     return info
 
 
+def latest_test_report(root):
+    """Newest pytest report under ``validation``; the gate names it by milestone."""
+    reports = [path for path in (Path(root) / 'validation').glob('tests-v*.xml') if path.is_file()]
+    return max(reports, key=lambda path: path.stat().st_mtime) if reports else None
+
+
+def junit_counts(xml_path):
+    """Totals from a pytest JUnit report; no case names, timings or host details."""
+    root = ElementTree.parse(xml_path).getroot()
+    suites = [root] if root.tag == 'testsuite' else list(root.iter('testsuite'))
+    totals = {key: sum(int(suite.get(key, 0) or 0) for suite in suites)
+              for key in ('tests', 'failures', 'errors', 'skipped')}
+    totals['passed'] = totals['tests'] - totals['skipped']
+    totals['seconds'] = round(sum(float(suite.get('time', 0) or 0) for suite in suites), 1)
+    return totals
+
+
+def write_release_evidence(folder, counts):
+    """Ship one generated page about the verification, never the raw report."""
+    evidence = Path(folder) / EVIDENCE_DIR
+    if not counts or not counts.get('tests'):
+        return None
+    evidence.mkdir(exist_ok=True)
+    for stale in evidence.iterdir():
+        if stale.is_file() and stale.name not in EVIDENCE_FILES:
+            stale.unlink()
+    target = evidence / EVIDENCE_FILES[0]
+    line = ('- 自动化测试：共 %d 项，通过 %d，失败 %d，错误 %d，跳过 %d'
+            % (counts['tests'], counts['passed'], counts['failures'], counts['errors'],
+               counts['skipped']))
+    if counts.get('seconds') is not None:
+        line += '，耗时 %.1f 秒' % counts['seconds']
+    target.write_text(
+        '# 验证摘要\n\n' + line + '\n'
+        '- 本文件由构建脚本从测试报告汇总生成。完整报告含全部用例名与构建机信息，'
+        '保留在构建方，不随程序分发。\n', encoding='utf8')
+    return target
+
+
 def assert_release_clean(folder):
     """Return evidence for a clean release folder, or raise with every offender."""
     folder = Path(folder)
@@ -197,6 +241,12 @@ def assert_release_clean(folder):
         problems.append('源码/字节码文件：' + '、'.join(source_files[:10]))
     if databases:
         problems.append('非种子数据库：' + '、'.join(databases[:10]))
+    evidence = folder / EVIDENCE_DIR
+    if evidence.is_dir():
+        unexpected = sorted(path.name for path in evidence.iterdir()
+                            if path.name not in EVIDENCE_FILES)
+        if unexpected:
+            problems.append('验证资料含未许可文件：' + '、'.join(unexpected[:10]))
     if problems:
         raise RuntimeError('发行目录包含不应交付的内容：' + '；'.join(problems))
     files = [path for path in folder.rglob('*') if path.is_file()]
@@ -246,11 +296,8 @@ def stage(raw_folder, dest, root, version):
         if required:
             raise SystemExit('缺少必需发布素材：' + target + '（' + str(source) + '）')
         optional.append(target)
-    evidence = dest / '验证资料'
-    evidence.mkdir(exist_ok=True)
-    for filename in ('tests-v' + version + '.xml', 'ocr-benchmark-v' + version + '.json'):
-        if (root / 'validation' / filename).is_file():
-            shutil.copy2(root / 'validation' / filename, evidence / filename)
+    report = latest_test_report(root)
+    write_release_evidence(dest, junit_counts(report) if report else None)
     versions = collect_licenses(dest, root)
     write_build_info(dest, version=version, dependencies=versions, missing=optional, root=root)
     evidence_summary = assert_release_clean(dest)

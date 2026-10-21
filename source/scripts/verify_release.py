@@ -18,7 +18,7 @@ sys.path.insert(0,str(ROOT))
 sys.path.insert(0,str(ROOT/'scripts'))
 from shenlun.storage import Store
 from shenlun import __version__
-from stage_release import assert_release_clean, source_hashes
+from stage_release import assert_release_clean, junit_counts, source_hashes, write_release_evidence
 
 
 def intake_fixtures(work):
@@ -118,9 +118,10 @@ def main():
         raise RuntimeError('发行包声明包含应用源码，请重新构建')
     if info.get('source_sha256')!=source_hashes(ROOT):
         raise RuntimeError('发行包记录的源文件哈希与当前源码不一致，请重新构建')
-    evidence=folder/'验证资料'
+    evidence = folder/'验证资料'
     evidence.mkdir(exist_ok=True)
-    shutil.copy2(args.test_report,evidence/args.test_report.name)
+    write_release_evidence(folder,junit_counts(args.test_report))
+    assert_release_clean(folder)
     work=ROOT/'build-tmp'/('release-'+datetime.now().strftime('%Y%m%d-%H%M%S'))
     work.mkdir(parents=True)
     fixtures=intake_fixtures(work)
