@@ -1,0 +1,26 @@
+{
+  "_comment": "Publisher material copied by scripts/stage_release.py. Paths are relative to the source folder. `required: true` aborts the build when the file or folder is absent; the three documents below are set to false because they live outside the source tree, so a public release build should flip them to true.",
+  "assets": [
+    {
+      "path": "../output/文章写法研习_2026-10-17/方法手册.md",
+      "target": "内置文章方法手册.md",
+      "required": false,
+      "kind": "file",
+      "note": "阅读版方法手册；缺失时界面仍可用，只是少了随包说明。"
+    },
+    {
+      "path": "../方法研究/名师方法_2026-10-16/名师方法来源与边界",
+      "target": "名师方法来源与边界",
+      "required": false,
+      "kind": "dir",
+      "note": "名师方法核验记录；缺失时不影响方法库本身。"
+    },
+    {
+      "path": "../评测/真实样本_v0.7",
+      "target": "公开作答来源索引",
+      "required": false,
+      "kind": "dir",
+      "note": "公开作答索引；缺失时不提供该索引页。"
+    }
+  ]
+}

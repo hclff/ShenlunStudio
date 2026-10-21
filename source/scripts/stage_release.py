@@ -85,6 +85,23 @@ def _copy_entry(source, target, absent, label):
     return False
 
 
+def publisher_assets(root):
+    """Read the explicit asset list; the manifest itself is mandatory."""
+    manifest = root / 'assets' / 'release-manifest.json'
+    if not manifest.is_file():
+        raise SystemExit('缺少 assets/release-manifest.json（发布素材清单）')
+    entries = json.loads(manifest.read_text(encoding='utf-8')).get('assets', [])
+    result = []
+    for entry in entries:
+        name = str(entry.get('path') or '')
+        target = str(entry.get('target') or '')
+        if not name or not target:
+            raise SystemExit('发布素材清单条目缺少 path 或 target：' +
+                             json.dumps(entry, ensure_ascii=False))
+        result.append((root / name, target, bool(entry.get('required'))))
+    return result
+
+
 def source_hashes(root):
     """Content hashes of the application modules this build came from."""
     files = sorted((root / 'shenlun').rglob('*.py')) + [root / 'run_app.py']
@@ -219,14 +236,16 @@ def stage(raw_folder, dest, root, version):
                 dest / 'GitHub社区方法来源与许可.md', missing, 'GitHub社区方法来源与许可.md')
     if missing:
         raise SystemExit('缺少必需发布内容：' + '、'.join(missing))
-    # Optional publisher material: reported when absent instead of failing silently.
+    # Publisher material: required entries abort the build, optional ones are
+    # recorded in build-info.json instead of disappearing silently.
     optional = []
-    _copy_entry(root.parent / 'output' / '文章写法研习_2026-10-17' / '方法手册.md',
-                dest / '内置文章方法手册.md', optional, '内置文章方法手册.md')
-    _copy_entry(root.parent / '方法研究' / '名师方法_2026-10-16' / '名师方法来源与边界',
-                dest / '名师方法来源与边界', optional, '名师方法来源与边界')
-    _copy_entry(root.parent / '评测' / '真实样本_v0.7', dest / '公开作答来源索引',
-                optional, '公开作答来源索引')
+    for source, target, required in publisher_assets(root):
+        absent = []
+        if _copy_entry(source, dest / target, absent, target):
+            continue
+        if required:
+            raise SystemExit('缺少必需发布素材：' + target + '（' + str(source) + '）')
+        optional.append(target)
     evidence = dest / '验证资料'
     evidence.mkdir(exist_ok=True)
     for filename in ('tests-v' + version + '.xml', 'ocr-benchmark-v' + version + '.json'):

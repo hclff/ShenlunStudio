@@ -31,6 +31,9 @@ def source_root(tmp_path):
     (root / 'run_app.py').write_text('print(1)\n', encoding='utf8')
     (root / 'assets').mkdir()
     (root / 'assets' / 'community_teaching_sources.md').write_text('许可\n', encoding='utf8')
+    (root / 'assets' / 'release-manifest.json').write_text(json.dumps({'assets': [
+        {'path': '../absent/方法手册.md', 'target': '内置文章方法手册.md', 'required': False}]},
+        ensure_ascii=False), encoding='utf8')
     (root / 'README.md').write_text('使用说明\n', encoding='utf8')
     return root
 
@@ -117,6 +120,16 @@ def test_stage_drops_raw_leftovers_and_records_source_hashes(tmp_path):
     # The shipped manifest must not disclose build-machine paths.
     assert all('/' not in item and '\\' not in item for item in info['missing_optional_assets'])
     assert_release_clean(dest)
+
+
+def test_stage_aborts_when_a_required_publisher_asset_is_missing(tmp_path):
+    root, raw = source_root(tmp_path), raw_build(tmp_path)
+    (root / 'assets' / 'release-manifest.json').write_text(json.dumps({'assets': [
+        {'path': '../absent/方法手册.md', 'target': '内置文章方法手册.md', 'required': True}]},
+        ensure_ascii=False), encoding='utf8')
+    with pytest.raises(SystemExit) as error:
+        stage(raw, tmp_path / 'dist' / 'ShenlunStudio', root=root, version='9.9.9')
+    assert '必需发布素材' in str(error.value)
 
 
 def test_stage_rejects_missing_required_documentation(tmp_path):

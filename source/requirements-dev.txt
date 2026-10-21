@@ -1,0 +1,4 @@
+# Development and CI tooling; never bundled with the application.
+# Build/runtime pins live in requirements-build.txt.
+ruff>=0.12,<1
+pytest-xdist>=3.8,<4

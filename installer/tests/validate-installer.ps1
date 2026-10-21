@@ -34,7 +34,15 @@ Assert-True -Condition (Test-Path -LiteralPath (Join-Path $releaseDir 'ShenlunSt
 Assert-True -Condition (Test-Path -LiteralPath (Join-Path $releaseDir '_internal') -PathType Container) -Message 'Latest portable release is missing _internal.'
 
 $iss = Get-Content -LiteralPath $issPath -Raw -Encoding utf8
-Assert-Match $iss '#define\s+MyAppVersion\s+"0\.9\.5"' 'Installer version macro is not 0.9.5.'
+# The single source of truth for the version is pyproject.toml.
+$pyprojectPath = Join-Path $projectRoot 'source\pyproject.toml'
+Assert-True -Condition (Test-Path -LiteralPath $pyprojectPath -PathType Leaf) -Message 'Missing source/pyproject.toml.'
+$pyproject = Get-Content -LiteralPath $pyprojectPath -Raw -Encoding utf8
+$versionMatch = [regex]::Match($pyproject, '(?m)^version = "([0-9]+\.[0-9]+\.[0-9]+)"')
+Assert-True -Condition $versionMatch.Success -Message 'source/pyproject.toml has no version.'
+$expectedVersion = $versionMatch.Groups[1].Value
+Assert-Match $iss ('#define\s+MyAppVersion\s+"' + [regex]::Escape($expectedVersion) + '"') "Installer version macro does not match pyproject $expectedVersion."
+Assert-Match $iss ('VersionInfoVersion=' + [regex]::Escape($expectedVersion) + '\.0') "Installer file version does not match pyproject $expectedVersion."
 Assert-Match $iss 'AppVersion=\{#MyAppVersion\}' 'Installer does not use the declared application version.'
 Assert-Match $iss 'PrivilegesRequired=lowest' 'Installer must use per-user privileges.'
 Assert-Match $iss 'DefaultDirName=\{localappdata\}\\Programs\\ShenlunStudio' 'Default installation directory is incorrect.'

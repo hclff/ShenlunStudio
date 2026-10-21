@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONIOENCODING: utf-8
+  QT_QPA_PLATFORM: offscreen
+
+jobs:
+  lint:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install ruff
+        run: python -m pip install --upgrade pip -r requirements-dev.txt
+      - name: Runtime-error rules (blocking)
+        run: python -m ruff check shenlun scripts tests
+      - name: Style backlog (report only)
+        run: python -m ruff check shenlun scripts tests --select F --statistics --exit-zero
+
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-build.txt -r requirements-dev.txt
+      - name: Run the suite headless
+        run: >
+          python -m pytest -q -n 4 --dist loadgroup
+          --basetemp="${{ runner.temp }}/pytest-${{ github.run_id }}"
+          --junitxml=ci-tests.xml
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit
+          path: ci-tests.xml
+          if-no-files-found: warn
+
+  package:
+    # Publishing needs the 262 MB corpus seed, which is not in version control.
+    # A tag build on a runner that provides assets/seed.db produces the portable
+    # folder; otherwise the job reports why it skipped instead of failing.
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: test
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-build.txt
+      - name: Build portable folder
+        shell: pwsh
+        run: |
+          if (-not (Test-Path assets/seed.db)) {
+            Write-Output '::warning::assets/seed.db is missing; packaging skipped.'
+            exit 0
+          }
+          python scripts/build_release.py
+      - name: Detect release folder
+        id: release
+        shell: pwsh
+        run: |
+          $built = Test-Path source/dist/ShenlunStudio/ShenlunStudio.exe
+          "built=$($built.ToString().ToLower())" >> $env:GITHUB_OUTPUT
+      - name: Verify frozen build
+        if: steps.release.outputs.built == 'true'
+        run: python scripts/verify_release.py --test-report ci-tests.xml
+      - name: Sign executable
+        if: steps.release.outputs.built == 'true'
+        run: pwsh scripts/sign_release.ps1 -Path source/dist/ShenlunStudio/ShenlunStudio.exe
+      - name: Upload portable folder
+        if: steps.release.outputs.built == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: portable-${{ github.ref_name }}
+          path: source/dist/ShenlunStudio
