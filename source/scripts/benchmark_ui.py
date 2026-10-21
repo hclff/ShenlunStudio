@@ -138,6 +138,9 @@ def main(argv=None):
             ('list_articles_100000', lambda: store.list_articles(limit=100000)),
             ('list_articles_100000_again', lambda: store.list_articles(limit=100000)),
             ('list_articles_query', lambda: store.list_articles(query='发展', limit=100000)),
+            ('list_article_summaries_100000', lambda: store.list_article_summaries(limit=100000)),
+            ('list_article_summaries_query', lambda: store.list_article_summaries(query='发展', limit=100000)),
+            ('count_articles', store.count_articles),
             ('list_reviews_1000', lambda: store.list_reviews(limit=1000)),
             ('list_questions_1000', lambda: store.list_questions(limit=1000)),
             ('list_cards', store.list_cards)):

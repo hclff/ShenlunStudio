@@ -239,7 +239,7 @@ def test_local_source_intake_preview_cancel_then_apply(host, tmp_path, monkeypat
     p = panel(host); p.select_method('LM01'); old = p.source_excerpt.toPlainText()
     path = tmp_path / 'source.txt'; path.write_text('本机合成片段', encoding='utf8')
     # Execute the real local reader synchronously, keeping the remote boundary unreachable.
-    monkeypatch.setattr(host, 'start_job', lambda title, op, done: done(op(lambda x: None, threading.Event())))
+    monkeypatch.setattr(host, 'start_job', lambda title, op, done, **kwargs: done(op(lambda x: None, threading.Event())))
     monkeypatch.setattr(ui().TeachingSourcePreviewDialog, 'exec', lambda self: QDialog.DialogCode.Rejected)
     p.read_source([str(path)]); assert p.source_excerpt.toPlainText() == old
     monkeypatch.setattr(ui().TeachingSourcePreviewDialog, 'exec', lambda self: QDialog.DialogCode.Accepted)

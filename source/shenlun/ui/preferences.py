@@ -221,7 +221,7 @@ class PreferencesMixin:
             service = self.get_service(require_config=True)
             tested_config = self.read_preferences()
             self.start_job('模型兼容性检测', lambda progress, cancel: service.check_compatibility(progress=progress,cancel=cancel),
-                lambda result:self.show_compatibility_result(result, tested_config))
+                lambda result:self.show_compatibility_result(result, tested_config), domains=('usage',))
         except (ValueError, TypeError) as exc:
             self.notify(str(exc))
 

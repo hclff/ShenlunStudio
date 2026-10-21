@@ -191,7 +191,7 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
         except Exception as exc:
             self.job_failed(job,str(exc) or type(exc).__name__)
 
-    def start_job(self, title, operation, on_result, *, retry=None):
+    def start_job(self, title, operation, on_result, *, retry=None, domains=None):
         if self.workers:
             self.notify('已有任务正在运行，请完成或取消后再开始。')
             return None
@@ -200,6 +200,9 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
         job.last_stage=title
         job.result_received=False
         job.retry_callback=retry
+        # None keeps the historical "refresh everything" behaviour for any
+        # caller that has not declared what it changes.
+        job.domains=None if domains is None else tuple(domains)
         job.config_snapshot=dict(self.config)
         job.failure_message=''
         self.clear_task_feedback()
@@ -230,13 +233,9 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
         self.busy.hide()
         self.global_cancel.hide()
         self.retry_task_button.setEnabled(self._retry_task is not None and not cancelled)
-        # A cancelled extraction/import may already have durable checkpoints.
-        self.refresh_corpus()
-        self.refresh_methods()
-        self.refresh_history()
-        self.refresh_usage()
-        self.refresh_questions()
-        self.refresh_calibration()
+        # A cancelled extraction/import may already have durable checkpoints, so
+        # declarations are honoured for cancellations as well.
+        self.refresh_domains(getattr(job, 'domains', None))
         if cancelled:
             self.notify('任务已取消；此前已保存的记录和导入进度仍在本机。')
             self.set_task_state('cancelled')
@@ -247,6 +246,22 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
             self.set_task_state('success')
         if self._closing and not self.workers:
             QTimer.singleShot(0, self.close)
+
+    DOMAIN_REFRESHES = {'corpus': 'refresh_corpus', 'methods': 'refresh_methods',
+                        'history': 'refresh_history', 'usage': 'refresh_usage',
+                        'questions': 'refresh_questions', 'calibration': 'refresh_calibration'}
+
+    def refresh_domains(self, domains=None):
+        """Refresh only what a finished job could have changed.
+
+        ``None`` means the caller did not declare a scope, which keeps the
+        previous refresh-everything behaviour instead of risking stale views.
+        """
+        names = tuple(self.DOMAIN_REFRESHES) if domains is None else tuple(domains)
+        for name in names:
+            refresh = getattr(self, self.DOMAIN_REFRESHES[name], None)
+            if refresh is not None:
+                refresh()
 
     def cancel_jobs(self):
         for worker in self.workers:

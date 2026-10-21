@@ -16,6 +16,9 @@ import sqlite3
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from shenlun.storage import upgrade_article_columns
+
 NAME = 'ShenlunStudio'
 EXE = NAME + '.exe'
 
@@ -202,6 +205,9 @@ def stage(raw_folder, dest, root, version):
     try:
         bundled.execute('PRAGMA wal_checkpoint(TRUNCATE)')
         bundled.execute('PRAGMA journal_mode=DELETE')
+        # Bake the derived article columns so a fresh install does not pay the
+        # one-time upgrade while the first window is opening.
+        upgrade_article_columns(bundled)
         bundled.commit()
     finally:
         bundled.close()

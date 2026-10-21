@@ -6,6 +6,14 @@ All modules import under package `shenlun`. Python 3.13. All public data is JSON
 
 `{id: str, title: str, journal: str, year: int, issue: int, author: str, url: str, publication: str, kind: str, status: 'available'|'unavailable', body: str, paragraphs: [{id: str, text: str}], fingerprint: str}`. IDs are stable from URL or body, paragraph IDs use `<article-id>:p1`. kind one of 评论/理论/导读/推荐/统计/人物/其他. Preserve missing entries with empty body. Additional fields allowed.
 
+## Article list summaries (0.9.6 additive)
+
+`upgrade_article_columns(conn)` adds derived `articles.year`/`has_body` columns, backfills them once from the stored JSON and creates `article_year` plus the covering `article_summary_scan` index. It is idempotent, runs on `Store.__init__`, and `scripts/stage_release.py` bakes it into the bundled seed so a new installation does not pay the upgrade while the first window opens. The ordered migration framework replaces this ad-hoc step.
+
+`Store.list_article_summaries(query='',journal='',kind='',year='',limit=200,offset=0)` returns only `{id,title,journal,year,kind,status,publication,has_body}`; `data`, `body` and `paragraphs` are never read. `Store.count_articles(...)` applies the same filters. `list_articles` accepts the optional `year`/`offset` keywords and keeps its previous semantics. `Store.get_articles(ids)` and `Store.article_titles(ids)` resolve ids in chunks of 400 and preserve caller order, skipping unknown ids. `stats()` adds `text_bearing` (rows with a non-empty body).
+
+List surfaces must read summaries and load a body only for the selected id. `ui/table_models.ArticleSummaryModel` with `ui/widgets.ModelTable` gives a virtualized, read-only table that reuses the `QTableWidget` styling. `MainWindow.start_job(..., domains=...)` declares what a job can change (`corpus`, `methods`, `history`, `usage`, `questions`, `calibration`); `finish_job` refreshes only those domains, while `domains=None` keeps refreshing everything.
+
 ## Store(path: Path)
 
 `upsert_article(article:dict)->str`; `get_article(id:str)->dict|None`; `list_articles(query='',journal='',kind='',limit=200)->list[dict]` (metadata including body permitted, sorted deterministically); `stats()->dict` keys articles,available,unavailable,unique_bodies,analyses,cards,reviews.

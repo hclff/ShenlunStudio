@@ -490,7 +490,8 @@ class AssessmentMixin(ReviewGoalsUiMixin, RubricLibraryUiMixin, AssessmentRecove
             return
         self.start_job('重试修改稿',
             lambda progress,cancel:service.retry_revisions(review['id'], progress, cancel, expected_review=copy.deepcopy(review)),
-            self.show_review, retry=lambda:self.retry_revision_snapshot(review))
+            self.show_review, retry=lambda:self.retry_revision_snapshot(review),
+            domains=('history', 'usage'))
 
     def select_annotation(self, index):
         if not self.current_review or index < 0:

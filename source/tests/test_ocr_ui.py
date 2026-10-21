@@ -97,7 +97,7 @@ def test_clipboard_and_file_options_route_selected_local_mode(window, monkeypatc
         dialog.ocr_columns.setCurrentIndex(dialog.ocr_columns.findData(2))
         return QDialog.DialogCode.Accepted
     monkeypatch.setattr(IntakeOptionsDialog, 'exec', options)
-    window.start_job = lambda title, operation, callback: operation(lambda text: None, threading.Event())
+    window.start_job = lambda title, operation, callback, **kwargs: operation(lambda text: None, threading.Event())
     window.import_paths(['fixture.png'])
     mime = QMimeData(); image = QImage(20, 20, QImage.Format.Format_RGB32)
     image.fill(Qt.GlobalColor.white); mime.setImageData(image)

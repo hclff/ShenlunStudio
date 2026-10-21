@@ -8,7 +8,7 @@ from contextlib import closing
 
 from .domain import RUBRICS, require_list, require_text
 from .service import AppService
-from .storage import _dump, normalize_article
+from .storage import _dump, insert_article_row, normalize_article
 
 
 class _ArticleLookup:
@@ -99,9 +99,7 @@ def install_bundled_article_methods(store, catalog_path, seed_path, *, backup_ex
                     continue
                 article = articles[identity]
                 search_text = '\n'.join(article[key] for key in ('title', 'author', 'journal', 'body'))
-                conn.execute('INSERT INTO articles VALUES (?,?,?,?,?,?,?,?,?)',
-                             tuple(article[key] for key in ('id', 'title', 'journal', 'kind', 'status', 'fingerprint', 'publication'))
-                             + (search_text, _dump(article)))
+                insert_article_row(conn, article, search_text)
                 if store.fts_available:
                     conn.execute('INSERT INTO article_search(article_id,text) VALUES (?,?)', (identity, search_text))
                 actual[identity] = article

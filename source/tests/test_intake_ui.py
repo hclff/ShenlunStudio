@@ -236,6 +236,6 @@ def test_copied_web_image_with_remote_url_uses_image_preview(window,monkeypatch)
     mime.setImageData(image);mime.setUrls([QUrl('https://example.org/material.png')])
     monkeypatch.setattr(IntakeOptionsDialog,'exec',lambda self:QDialog.DialogCode.Accepted)
     jobs=[]
-    window.start_job=lambda title,operation,on_result:jobs.append(title)
+    window.start_job=lambda title,operation,on_result,**kwargs:jobs.append(title)
     window.intake_from_mime(mime,'materials')
     assert jobs==['本机图片文字识别']

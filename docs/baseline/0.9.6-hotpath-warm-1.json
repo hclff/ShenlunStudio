@@ -1,0 +1,88 @@
+{
+  "generated_at": "2026-10-21T04:27:37.428428+00:00",
+  "app_version": "0.9.5",
+  "python": "3.13.9",
+  "pyside6": "6.9.2",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+  "data_dir": "E:\\vibework\\ShenlunStudio\\release_1.0\\validation\\perf4",
+  "first_run": false,
+  "seed_db_mb": 262.3,
+  "store_open_seconds": 0.027919800020754337,
+  "window_construct_seconds": 0.28932699997676536,
+  "first_paint_seconds": 0.07172959996387362,
+  "memory_after_construct_mb": 101.7,
+  "page_switch_seconds": [
+    {
+      "page": 0,
+      "name": "开始批改",
+      "seconds": 0.0031
+    },
+    {
+      "page": 1,
+      "name": "文章资料库",
+      "seconds": 0.0246
+    },
+    {
+      "page": 2,
+      "name": "写作方法库",
+      "seconds": 0.0159
+    },
+    {
+      "page": 3,
+      "name": "训练记录",
+      "seconds": 0.0116
+    },
+    {
+      "page": 4,
+      "name": "设置",
+      "seconds": 0.0139
+    },
+    {
+      "page": 5,
+      "name": "我的题库",
+      "seconds": 0.0122
+    }
+  ],
+  "refresh_seconds": {
+    "refresh_corpus": [
+      0.0236,
+      0.0217
+    ],
+    "refresh_methods": [
+      0.0302,
+      0.0311
+    ],
+    "refresh_history": [
+      0.0031,
+      0.0031
+    ],
+    "refresh_usage": [
+      0.0022,
+      0.0018
+    ],
+    "refresh_questions": [
+      0.0058,
+      0.0056
+    ],
+    "refresh_calibration": [
+      0.0078,
+      0.0076
+    ]
+  },
+  "query_seconds": {
+    "stats": 0.0121,
+    "list_articles_100000": 0.1839,
+    "list_articles_100000_again": 0.1867,
+    "list_articles_query": 0.1849,
+    "list_article_summaries_100000": 0.008,
+    "list_article_summaries_query": 0.0442,
+    "count_articles": 0.0021,
+    "list_reviews_1000": 0.0017,
+    "list_questions_1000": 0.0016,
+    "list_cards": 0.0019
+  },
+  "memory_end_mb": 115.6,
+  "memory_peak_mb": 229.3,
+  "db_size_mb": 262.5
+}

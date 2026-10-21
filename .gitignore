@@ -40,3 +40,5 @@ validation-artifacts/
 # --- Local scratch ---
 scratch/
 tmp/
+# Environment safe-delete quarantine written during test runs.
+**/.codebuddy/safe-delete-staging/

@@ -4,14 +4,16 @@ import sqlite3
 from datetime import date, timedelta
 from pathlib import Path
 
-from PySide6.QtCore import QDate, Qt, QTimer
+from PySide6.QtCore import QDate, QItemSelectionModel, Qt, QTimer
 from PySide6.QtWidgets import (QAbstractItemView, QComboBox, QDateEdit, QDialog,
     QDialogButtonBox, QFileDialog, QFormLayout, QHBoxLayout, QHeaderView, QInputDialog, QLabel,
     QLineEdit, QMessageBox, QSplitter, QTableWidgetItem, QTabWidget, QVBoxLayout,
     QWidget)
 
 from ..importers import import_file, import_manifest, import_people_range, import_url
-from .widgets import button, card, editor, empty_state, open_publisher, page, publisher_url, row, section_label, table
+from .table_models import ArticleSummaryModel
+from .widgets import (button, card, editor, empty_state, model_table, open_publisher, page,
+    publisher_url, row, section_label, table)
 from .teaching import TeachingPanel
 from .article_method_editor import ArticleMethodEditorDialog, MethodTrashDialog
 from .method_batch import ArticleBatchMixin
@@ -76,12 +78,13 @@ class LibraryMixin(ArticleBatchMixin):
         for combo in (self.journal_filter, self.kind_filter, self.year_filter):
             combo.currentIndexChanged.connect(self.refresh_corpus)
         split = QSplitter(Qt.Orientation.Vertical)
-        self.corpus_table = table(['文章标题', '来源', '年份', '类型', '正文状态'])
+        self.corpus_model = ArticleSummaryModel()
+        self.corpus_table = model_table(self.corpus_model)
         self.corpus_table.setMinimumHeight(122)
         self.corpus_table.set_empty_text('资料库中还没有文章', '导入本地文件或官方来源，建立自己的训练资料库。')
         self.corpus_table.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.corpus_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
-        self.corpus_table.itemSelectionChanged.connect(self.show_article_selection)
+        self.corpus_table.selectionModel().selectionChanged.connect(self.show_article_selection)
         split.addWidget(self.corpus_table)
         detail = QWidget()
         detail_layout = QVBoxLayout(detail)
@@ -128,53 +131,43 @@ class LibraryMixin(ArticleBatchMixin):
         return widget
 
     def selected_article_ids(self):
-        return [self.corpus_table.item(index.row(), 0).data(Qt.ItemDataRole.UserRole)
-                for index in self.corpus_table.selectionModel().selectedRows()]
+        return self.corpus_table.selected_ids()
 
     def refresh_corpus(self):
         selected = set(self.selected_article_ids())
         stats = self.store.stats()
-        text_count = stats.get('text_bearing')
-        if text_count is None:
-            text_count = stats.get('text_articles', stats.get('text_available', '?'))
-        self.corpus_stats.setText(f'总条目 {stats["articles"]:,}　可访问 {stats["available"]:,}　缺失 {stats["unavailable"]:,}　去重正文 {stats["unique_bodies"]:,}　含文本 {text_count}　已提炼 {stats["analyses"]:,}')
-        articles = self.store.list_articles(query=self.corpus_search.text().strip(),
-            journal='' if self.journal_filter.currentIndex() == 0 else self.journal_filter.currentText(),
-            kind='' if self.kind_filter.currentIndex() == 0 else self.kind_filter.currentText(), limit=100000)
-        if self.year_filter.currentIndex():
-            articles = [a for a in articles if str(a.get('year')) == self.year_filter.currentText()]
-        if text_count == '?':
-            # Only a metadata statistic; do not reinterpret image-only entries as missing.
-            all_articles = articles if not self.corpus_search.text() and not self.journal_filter.currentIndex() and not self.kind_filter.currentIndex() and not self.year_filter.currentIndex() else self.store.list_articles(limit=100000)
-            self.corpus_stats.setText(self.corpus_stats.text().replace('含文本 ?', f'含文本 {sum(bool(a.get("body", "").strip()) for a in all_articles):,}'))
-            text_count = sum(bool(a.get('body', '').strip()) for a in all_articles)
+        self.corpus_stats.setText(f'总条目 {stats["articles"]:,}　可访问 {stats["available"]:,}　缺失 {stats["unavailable"]:,}　去重正文 {stats["unique_bodies"]:,}　含文本 {stats["text_bearing"]:,}　已提炼 {stats["analyses"]:,}')
         for key, label in self.corpus_stat_values.items():
-            value = text_count if key == 'text_bearing' else stats[key]
-            label.setText(f'{value:,}' if isinstance(value, int) else str(value))
+            value = stats.get(key)
+            label.setText(f'{value:,}' if isinstance(value, int) else '—')
         self.corpus_table.set_empty_text(
             '没有匹配的文章' if stats['articles'] else '资料库中还没有文章',
             '试试其他关键词，或清除来源、类型与年份筛选。' if stats['articles'] else '从下方导入本地文件或官方来源，开始积累训练资料。')
-        self.corpus_table.blockSignals(True)
-        self.corpus_table.setRowCount(len(articles))
-        for r, article in enumerate(articles):
-            status = '缺失' if article['status'] != 'available' else '有文本' if article.get('body', '').strip() else '仅图片'
-            values = [article['title'], article.get('journal', ''), str(article.get('year') or ''), article.get('kind', ''), status]
-            for c, value in enumerate(values):
-                item = QTableWidgetItem(value)
-                if c == 0:
-                    item.setData(Qt.ItemDataRole.UserRole, article['id'])
-                self.corpus_table.setItem(r, c, item)
-            if article['id'] in selected:
-                for c in range(self.corpus_table.columnCount()):
-                    self.corpus_table.item(r, c).setSelected(True)
-        self.corpus_table.blockSignals(False)
+        # Only scalar summaries are read here; bodies load when a row is opened.
+        summaries = self.store.list_article_summaries(
+            query=self.corpus_search.text().strip(),
+            journal='' if self.journal_filter.currentIndex() == 0 else self.journal_filter.currentText(),
+            kind='' if self.kind_filter.currentIndex() == 0 else self.kind_filter.currentText(),
+            year=self.year_filter.currentText() if self.year_filter.currentIndex() else '',
+            limit=100000)
+        self.corpus_model.set_rows(summaries)
+        selection = self.corpus_table.selectionModel()
+        selection.blockSignals(True)
+        selection.clearSelection()
+        for article_id in selected:
+            row_index = self.corpus_model.index_of(article_id)
+            if row_index >= 0:
+                selection.select(self.corpus_model.index(row_index, 0),
+                                 QItemSelectionModel.SelectionFlag.Select
+                                 | QItemSelectionModel.SelectionFlag.Rows)
+        selection.blockSignals(False)
         self.show_article_selection()
 
     def show_article_selection(self):
-        ids = self.selected_article_ids()
+        rows = self.corpus_table.selected_rows()
+        ids = [row['id'] for row in rows]
         self.extract_button.setEnabled(any(
-            article and article.get('status') == 'available' and bool(article.get('body', '').strip())
-            for article in (self.store.get_article(article_id) for article_id in ids)))
+            row['status'] == 'available' and row['has_body'] for row in rows))
         self.article_selection_label.setText(f'已选 {len(ids)} 篇' if ids else '尚未选择文章')
         self.article_selection_label.setToolTip('可按 Ctrl 多选文章进行批量提炼。')
         if ids:
@@ -268,9 +261,9 @@ class LibraryMixin(ArticleBatchMixin):
 
     def start_import(self, title, operation):
         def done(result):
-            self.refresh_corpus()
             self.notify(title + '完成：' + json.dumps(result, ensure_ascii=False))
-        self.start_job(title, operation, done)
+        # Imports only add corpus rows; other pages stay untouched.
+        self.start_job(title, operation, done, domains=('corpus',))
 
     def extract_selected(self):
         ids = self.selected_article_ids()
@@ -291,10 +284,10 @@ class LibraryMixin(ArticleBatchMixin):
             if QMessageBox.question(self, '确认模型批量提炼', message) != QMessageBox.StandardButton.Yes:
                 return
             def done(result):
-                self.refresh_corpus()
-                self.refresh_methods()
                 self.notify('提炼完成：' + json.dumps(result, ensure_ascii=False))
-            self.start_job('提炼所选文章', lambda progress, cancel: service.extract(ids, progress=progress, cancel=cancel), done)
+            # Extraction stores analyses, candidate methods and token usage.
+            self.start_job('提炼所选文章', lambda progress, cancel: service.extract(ids, progress=progress, cancel=cancel),
+                           done, domains=('corpus', 'methods', 'usage'))
         except (ValueError, TypeError) as exc:
             self.notify(str(exc))
 
@@ -381,10 +374,9 @@ class LibraryMixin(ArticleBatchMixin):
         all_cards = self.store.list_cards()
         titles = {}
         if self.article_method_search.text().strip():
-            for card in all_cards:
-                for identity in card.get('source_article_ids', []):
-                    if identity not in titles:
-                        titles[identity] = (self.store.get_article(identity) or {}).get('title', '')
+            identities = sorted({identity for card in all_cards
+                                 for identity in card.get('source_article_ids', [])})
+            titles = self.store.article_titles(identities)
         self.cards = [card for card in all_cards if self.article_method_filters.matches(card,
             source_titles=[titles.get(identity, '') for identity in card.get('source_article_ids', [])])]
         self.method_table.blockSignals(True)

@@ -17,7 +17,8 @@ def test_chinese_search_preserves_sources_and_quotes(tmp_path):
     assert store.list_articles(journal='求是', kind='理论')[0]['id'] == first
     assert store.get_article(first)['paragraphs'] == [{'id': first + ':p1', 'text': '坚持以人民为中心。'}, {'id': first + ':p2', 'text': '提升公共服务水平。'}]
     assert store.get_article(missing)['body'] == ''
-    assert store.stats() == {'articles': 3, 'available': 2, 'unavailable': 1, 'unique_bodies': 1, 'analyses': 0, 'cards': 0, 'reviews': 0}
+    assert store.stats() == {'articles': 3, 'available': 2, 'unavailable': 1, 'unique_bodies': 1,
+                             'text_bearing': 2, 'analyses': 0, 'cards': 0, 'reviews': 0}
     assert store.upsert_article(store.get_article(first)) == first
     assert Store(tmp_path / 'corpus.db').stats()['articles'] == 3
     with sqlite3.connect(tmp_path / 'corpus.db') as conn:

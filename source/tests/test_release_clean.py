@@ -40,7 +40,7 @@ def raw_build(tmp_path):
     (raw / '_internal' / 'assets').mkdir(parents=True)
     (raw / 'ShenlunStudio.exe').write_bytes(b'MZ')
     with sqlite3.connect(raw / '_internal' / 'assets' / 'seed.db') as conn:
-        conn.execute('CREATE TABLE articles (id TEXT)')
+        conn.execute('CREATE TABLE articles (id TEXT PRIMARY KEY, data TEXT NOT NULL)')
     return raw
 
 

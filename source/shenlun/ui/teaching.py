@@ -524,7 +524,7 @@ class TeachingPanel(TeachingBatchMixin,QWidget):
             if self.current.get('id') == current_id and self._source_index == source_index:
                 self.source_excerpt.setPlainText(text); self.say('片段已写入编辑区，请填写来源定位并核对精确引文后保存。')
         self.host.start_job('读取本机方法来源', lambda progress, cancel: read_inputs(paths, progress=progress,
-            cancel=cancel, retain_failed=True), preview)
+            cancel=cancel, retain_failed=True), preview, domains=())
 
 
 class TeachingUiMixin:

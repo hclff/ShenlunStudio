@@ -94,8 +94,9 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
     def save_question(self,submission,title='',tags=None,source='',needs_retry=None):
         with self._connection() as conn:return self._save_question(conn,submission,title,tags,source,needs_retry)
 
-    def _decorate_question(self,conn,value):
-        count=conn.execute('SELECT count(*) FROM review_questions WHERE question_id=?',(value['id'],)).fetchone()[0]
+    def _decorate_question(self,conn,value,count=None):
+        if count is None:
+            count=conn.execute('SELECT count(*) FROM review_questions WHERE question_id=?',(value['id'],)).fetchone()[0]
         value['attempt_count']=count
         value['status']='待重练' if value.get('needs_retry') else '已练' if count else '未练'
         return value
@@ -112,8 +113,12 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
         limit=max(0,min(10000,int(limit)));result=[]
         if not limit:return result
         with self._connection() as conn:
+            # One aggregate instead of a count per question.
+            counts=dict(conn.execute('SELECT question_id,count(*) FROM review_questions '
+                                     'WHERE question_id IS NOT NULL GROUP BY question_id'))
             for row in conn.execute(sql,params):
-                value=self._decorate_question(conn,json.loads(row[0]))
+                value=json.loads(row[0])
+                value=self._decorate_question(conn,value,counts.get(value['id'],0))
                 if status and value['status']!=status:continue
                 if question_type and value['submission'].get('question_type')!=question_type:continue
                 result.append(value)
@@ -353,6 +358,9 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
                       'deleted_practice_reviews':('review_id','deleted_at'),
                       'assessment_tasks':('id','state','claim_token','review_id','created_at','updated_at','error_summary','data')}
             tables={row[0] for row in source.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+            # Additive trailing columns; a backup either lacks them (upgraded in
+            # place after the copy) or carries them in this exact order.
+            derived={'articles':('year','has_body')}
             for table,columns in {**required,**{k:v for k,v in optional.items() if k in tables}}.items():
                 if table not in tables:raise ValueError('这不是兼容的申论研习数据库。')
                 schema=list(source.execute('PRAGMA table_xinfo('+table+')'))
@@ -362,7 +370,8 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
                               'method_library_trash':('kind','method_id'),
                               'method_library_purged':('kind','method_id')}.get(table,(columns[0],))
                 primary=tuple(row[1] for row in sorted(schema,key=lambda row:row[5]) if row[5])
-                if tuple(row[1] for row in schema)!=columns or any(row[6] for row in schema) or primary!=expected_key:
+                actual=tuple(row[1] for row in schema)
+                if actual not in (columns,columns+derived.get(table,())) or any(row[6] for row in schema) or primary!=expected_key:
                     raise ValueError('这不是兼容的申论研习数据库。')
                 if table=='question_bank':
                     unique_indexes=[row[1] for row in source.execute('PRAGMA index_list(question_bank)') if row[2] and not row[4]]

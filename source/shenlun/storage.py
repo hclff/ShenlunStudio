@@ -30,6 +30,56 @@ def _now():
     return datetime.now(timezone.utc).isoformat()
 
 
+ARTICLE_SOURCE_COLUMNS = ('id', 'title', 'journal', 'kind', 'status', 'fingerprint', 'publication')
+
+
+def insert_article_row(conn, value, search_text):
+    """Single definition of the article insert so column changes stay in one place."""
+    columns = ARTICLE_SOURCE_COLUMNS + ('search_text', 'data', 'year', 'has_body')
+    conn.execute('INSERT INTO articles(' + ','.join(columns) + ') VALUES (' +
+                 ','.join('?' * len(columns)) + ') ON CONFLICT(id) DO UPDATE SET '
+                 'title=excluded.title,journal=excluded.journal,kind=excluded.kind,'
+                 'status=excluded.status,fingerprint=excluded.fingerprint,'
+                 'publication=excluded.publication,search_text=excluded.search_text,'
+                 'data=excluded.data,year=excluded.year,has_body=excluded.has_body',
+                 tuple(value[key] for key in ARTICLE_SOURCE_COLUMNS)
+                 + (search_text, _dump(value), int(value.get('year') or 0),
+                    1 if str(value.get('body') or '').strip() else 0))
+
+
+def upgrade_article_columns(conn):
+    """Add the derived ``year``/``has_body`` columns and backfill them once.
+
+    Idempotent: safe on a database that already has them. The ordered migration
+    framework takes over this upgrade so the step keeps a single definition.
+    Returns True when a backfill was performed.
+    """
+    existing = {row[1] for row in conn.execute('PRAGMA table_info(articles)')}
+    if not existing:
+        return False
+    added = [name for name in ('year', 'has_body') if name not in existing]
+    if added:
+        for name in added:
+            conn.execute('ALTER TABLE articles ADD COLUMN ' + name + ' INTEGER NOT NULL DEFAULT 0')
+        if 'data' in existing:
+            # One SQL pass; SQLite parses each stored JSON once in C.
+            conn.execute("""UPDATE articles SET
+                year=CAST(coalesce(json_extract(data,'$.year'),0) AS INTEGER),
+                has_body=CASE WHEN length(trim(coalesce(json_extract(data,'$.body'),'')))>0
+                    THEN 1 ELSE 0 END""")
+    columns = existing | set(added)
+    if 'year' in columns:
+        conn.execute('CREATE INDEX IF NOT EXISTS article_year ON articles(year)')
+    summary_columns = {'id', 'title', 'journal', 'kind', 'status', 'publication',
+                       'year', 'has_body'}
+    if summary_columns <= columns:
+        # Covering index for the list view: scanning it avoids walking each
+        # row's body blob (60-80 ms versus 4 ms for the same 2151 rows).
+        conn.execute("""CREATE INDEX IF NOT EXISTS article_summary_scan ON articles(
+            publication DESC,title ASC,id ASC,journal,kind,status,year,has_body)""")
+    return bool(added)
+
+
 def normalize_article(article):
     """Return a serializable canonical record, preserving all source extras."""
     value = dict(article)
@@ -74,6 +124,7 @@ class Store(RubricLibraryStoreMixin,AssessmentTaskStoreMixin,PracticeStoreMixin,
                 CREATE TABLE IF NOT EXISTS usage (id INTEGER PRIMARY KEY, input_tokens INTEGER NOT NULL,
                     output_tokens INTEGER NOT NULL, total_tokens INTEGER NOT NULL, data TEXT NOT NULL);
             ''')
+            upgrade_article_columns(conn)
             self.fts_available = False
             try:
                 conn.execute("CREATE VIRTUAL TABLE IF NOT EXISTS article_search USING fts5(article_id UNINDEXED, text, tokenize='trigram')")
@@ -111,11 +162,7 @@ class Store(RubricLibraryStoreMixin,AssessmentTaskStoreMixin,PracticeStoreMixin,
         value = normalize_article(article)
         search_text = '\n'.join(value[key] for key in ('title', 'author', 'journal', 'body'))
         with self._connection() as conn:
-            conn.execute('''INSERT INTO articles VALUES (?,?,?,?,?,?,?,?,?)
-                ON CONFLICT(id) DO UPDATE SET title=excluded.title,journal=excluded.journal,
-                kind=excluded.kind,status=excluded.status,fingerprint=excluded.fingerprint,
-                publication=excluded.publication,search_text=excluded.search_text,data=excluded.data''',
-                tuple(value[key] for key in ('id', 'title', 'journal', 'kind', 'status', 'fingerprint', 'publication')) + (search_text, _dump(value)))
+            insert_article_row(conn, value, search_text)
             if self.fts_available:
                 conn.execute('DELETE FROM article_search WHERE article_id=?', (value['id'],))
                 conn.execute('INSERT INTO article_search(article_id,text) VALUES (?,?)', (value['id'], search_text))
@@ -126,7 +173,10 @@ class Store(RubricLibraryStoreMixin,AssessmentTaskStoreMixin,PracticeStoreMixin,
             row = conn.execute('SELECT data FROM articles WHERE id=?', (id,)).fetchone()
         return json.loads(row[0]) if row else None
 
-    def list_articles(self, query='', journal='', kind='', limit=200):
+    ARTICLE_SUMMARY_COLUMNS = ('id', 'title', 'journal', 'year', 'kind', 'status',
+                               'publication', 'has_body')
+
+    def _article_clauses(self, query='', journal='', kind='', year=''):
         clauses, params = [], []
         if query:
             # All syntax characters are quoted as literal text; short Chinese
@@ -136,20 +186,73 @@ class Store(RubricLibraryStoreMixin,AssessmentTaskStoreMixin,PracticeStoreMixin,
                 params.append('"' + query.replace('"', '""') + '"')
             clauses.append('instr(search_text,?) > 0')
             params.append(query)
-        for field, value in [('journal', journal), ('kind', kind)]:
+        for field, value in (('journal', journal), ('kind', kind)):
             if value:
                 clauses.append(field + '=?')
                 params.append(value)
+        if str(year).strip():
+            clauses.append('year=?')
+            params.append(int(year))
+        return clauses, params
+
+    def list_articles(self, query='', journal='', kind='', limit=200, year='', offset=0):
+        clauses, params = self._article_clauses(query, journal, kind, year)
         sql = 'SELECT data FROM articles' + (' WHERE ' + ' AND '.join(clauses) if clauses else '')
-        sql += ' ORDER BY publication DESC,title ASC,id ASC LIMIT ?'
-        params.append(max(0, int(limit)))
+        sql += ' ORDER BY publication DESC,title ASC,id ASC LIMIT ? OFFSET ?'
+        params += [max(0, int(limit)), max(0, int(offset))]
         with self._connection() as conn:
             return [json.loads(row[0]) for row in conn.execute(sql, params)]
 
+    def list_article_summaries(self, query='', journal='', kind='', year='', limit=200, offset=0):
+        """Scalar columns only, so a list view never parses an article body."""
+        clauses, params = self._article_clauses(query, journal, kind, year)
+        sql = 'SELECT ' + ','.join(self.ARTICLE_SUMMARY_COLUMNS) + ' FROM articles'
+        sql += (' WHERE ' + ' AND '.join(clauses) if clauses else '')
+        sql += ' ORDER BY publication DESC,title ASC,id ASC LIMIT ? OFFSET ?'
+        params += [max(0, int(limit)), max(0, int(offset))]
+        result = []
+        with self._connection() as conn:
+            for row in conn.execute(sql, params):
+                value = dict(zip(self.ARTICLE_SUMMARY_COLUMNS, row))
+                value['has_body'] = bool(value['has_body'])
+                result.append(value)
+        return result
+
+    def count_articles(self, query='', journal='', kind='', year=''):
+        clauses, params = self._article_clauses(query, journal, kind, year)
+        sql = 'SELECT count(*) FROM articles' + (' WHERE ' + ' AND '.join(clauses) if clauses else '')
+        with self._connection() as conn:
+            return int(conn.execute(sql, params).fetchone()[0])
+
+    def _article_rows(self, columns, ids):
+        """Chunked id lookup; older SQLite builds cap bound parameters."""
+        ordered = [str(item) for item in ids]
+        rows = []
+        if not ordered:
+            return rows
+        with self._connection() as conn:
+            for start in range(0, len(ordered), 400):
+                block = ordered[start:start + 400]
+                rows.extend(conn.execute('SELECT ' + columns + ' FROM articles WHERE id IN (' +
+                                         ','.join('?' * len(block)) + ')', block).fetchall())
+        return rows
+
+    def get_articles(self, ids):
+        """Batch fetch preserving the caller's order; unknown ids are skipped."""
+        found = {row[0]: json.loads(row[1]) for row in self._article_rows('id,data', ids)}
+        return [found[item] for item in (str(value) for value in ids) if item in found]
+
+    def article_titles(self, ids):
+        """Title lookup without touching stored bodies."""
+        return dict(self._article_rows('id,title', ids))
+
     def stats(self):
         with self._connection() as conn:
-            row = conn.execute("SELECT count(*),sum(status='available'),sum(status='unavailable'),count(DISTINCT nullif(fingerprint,'')) FROM articles").fetchone()
-            result = dict(zip(('articles', 'available', 'unavailable', 'unique_bodies'), (int(v or 0) for v in row)))
+            row = conn.execute("SELECT count(*),sum(status='available'),sum(status='unavailable'),"
+                               "count(DISTINCT nullif(fingerprint,'')),"
+                               "sum(CASE WHEN has_body>0 THEN 1 ELSE 0 END) FROM articles").fetchone()
+            result = dict(zip(('articles', 'available', 'unavailable', 'unique_bodies', 'text_bearing'),
+                              (int(v or 0) for v in row)))
             for table in ('analyses', 'cards', 'reviews'):
                 result[table] = conn.execute('SELECT count(*) FROM ' + table).fetchone()[0]
             result['cards']=conn.execute("""SELECT count(*) FROM cards WHERE

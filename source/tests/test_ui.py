@@ -116,8 +116,8 @@ def test_all_bundled_journals_can_be_filtered(window):
     assert index >= 0
     window.journal_filter.setCurrentIndex(index)
     window.refresh_corpus()
-    assert window.corpus_table.rowCount() == 1
-    assert window.corpus_table.item(0, 1).text() == '红旗文稿'
+    assert window.corpus_table.model().rowCount() == 1
+    assert window.corpus_table.model().index(0, 1).data() == '红旗文稿'
 
 
 def test_history_restores_score_snapshot_and_unicode_annotation(window, app):

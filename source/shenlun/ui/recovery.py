@@ -180,5 +180,6 @@ class AssessmentRecoveryMixin:
         self.start_job('训练批改', lambda progress,cancel:service.assess(
             copy.deepcopy(task['submission']), progress=progress, cancel=cancel,
             grade_context=copy.deepcopy(task['context']), task_id=task_id, expected_generation=generation),
-            show_result, retry=lambda:self.resume_assessment_task(task_id))
+            show_result, retry=lambda:self.resume_assessment_task(task_id),
+            domains=('history', 'questions', 'usage'))
         return True

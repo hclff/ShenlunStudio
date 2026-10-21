@@ -7,7 +7,7 @@ from urllib.parse import urlsplit
 from PySide6.QtCore import QUrl,Qt
 from PySide6.QtGui import QColor,QDesktopServices, QFont, QFontDatabase,QPalette
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QLabel,
-    QPlainTextEdit, QPushButton, QTableWidget, QVBoxLayout, QWidget,QSizePolicy)
+    QPlainTextEdit, QPushButton, QTableView, QTableWidget, QVBoxLayout, QWidget,QSizePolicy)
 
 
 STYLE = r'''
@@ -72,12 +72,12 @@ QTabWidget::pane{border:1px solid #e0e7ef;border-radius:8px;background:white;top
 QTabBar::tab{background:transparent;color:#7d8da1;padding:11px 16px;border-bottom:2px solid transparent;margin-right:4px;}
 QTabBar::tab:selected{color:#118372;border-bottom:2px solid #199b87;font-weight:600;}
 QTabBar::tab:hover{color:#147d72;background:#edf6f3;}
-QTableWidget,QListWidget{background:white;border:1px solid #e0e7ef;border-radius:7px;alternate-background-color:#f8fafc;selection-background-color:#e3f3f0;selection-color:#23594f;outline:none;}
-QTableWidget::item{padding:5px 8px;border-bottom:1px solid #f0f3f7;}
-QTableWidget::item:selected{background:#e3f3f0;color:#205c50;}
-QTableWidget::item:hover{background:#f0f7f6;}
-QListWidget::item{padding:9px;border-bottom:1px solid #f1f4f8;}
-QListWidget::item:selected{background:#e3f3f0;color:#205c50;}
+QTableWidget,QTableView,QListWidget,QListView{background:white;border:1px solid #e0e7ef;border-radius:7px;alternate-background-color:#f8fafc;selection-background-color:#e3f3f0;selection-color:#23594f;outline:none;}
+QTableWidget::item,QTableView::item{padding:5px 8px;border-bottom:1px solid #f0f3f7;}
+QTableWidget::item:selected,QTableView::item:selected{background:#e3f3f0;color:#205c50;}
+QTableWidget::item:hover,QTableView::item:hover{background:#f0f7f6;}
+QListWidget::item,QListView::item{padding:9px;border-bottom:1px solid #f1f4f8;}
+QListWidget::item:selected,QListView::item:selected{background:#e3f3f0;color:#205c50;}
 QHeaderView::section{background:#f7f9fc;border:none;border-bottom:1px solid #e3e9f1;padding:10px 8px;color:#6a7b90;font-size:12px;font-weight:600;}
 QTableCornerButton::section{background:#f7f9fc;border:0;}
 QSplitter::handle{background:transparent;width:8px;height:8px;}
@@ -213,6 +213,73 @@ def table(headers):
     result.setMouseTracking(True)
     result.horizontalHeader().setStretchLastSection(True)
     return result
+
+
+class ModelTable(QTableView):
+    """Model-backed table for long lists; only visible rows are laid out.
+
+    Shares the QTableWidget styling and the empty-state hint so switching a
+    table to a model cannot change what the workspace looks like.
+    """
+    def __init__(self, model):
+        super().__init__()
+        self.setModel(model)
+        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.setAlternatingRowColors(True)
+        self.verticalHeader().hide()
+        self.verticalHeader().setDefaultSectionSize(40)
+        self.setShowGrid(False)
+        self.setWordWrap(False)
+        self.setTextElideMode(Qt.TextElideMode.ElideRight)
+        self.setMouseTracking(True)
+        self.horizontalHeader().setStretchLastSection(True)
+        self.empty_hint = QLabel(self.viewport())
+        self.empty_hint.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.empty_hint.setWordWrap(True)
+        self.empty_hint.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        self.empty_hint.setStyleSheet('color:#8492a6;background:transparent;font-size:13px;padding:24px;')
+        self.set_empty_text('暂无内容', '导入资料或调整筛选条件后，内容会显示在这里。')
+        model.modelReset.connect(self.update_empty)
+        model.rowsInserted.connect(lambda *_: self.update_empty())
+        model.rowsRemoved.connect(lambda *_: self.update_empty())
+
+    def set_empty_text(self, title, description=''):
+        self.empty_hint.setText(title + '\n\n' + description)
+        self.update_empty()
+
+    def update_empty(self):
+        self.empty_hint.setGeometry(self.viewport().rect())
+        model = self.model()
+        self.empty_hint.setVisible(model is None or model.rowCount() == 0)
+
+    def rowCount(self):
+        model = self.model()
+        return model.rowCount() if model is not None else 0
+
+    def selected_ids(self, role=Qt.ItemDataRole.UserRole):
+        model = self.model()
+        if model is None or not hasattr(model, 'id_at'):
+            return []
+        return [model.id_at(index.row()) for index in self.selectionModel().selectedRows()]
+
+    def selected_rows(self):
+        model = self.model()
+        if model is None or not hasattr(model, 'row_at'):
+            return []
+        return [model.row_at(index.row()) for index in self.selectionModel().selectedRows()]
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.update_empty()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.update_empty()
+
+
+def model_table(model):
+    return ModelTable(model)
 
 
 def card(title='',subtitle=''):

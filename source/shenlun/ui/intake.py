@@ -766,7 +766,8 @@ class IntakeMixin:
             page_spec, force_ocr = options.page_spec.text(), options.force_ocr.isChecked()
             ocr_options = {'mode': options.ocr_mode.currentData(), 'columns': options.ocr_columns.currentData()}
         self.start_job('读取本机文件', lambda progress, cancel: read_inputs(paths, progress=progress, cancel=cancel,
-                       force_ocr=force_ocr, page_spec=page_spec, ocr_options=ocr_options, retain_failed=True), lambda batch: self.preview_intake(batch, target))
+                       force_ocr=force_ocr, page_spec=page_spec, ocr_options=ocr_options, retain_failed=True), lambda batch: self.preview_intake(batch, target),
+                       domains=())
 
     def import_clipboard(self):
         self.intake_from_mime(QApplication.clipboard().mimeData(), self.current_intake_target())
@@ -806,7 +807,7 @@ class IntakeMixin:
             target = options.target_combo.currentData()
             ocr_options = {'mode': options.ocr_mode.currentData(), 'columns': options.ocr_columns.currentData()}
             self.start_job('本机图片文字识别', lambda progress, cancel: read_image_bytes(payload, progress=progress, cancel=cancel, ocr_options=ocr_options, retain_failed=True),
-                           lambda batch: self.preview_intake(batch, target))
+                           lambda batch: self.preview_intake(batch, target), domains=())
         elif mime.hasUrls():
             self.notify('请拖入本机文件；网页链接不作为题目导入。')
         elif mime.hasText() and mime.text().strip():
