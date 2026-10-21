@@ -1,0 +1,4 @@
+# Byte fidelity matters here: release verification compares SHA256 of source files
+# between the working copy, the published project and the portable bundle.
+# Disable end-of-line conversion so checkout restores the exact committed bytes.
+* -text

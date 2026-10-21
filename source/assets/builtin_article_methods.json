@@ -1,0 +1,4068 @@
+{
+  "catalog_id": "article-methods-20261017-round2",
+  "version": 1,
+  "read_article_entries": 73,
+  "notice": "GPT辅助归纳的文章写作候选，非刊方自述、人工认证或官方评分细则。",
+  "cards": [
+    {
+      "name": "以共同维度比较差异，再分类安排路径",
+      "purpose": "证明因地制宜时给出同一维度上的差异与相应行动，避免只喊不可一刀切。",
+      "steps": [
+        "确定要比较的是地区、群体还是发展阶段，保持分类层级一致。",
+        "选择与主张相关的共同维度，如基础、需求、资源或成熟度。",
+        "沿该维度分别写出各类对象的特点。",
+        "为各类对象匹配有区别的措施，并说明共同目标。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "差异与措施无关时不扩写；材料不足以支撑分类时，不凭刻板印象替地区或人群分档。",
+      "refs": [
+        {
+          "id": "a-0ddf735e4e43b2f482fcba92:p11",
+          "quote": "不同产业发展处于不同阶段，有着不同质的矛盾，需要有不同的应对措施。"
+        },
+        {
+          "id": "a-8cbfd143269fad9b7713ee1b:p9",
+          "quote": "因地制宜、因时制宜、因人制宜"
+        },
+        {
+          "id": "a-d22f8be5030e9db05fc4fdf8:p10",
+          "quote": "面向前沿创新"
+        },
+        {
+          "id": "a-d22f8be5030e9db05fc4fdf8:p10",
+          "quote": "面向行业融合"
+        },
+        {
+          "id": "a-d22f8be5030e9db05fc4fdf8:p10",
+          "quote": "面向生产应用"
+        },
+        {
+          "id": "a-01496f5c9e324fd043069539:p11",
+          "quote": "受知识结构、数字技术素养与操作水平等的影响"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-0ddf735e4e43b2f482fcba92",
+          "paragraph_ids": [
+            "a-0ddf735e4e43b2f482fcba92:p11",
+            "a-0ddf735e4e43b2f482fcba92:p12"
+          ],
+          "observation": "p11按产业成熟度比较传统、新兴、未来产业，再分别配置改造提升、重点培育和超前布局；p12按地区产业科教等基础比较路径。可迁移的是共同维度下的差异化推导。"
+        },
+        {
+          "article_id": "a-8cbfd143269fad9b7713ee1b",
+          "paragraph_ids": [
+            "a-8cbfd143269fad9b7713ee1b:p9",
+            "a-8cbfd143269fad9b7713ee1b:p14"
+          ],
+          "observation": "p9从地域、区域、群体及变化因素解释需求差异，p14据此提出按地区群体需求设计差异化配送方案。分类不是标签装饰，而是选择供给的依据。"
+        },
+        {
+          "article_id": "a-d22f8be5030e9db05fc4fdf8",
+          "paragraph_ids": [
+            "a-d22f8be5030e9db05fc4fdf8:p3",
+            "a-d22f8be5030e9db05fc4fdf8:p4",
+            "a-d22f8be5030e9db05fc4fdf8:p5",
+            "a-d22f8be5030e9db05fc4fdf8:p10"
+          ],
+          "observation": "p10保持人才应用层次维度：前沿研发、行业融合、生产应用，分别匹配核心研究人才、技术行业复合人才与实操培训，服务能力适配共同目标。支持旧步骤1—4，不把三个面向仅当排比。"
+        },
+        {
+          "article_id": "a-01496f5c9e324fd043069539",
+          "paragraph_ids": [
+            "a-01496f5c9e324fd043069539:p10",
+            "a-01496f5c9e324fd043069539:p11",
+            "a-01496f5c9e324fd043069539:p12",
+            "a-01496f5c9e324fd043069539:p13",
+            "a-01496f5c9e324fd043069539:p16",
+            "a-01496f5c9e324fd043069539:p17",
+            "a-01496f5c9e324fd043069539:p18",
+            "a-01496f5c9e324fd043069539:p19"
+          ],
+          "observation": "p10按行业、p11按知识技能群体、p12按收入保障、p13按国家条件分别比较影响；p17分类风险评估、p18—19分层培训与教育。支持旧步骤1—3，并为步骤4提供风险能力配置依据；多个分类轴须分开。"
+        }
+      ],
+      "category": "比较与分类论证",
+      "example": "【自编微型演示】同是阅读服务，通勤人群更需要晚间借阅，行动不便者更需要送书上门。按使用时段和到馆能力分类安排，比统一延长所有网点开放时间更能贴合需求。",
+      "misuse": "先按地区分类，后文忽然按产业分类却不说明关系；只说甲乙不同，没有推出路径差异。",
+      "id": "corpus-20261017-18c24a4b2c6f4025b610",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-0ddf735e4e43b2f482fcba92",
+        "a-8cbfd143269fad9b7713ee1b",
+        "a-d22f8be5030e9db05fc4fdf8",
+        "a-01496f5c9e324fd043069539"
+      ],
+      "source_fingerprints": [
+        "1ea93ca3efeb1b6c3c3b396795b1cfe13889bc10d0803ec0a5b1d1c66da25eff",
+        "787480bda0eca0a87d9fef57b818da969b962c94f532aab8ef882aac86b4f622",
+        "1470179c1fdcabc9ee7d9f1df0c686b24959ed4977471fef387104ca4733c7dd",
+        "a78ab859dac11d4fe80846f0033087e3998fe4d2dbf100d2e11eb81f89265f06"
+      ],
+      "source_versions": {
+        "a-0ddf735e4e43b2f482fcba92": "1ea93ca3efeb1b6c3c3b396795b1cfe13889bc10d0803ec0a5b1d1c66da25eff",
+        "a-8cbfd143269fad9b7713ee1b": "787480bda0eca0a87d9fef57b818da969b962c94f532aab8ef882aac86b4f622",
+        "a-d22f8be5030e9db05fc4fdf8": "1470179c1fdcabc9ee7d9f1df0c686b24959ed4977471fef387104ca4733c7dd",
+        "a-01496f5c9e324fd043069539": "a78ab859dac11d4fe80846f0033087e3998fe4d2dbf100d2e11eb81f89265f06"
+      },
+      "source_metadata": [
+        {
+          "id": "a-0ddf735e4e43b2f482fcba92",
+          "title": "因地制宜发展新质生产力",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/hqwg/2024-07/27/c_1130185881.htm",
+          "publication": "2024-07-27 11:23:31",
+          "author": "朱安东 黄怡暄"
+        },
+        {
+          "id": "a-8cbfd143269fad9b7713ee1b",
+          "title": "建立优质文化资源直达基层供需适配机制",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/20241213/85defc5ce4644c45939d0d55a1a7dad1/c.html",
+          "publication": "2024-12-14 21:30:35",
+          "author": "龚剑飞 盛方富"
+        },
+        {
+          "id": "a-d22f8be5030e9db05fc4fdf8",
+          "title": "人工智能时代需要培养什么样的能力",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20261010/85b6086ee4cd4c42aba228c1abf4d8f0/c.html",
+          "publication": "2026-10-10 15:25:43",
+          "author": "卓泽林"
+        },
+        {
+          "id": "a-01496f5c9e324fd043069539",
+          "title": "人工智能对就业的影响及对策",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250714/ef84841650ce4dbab6d8fedaad6bdd47/c.html",
+          "publication": "2025-07-14 10:27:44",
+          "author": "李 韬"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "红旗文稿:6"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "红旗文稿",
+          "scope_note": "维度由材料对象决定，不把全文行业、国家、年龄混列为同层次三分论点。"
+        }
+      ]
+    },
+    {
+      "name": "事实或数据之后解释它证明了什么",
+      "purpose": "让数字承担明确论证任务，保留时间与对象限定，再回扣本段判断。",
+      "steps": [
+        "先确定本段要证明的是能力、趋势还是成效。",
+        "选取与该判断口径一致的一项事实或一组可比数据，保留年份和对象。",
+        "解释该事实对应了什么能力或变化，避免只报数字。",
+        "回扣分论点并保留限度，不从数量增长直接推出质量全面提升。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "材料数据口径不明或年份不可比时不强作对比；历史文章数字仅作写法证据，写当前事实需另行核验。",
+      "refs": [
+        {
+          "id": "a-cab7b5bf8de6538e63168f01:p11",
+          "quote": "成为日常风险防范和第一时间先期处置的重要力量。"
+        },
+        {
+          "id": "a-5807ecc6daee7c87a97f3629:p10",
+          "quote": "从2015年的67%提升到2025年的96.5%"
+        },
+        {
+          "id": "a-4f31beefe033e962db5c63fc:p14",
+          "quote": "冰雪文化，不仅传承历史文化，也是新的经济增长点。"
+        },
+        {
+          "id": "a-4f31beefe033e962db5c63fc:p16",
+          "quote": "打造冰雪经济全产业链是关键"
+        },
+        {
+          "id": "a-5396dcf44bc062f5251d22d0:p3",
+          "quote": "对人文领域的感知与欣赏能力却较为薄弱"
+        },
+        {
+          "id": "a-5449eaa3f0a25b1d371c232b:p3",
+          "quote": "就业增长符合时序进度。"
+        },
+        {
+          "id": "a-a19429b34cdb7a69814cda04:p9",
+          "quote": "青年总量就业压力仍处高位"
+        },
+        {
+          "id": "a-27965fb3647779cdf195ab93:p5",
+          "quote": "这些数据表明，投资并未全面收缩"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-cab7b5bf8de6538e63168f01",
+          "paragraph_ids": [
+            "a-cab7b5bf8de6538e63168f01:p11"
+          ],
+          "observation": "p11在队伍建设判断后给出截至2022年的队伍和人数，再解释其在日常防范与先期处置中的作用。数字服务队伍能力论点，不能凭队伍数量推出灾害损失已经下降。"
+        },
+        {
+          "article_id": "a-5807ecc6daee7c87a97f3629",
+          "paragraph_ids": [
+            "a-5807ecc6daee7c87a97f3629:p10",
+            "a-5807ecc6daee7c87a97f3629:p11"
+          ],
+          "observation": "p10先提出发展方式转变，举传统产业绿色转型及水质比例的前后数据，最后回到质效；p11以航道和吞吐量支持开放判断。可迁移的是论点—匹配证据—含义解释，原文多个指标并列也不能证明唯一因果。"
+        },
+        {
+          "article_id": "a-4f31beefe033e962db5c63fc",
+          "paragraph_ids": [
+            "a-4f31beefe033e962db5c63fc:p10",
+            "a-4f31beefe033e962db5c63fc:p14",
+            "a-4f31beefe033e962db5c63fc:p15",
+            "a-4f31beefe033e962db5c63fc:p16",
+            "a-4f31beefe033e962db5c63fc:p17",
+            "a-4f31beefe033e962db5c63fc:p20"
+          ],
+          "observation": "支持旧方法步骤1—4：p10的园区客流服务于体验热度，p14先提出经济增长判断，p15再给两个时间口径的全市游客与收入；p16—17转入装备研发、制造与文化创意，解释从旅游流量延伸到产业增长的行动方向。不同范围数字不能混成同一统计序列。"
+        },
+        {
+          "article_id": "a-5396dcf44bc062f5251d22d0",
+          "paragraph_ids": [
+            "a-5396dcf44bc062f5251d22d0:p3",
+            "a-5396dcf44bc062f5251d22d0:p4"
+          ],
+          "observation": "p3保留调查高校数、研究生数、满分与得分，再解释其对应科研后备力量审美感知较弱的含义，p4另分析教育与学科壁垒成因。支持旧步骤1—3，不由调查直接认定所有科研者均缺人文。"
+        },
+        {
+          "article_id": "a-5449eaa3f0a25b1d371c232b",
+          "paragraph_ids": [
+            "a-5449eaa3f0a25b1d371c232b:p3",
+            "a-5449eaa3f0a25b1d371c232b:p4"
+          ],
+          "observation": "p3用新增就业/全年目标、调查失业率和用工监测分别判断时序进度及总体稳定；p4紧接增长放缓与群体压力，给稳保留边界。支持旧步骤2—4的口径与判断限度。"
+        },
+        {
+          "article_id": "a-a19429b34cdb7a69814cda04",
+          "paragraph_ids": [
+            "a-a19429b34cdb7a69814cda04:p8",
+            "a-a19429b34cdb7a69814cda04:p9",
+            "a-a19429b34cdb7a69814cda04:p10"
+          ],
+          "observation": "p9保留毕业生供给及不同年龄青年失业率的同比变化，结尾说明总量压力与相对脆弱性；p10另谈技能观念错配。支持旧步骤1—3区分数据能证明的总量与另需解释的结构问题。"
+        },
+        {
+          "article_id": "a-27965fb3647779cdf195ab93",
+          "paragraph_ids": [
+            "a-27965fb3647779cdf195ab93:p3",
+            "a-27965fb3647779cdf195ab93:p4",
+            "a-27965fb3647779cdf195ab93:p5"
+          ],
+          "observation": "p3先要求区分短期波动与结构变化；p4保留“今年1至8月”的行业投资增速与对象，p5紧接解释这些数字对应的是投向重心和效能变化，而非只报总量或用单项增速宣告全面繁荣。这里“今年”须按2026年文章日期理解。"
+        }
+      ],
+      "category": "论据加工",
+      "example": "【自编微型演示】假设材料显示，试点后平均等待时间由30分钟降至15分钟。这说明排班调整改善了等候效率；是否更公平，还须看老人和偏远居民能否顺利获得服务。",
+      "misuse": "只堆一串百分比而不解释与主张的关系；删掉历史年份，把旧数据当成当前最新状况；用相关指标证明唯一原因。",
+      "id": "corpus-20261017-391139457fe5b668e9ee",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-cab7b5bf8de6538e63168f01",
+        "a-5807ecc6daee7c87a97f3629",
+        "a-4f31beefe033e962db5c63fc",
+        "a-5396dcf44bc062f5251d22d0",
+        "a-5449eaa3f0a25b1d371c232b",
+        "a-a19429b34cdb7a69814cda04",
+        "a-27965fb3647779cdf195ab93"
+      ],
+      "source_fingerprints": [
+        "34a60c07c61718eab2aa6f3a12ccb08294c9d44aa39ca691055748312390f4d8",
+        "532a8543e99c61a2eedaa0387a45ddbc9a17bec9bffc947dd87a1982f7ef4270",
+        "b82c1315fbed4feb17ddcaa1c54d738e165e946bf737849ce0691176470acc4c",
+        "ba128fd14d8c5845983b73b54cbb345df20410d02977115811f21c151536ab96",
+        "c73cd0b4eb3021bf891877c1352508f4bdfbfa4562bf9806ae4818fd02695879",
+        "1ac39be1eacdd3bc04377ad908924f553535bc7d17ebb8da2aa07fe31792d59e",
+        "de9450335a9199bcfdf006264e5ae208ca87b26d3ef5a009e2712e5fea9482a9"
+      ],
+      "source_versions": {
+        "a-cab7b5bf8de6538e63168f01": "34a60c07c61718eab2aa6f3a12ccb08294c9d44aa39ca691055748312390f4d8",
+        "a-5807ecc6daee7c87a97f3629": "532a8543e99c61a2eedaa0387a45ddbc9a17bec9bffc947dd87a1982f7ef4270",
+        "a-4f31beefe033e962db5c63fc": "b82c1315fbed4feb17ddcaa1c54d738e165e946bf737849ce0691176470acc4c",
+        "a-5396dcf44bc062f5251d22d0": "ba128fd14d8c5845983b73b54cbb345df20410d02977115811f21c151536ab96",
+        "a-5449eaa3f0a25b1d371c232b": "c73cd0b4eb3021bf891877c1352508f4bdfbfa4562bf9806ae4818fd02695879",
+        "a-a19429b34cdb7a69814cda04": "1ac39be1eacdd3bc04377ad908924f553535bc7d17ebb8da2aa07fe31792d59e",
+        "a-27965fb3647779cdf195ab93": "de9450335a9199bcfdf006264e5ae208ca87b26d3ef5a009e2712e5fea9482a9"
+      },
+      "source_metadata": [
+        {
+          "id": "a-cab7b5bf8de6538e63168f01",
+          "title": "扎实推进基层应急管理现代化建设",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/hqwg/2024-06/12/c_1130161402.htm",
+          "publication": "2024-06-12 15:43:50",
+          "author": "马玉娜"
+        },
+        {
+          "id": "a-5807ecc6daee7c87a97f3629",
+          "title": "因地制宜拓展流域经济模式",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260414/217a969ebbb149fc82dcd0a0572c99dd/c.html",
+          "publication": "2026-04-14 10:52:16",
+          "author": "易 淼"
+        },
+        {
+          "id": "a-4f31beefe033e962db5c63fc",
+          "title": "走，去冰城感受冰雪文化",
+          "journal": "求是",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250214/80ca7706fef14301ac4e9b42649a6e73/c.html",
+          "publication": "2025-02-16 09:00:00",
+          "author": "《求是》杂志记者 李雯博"
+        },
+        {
+          "id": "a-5396dcf44bc062f5251d22d0",
+          "title": "让人文精神滋养科技创新",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20261010/0c8e78a3eafe4eefa581b05003a355eb/c.html",
+          "publication": "2026-10-10 15:25:58",
+          "author": "思 力"
+        },
+        {
+          "id": "a-5449eaa3f0a25b1d371c232b",
+          "title": "统筹施策协力同心稳就业",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250728/b85d1436a1a44d8a9740dc3bd9b9e2ab/c.html",
+          "publication": "2025-07-28 10:50:16",
+          "author": "陈 云"
+        },
+        {
+          "id": "a-a19429b34cdb7a69814cda04",
+          "title": "持续促进青年群体高质量充分就业",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260512/9ebb76d0ae2d4842b54f9c2e33d4b76e/c.html",
+          "publication": "2026-05-12 11:01:27",
+          "author": "王泽润"
+        },
+        {
+          "id": "a-27965fb3647779cdf195ab93",
+          "title": "以投资优化支撑产业升级（人民时评）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185481.html",
+          "publication": "2026-10-14",
+          "author": "刘元春"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "红旗文稿:8"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "求是",
+          "scope_note": "2023—2024雪季、2025年春节黄金周及园区与全市数据分别使用。产业链是作者提出的后续解释和路径，不能写成这些数据已证明全产业链全部建成。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "红旗文稿",
+          "scope_note": "数据只作各文时间的论证例；未核验原始调查、未更新统计，不能当作当前实时就业结论。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "人民日报",
+          "scope_note": "补充“事实或数据之后解释它证明了什么”；细分行业数字用于修正“全面收缩”的判断，仍不足以单独证明全部投资质量已提升，教学迁移须保留口径与限制。"
+        }
+      ]
+    },
+    {
+      "name": "把价值主张落实为选择标准",
+      "purpose": "用实际需要或任务目标解释哪些行动值得选择，避免价值词停留在口号。",
+      "steps": [
+        "明确本段要评价的行动及实际目标。",
+        "识别材料已有的可选方向，或区分应履行与应纠正的行为。",
+        "以群众实际需要或题干目标为标尺，解释为何这样选择。",
+        "材料有实施结果时回扣结果；规范性论述只说明应然方向，不写成已验证成效。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "两篇证据分别为资源取舍的完整案例、责任边界的规范区分；后者不证明实际实施效果。材料没有分歧或约束时不虚构反对意见，不把个案暂缓设备采购推广为所有地方都不需要设备。",
+      "refs": [
+        {
+          "id": "a-1247304cf83a6947a4978199:p6",
+          "quote": "在财力有限的情况下，我们必须在“高端”和“普惠”之间作出取舍。"
+        },
+        {
+          "id": "a-ba9ac6845ca19e4c0c7c4463:p6",
+          "quote": "要区分应尽之责与应减之负"
+        },
+        {
+          "id": "a-a312d0b6edee56e1a8cf92a8:p5",
+          "quote": "切忌以自己的标准衡量天下人的‘读书’。"
+        },
+        {
+          "id": "a-1d7ef4c80357e634b939e455:p13",
+          "quote": "最终目的是造福人民。"
+        },
+        {
+          "id": "a-a1ff0a2313fa5d7e7f5d5b11:p17",
+          "quote": "从最具体的民生发力，从最突出的问题突破。"
+        },
+        {
+          "id": "a-33a89978df74a1d2fdb7fa83:p15",
+          "quote": "把满足人民精神文化需求、增进人民精神福祉作为文化建设的出发点和落脚点"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-1247304cf83a6947a4978199",
+          "paragraph_ids": [
+            "a-1247304cf83a6947a4978199:p5",
+            "a-1247304cf83a6947a4978199:p6"
+          ],
+          "observation": "p5给出医院积累资金与设备投资分歧，随即用本地受众、就医负担说明实际需求；p6选择普惠改造与外部医疗资源引入，再以就地治疗和转诊效果回扣政绩判断。价值主张由情境中的取舍支撑。"
+        },
+        {
+          "article_id": "a-ba9ac6845ca19e4c0c7c4463",
+          "paragraph_ids": [
+            "a-ba9ac6845ca19e4c0c7c4463:p6"
+          ],
+          "observation": "p6先写减负可能被用作不担当借口，继而区分应减之负与应尽之责，最后要求把节省时间用于实干并下沉资源。此段通过界限选择而非一味追求任务数量减少来论证减负。"
+        },
+        {
+          "article_id": "a-a312d0b6edee56e1a8cf92a8",
+          "paragraph_ids": [
+            "a-a312d0b6edee56e1a8cf92a8:p3",
+            "a-a312d0b6edee56e1a8cf92a8:p4",
+            "a-a312d0b6edee56e1a8cf92a8:p5",
+            "a-a312d0b6edee56e1a8cf92a8:p7",
+            "a-a312d0b6edee56e1a8cf92a8:p8"
+          ],
+          "observation": "主题是全民阅读；p3区分活动声势与自愿阅读，p4保留地方有效品牌，p5尊重趣味，p7针对原本不愿阅读者，p8允许无著述产出。支持旧步骤1—3：自主乐趣决定活动方式。"
+        },
+        {
+          "article_id": "a-1d7ef4c80357e634b939e455",
+          "paragraph_ids": [
+            "a-1d7ef4c80357e634b939e455:p13",
+            "a-1d7ef4c80357e634b939e455:p14",
+            "a-1d7ef4c80357e634b939e455:p15",
+            "a-1d7ef4c80357e634b939e455:p16"
+          ],
+          "observation": "主题是文化公园；p13提出造福人民，p14—16落实为人民创造的标识、共享水文化之美、关照民生和共建共管。支持旧步骤2—3，把人民立场转为展示什么、谁参与、谁受益的选择。"
+        },
+        {
+          "article_id": "a-a1ff0a2313fa5d7e7f5d5b11",
+          "paragraph_ids": [
+            "a-a1ff0a2313fa5d7e7f5d5b11:p15",
+            "a-a1ff0a2313fa5d7e7f5d5b11:p16",
+            "a-a1ff0a2313fa5d7e7f5d5b11:p17",
+            "a-a1ff0a2313fa5d7e7f5d5b11:p18",
+            "a-a1ff0a2313fa5d7e7f5d5b11:p19"
+          ],
+          "observation": "p15由价值转向实践，p17用急难愁盼决定突破点，p18用底线和重点决定资源安排，p19用实际能力限制推进。支持旧步骤1—3；应然要求不能写成既有成效。"
+        },
+        {
+          "article_id": "a-33a89978df74a1d2fdb7fa83",
+          "paragraph_ids": [
+            "a-33a89978df74a1d2fdb7fa83:p15"
+          ],
+          "observation": "p15先明确以人民为中心的原则，再把它转换为精准把握需求、从生活取材、提高供给、资源向基层覆盖、激发参与等选择标准，最终以文化权益和获得感回扣目标。此处从价值到选择的展开可核验，不能把规范性要求写成全部已实现。"
+        }
+      ],
+      "category": "价值判断与选择",
+      "example": "【自编微型演示】服务站人手有限，不能只以线上办结量排班。若材料显示高峰期老人集中求助，可将一部分人员安排到人工协助岗；评价这次调整，应看实际困难是否减少，而非只看线上数字是否更漂亮。",
+      "misuse": "写“群众利益最重要”后不交代具体选择；把减负理解成所有任务越少越好；为了显得有担当而鼓励超越法定权限。",
+      "id": "corpus-20261017-4c39515d0685426aa146",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-1247304cf83a6947a4978199",
+        "a-ba9ac6845ca19e4c0c7c4463",
+        "a-a312d0b6edee56e1a8cf92a8",
+        "a-1d7ef4c80357e634b939e455",
+        "a-a1ff0a2313fa5d7e7f5d5b11",
+        "a-33a89978df74a1d2fdb7fa83"
+      ],
+      "source_fingerprints": [
+        "09a4bb5b36eb66776d7328eb1b672e2b9f799b70135cb9c59f1fab86ee0c2fa1",
+        "ebc440ecc7f784ff4ace44333b6d04b7f24c34b71c4518654b1a6efbb879e7c0",
+        "8077ba9a01a42a1e1addde5e6e7b244b29956aaa48db3280bf3465d0c3f698c8",
+        "27cf94badf640f7685579aa28cd1e84e53e557505f6f07ec53bf537520df199b",
+        "2979ba78931902e8016c9d82f2d3443b37f158623c6282d6099bd94e328a1078",
+        "cb703f45a90eeda1b40f460e14419ac4cdbc0c9815a38684862bac7957a65084"
+      ],
+      "source_versions": {
+        "a-1247304cf83a6947a4978199": "09a4bb5b36eb66776d7328eb1b672e2b9f799b70135cb9c59f1fab86ee0c2fa1",
+        "a-ba9ac6845ca19e4c0c7c4463": "ebc440ecc7f784ff4ace44333b6d04b7f24c34b71c4518654b1a6efbb879e7c0",
+        "a-a312d0b6edee56e1a8cf92a8": "8077ba9a01a42a1e1addde5e6e7b244b29956aaa48db3280bf3465d0c3f698c8",
+        "a-1d7ef4c80357e634b939e455": "27cf94badf640f7685579aa28cd1e84e53e557505f6f07ec53bf537520df199b",
+        "a-a1ff0a2313fa5d7e7f5d5b11": "2979ba78931902e8016c9d82f2d3443b37f158623c6282d6099bd94e328a1078",
+        "a-33a89978df74a1d2fdb7fa83": "cb703f45a90eeda1b40f460e14419ac4cdbc0c9815a38684862bac7957a65084"
+      },
+      "source_metadata": [
+        {
+          "id": "a-1247304cf83a6947a4978199",
+          "title": "踏踏实实为群众办事就是政绩",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260530/846ff985a5584729a1e3b8611326efe4/c.html",
+          "publication": "2026-06-01 09:00:00",
+          "author": "郭康伟"
+        },
+        {
+          "id": "a-ba9ac6845ca19e4c0c7c4463",
+          "title": "让基层干部轻装上阵",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-12/01/c_1130224019.htm",
+          "publication": "2024-12-01 09:00:00",
+          "author": "庄 杰"
+        },
+        {
+          "id": "a-a312d0b6edee56e1a8cf92a8",
+          "title": "“全民阅读”该如何提倡",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260711/fad0fa88544b4993a5a428c233125831/c.html",
+          "publication": "2026-07-11 14:50:10",
+          "author": "陈平原"
+        },
+        {
+          "id": "a-1d7ef4c80357e634b939e455",
+          "title": "以人民为中心推进长江国家文化公园建设",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/hqwg/2024-10/28/c_1130213855.htm",
+          "publication": "2024-10-28 12:02:30",
+          "author": "路 璐 焦 敏"
+        },
+        {
+          "id": "a-a1ff0a2313fa5d7e7f5d5b11",
+          "title": "中国式现代化民生为大",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/hqwg/2024-06/27/c_1130169281.htm",
+          "publication": "2024-06-27 10:41:46",
+          "author": "张远新"
+        },
+        {
+          "id": "a-33a89978df74a1d2fdb7fa83",
+          "title": "发展新时代中国特色社会主义文化的科学指引（深入学习贯彻习近平新时代中国特色社会主义思想）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185513.html",
+          "publication": "2026-10-14",
+          "author": "齐卫平"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "求是:5"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "红旗文稿",
+          "scope_note": "阅读兴趣、文化参与、基本民生各有对象，选择标准须服从本题目标，不能互换。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "人民日报",
+          "scope_note": "补充“把价值主张落实为选择标准”；本段主要是应然论述，不能用其替代当前公共文化服务成效的事实核查。"
+        }
+      ]
+    },
+    {
+      "name": "由问题追到成因，让对策逐项回应",
+      "purpose": "使对策解释前文诊断，避免问题一套、措施另一套。",
+      "steps": [
+        "从事实中提取具体问题及其造成的损耗。",
+        "区分表面现象与机制缺口，材料不足时把成因标为有限推断。",
+        "针对成因提出相应动作，说明改变哪个流程、规则或服务环节。",
+        "逐项检查措施是否回应前文问题，删除无关口号并保留主体权限边界。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "材料仅提供现象时，应把成因标为有限推断或不作强断言；不能把所有问题归为干部态度差。",
+      "refs": [
+        {
+          "id": "a-ba9ac6845ca19e4c0c7c4463:p4",
+          "quote": "基层负担重，表现在基层，根子在上面。"
+        },
+        {
+          "id": "a-b9d5ba93f94c38098a53e510:p5",
+          "quote": "反映出评价考核标准的严重偏离。"
+        },
+        {
+          "id": "a-8cbfd143269fad9b7713ee1b:p14",
+          "quote": "基层广大群众缺乏有效的文化需求表达反馈机制"
+        },
+        {
+          "id": "a-5807ecc6daee7c87a97f3629:p12",
+          "quote": "上下游、左右岸、干支流之间缺乏统筹衔接"
+        },
+        {
+          "id": "a-3ad15ae0d508d7e606212faf:p17",
+          "quote": "教育供给、产业变迁、区域结构、信息流动和制度安排相互错位"
+        },
+        {
+          "id": "a-e0ccc06b2f7ff602e8c352d5:p3",
+          "quote": "考核评价体系中经济指标、城市建设指标等“硬任务”权重较高"
+        },
+        {
+          "id": "a-bcead7d4d06f55222040a53b:p10",
+          "quote": "从“表层嫁接”走向“深层融通”"
+        },
+        {
+          "id": "a-738917c9cfad4f2e9fca3ef4:p5",
+          "quote": "导致上述问题的原因是多方面的"
+        },
+        {
+          "id": "a-a19429b34cdb7a69814cda04:p10",
+          "quote": "人才供给体系滞后于市场需求变化"
+        },
+        {
+          "id": "a-8c9c0485cb659d324b6af6ec:p16",
+          "quote": "避免过度依赖人工智能"
+        },
+        {
+          "id": "a-5449eaa3f0a25b1d371c232b:p13",
+          "quote": "推动培训和就业、增收更好地挂钩。"
+        },
+        {
+          "id": "a-c3bb055c95f42cd59e407ad5:p2",
+          "quote": "探索建立联合申报机制"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-ba9ac6845ca19e4c0c7c4463",
+          "paragraph_ids": [
+            "a-ba9ac6845ca19e4c0c7c4463:p4",
+            "a-ba9ac6845ca19e4c0c7c4463:p5"
+          ],
+          "observation": "p4从基层疲于应付追到上级多头派责，再提出上级示范、实质性文会和明确权责；p5列举考核检查留痕负担，接续控制总量及整治过度留痕。这里不是单纯叙述基层辛苦，而是定位根源后配措施。"
+        },
+        {
+          "article_id": "a-b9d5ba93f94c38098a53e510",
+          "paragraph_ids": [
+            "a-b9d5ba93f94c38098a53e510:p5",
+            "a-b9d5ba93f94c38098a53e510:p7"
+          ],
+          "observation": "p5从总结表格照片过多且群众事情少有人问，追到以痕量绩的评价偏差，再把评价转向群众感受与问题实效；p7把重复调研对应统筹备案，把队伍庞大对应减员简接待。可迁移的是症状—原因—修正规则的段落关系，不能因为主题是调研就认定作者使用调研方法。"
+        },
+        {
+          "article_id": "a-8cbfd143269fad9b7713ee1b",
+          "paragraph_ids": [
+            "a-8cbfd143269fad9b7713ee1b:p14"
+          ],
+          "observation": "p14在同段先指出表达反馈机制缺失导致供需失衡，再提出沟通渠道、参与决策、需求征集和菜单式服务，随后解释供给针对性提高。这里有可核对的“原因—对策—作用”链。"
+        },
+        {
+          "article_id": "a-5807ecc6daee7c87a97f3629",
+          "paragraph_ids": [
+            "a-5807ecc6daee7c87a97f3629:p12",
+            "a-5807ecc6daee7c87a97f3629:p14",
+            "a-5807ecc6daee7c87a97f3629:p15",
+            "a-5807ecc6daee7c87a97f3629:p16",
+            "a-5807ecc6daee7c87a97f3629:p17"
+          ],
+          "observation": "p12诊断因地制宜不足、统筹不足、同质建设、利益失衡，p14先提出差异与定位要求，p15—17再分别写总体谋划、产业分工、补偿共享。可迁移的是前后问题与路径的对应，非照搬流域政策。"
+        },
+        {
+          "article_id": "a-3ad15ae0d508d7e606212faf",
+          "paragraph_ids": [
+            "a-3ad15ae0d508d7e606212faf:p17",
+            "a-3ad15ae0d508d7e606212faf:p18",
+            "a-3ad15ae0d508d7e606212faf:p19"
+          ],
+          "observation": "支持旧方法步骤1—4：p17提出毕业生多与招不到人并存，p18分辨培养滞后、岗位门槛与地域分布、信息不对称等原因，p19依次安排教育改革、产教联动、区域布局和信息服务。措施由前文成因约束。"
+        },
+        {
+          "article_id": "a-e0ccc06b2f7ff602e8c352d5",
+          "paragraph_ids": [
+            "a-e0ccc06b2f7ff602e8c352d5:p2",
+            "a-e0ccc06b2f7ff602e8c352d5:p3",
+            "a-e0ccc06b2f7ff602e8c352d5:p4",
+            "a-e0ccc06b2f7ff602e8c352d5:p5"
+          ],
+          "observation": "支持旧方法步骤1—4：p2列拆真建假、重开发轻保护及原住民流失等表现，p3追到价值误认、显绩考核和利益冲动，p4说明文化、认同和公信后果，p5以保护原则、考核评价与责任追究回应。问题、成因、后果各有位置。"
+        },
+        {
+          "article_id": "a-bcead7d4d06f55222040a53b",
+          "paragraph_ids": [
+            "a-bcead7d4d06f55222040a53b:p9",
+            "a-bcead7d4d06f55222040a53b:p10",
+            "a-bcead7d4d06f55222040a53b:p11"
+          ],
+          "observation": "支持旧方法步骤1—4：p9针对技术炫技追到流量焦虑和艺术语言转化不足；p10针对符号拼贴追到思想内核、语境把握不深，提出田野调查、文献和原型研究；p11再以全链条支持和版权等制度回应原创不足。"
+        },
+        {
+          "article_id": "a-738917c9cfad4f2e9fca3ef4",
+          "paragraph_ids": [
+            "a-738917c9cfad4f2e9fca3ef4:p4",
+            "a-738917c9cfad4f2e9fca3ef4:p5",
+            "a-738917c9cfad4f2e9fca3ef4:p8",
+            "a-738917c9cfad4f2e9fca3ef4:p9",
+            "a-738917c9cfad4f2e9fca3ef4:p10",
+            "a-738917c9cfad4f2e9fca3ef4:p11"
+          ],
+          "observation": "支持旧方法步骤1—4：p4先列风险识别、预案适配、物资和预警问题，p5追到权责协调、资源能力与认识偏差，p8—11分别提出源头治理、预案储备、数据共享和科普演练。逐项回应而非孤立堆部署。"
+        },
+        {
+          "article_id": "a-a19429b34cdb7a69814cda04",
+          "paragraph_ids": [
+            "a-a19429b34cdb7a69814cda04:p9",
+            "a-a19429b34cdb7a69814cda04:p10",
+            "a-a19429b34cdb7a69814cda04:p13",
+            "a-a19429b34cdb7a69814cda04:p14",
+            "a-a19429b34cdb7a69814cda04:p15"
+          ],
+          "observation": "p9供需总量压力对应p13稳存量挖增量；p10技能错配、观念偏差对应p14监测需求、专业调整、产教融合和公平保障；p15补信息权益障碍。支持旧步骤1—4逐项回应，不从就业难跳到笼统引导。"
+        },
+        {
+          "article_id": "a-8c9c0485cb659d324b6af6ec",
+          "paragraph_ids": [
+            "a-8c9c0485cb659d324b6af6ec:p9",
+            "a-8c9c0485cb659d324b6af6ec:p10",
+            "a-8c9c0485cb659d324b6af6ec:p11",
+            "a-8c9c0485cb659d324b6af6ec:p14",
+            "a-8c9c0485cb659d324b6af6ec:p15",
+            "a-8c9c0485cb659d324b6af6ec:p16",
+            "a-8c9c0485cb659d324b6af6ec:p17"
+          ],
+          "observation": "p9过度依赖、p10价值偏差、p11互动减少及隐私风险，分别在p14—17接权责规范、内容审核、师生培训与动态试点。支持旧步骤2—4；不强说每项风险只对应一条措施。"
+        },
+        {
+          "article_id": "a-5449eaa3f0a25b1d371c232b",
+          "paragraph_ids": [
+            "a-5449eaa3f0a25b1d371c232b:p4",
+            "a-5449eaa3f0a25b1d371c232b:p12",
+            "a-5449eaa3f0a25b1d371c232b:p13",
+            "a-5449eaa3f0a25b1d371c232b:p14",
+            "a-5449eaa3f0a25b1d371c232b:p15"
+          ],
+          "observation": "p4区分需求放缓、群体压力、灵活就业不稳；p12扩岗，p13岗位需求贯穿培训评价服务，p14精准兜底，p15权益预警。支持旧步骤1、3—4，尤其培训对准岗位而非只增加次数。"
+        },
+        {
+          "article_id": "a-c3bb055c95f42cd59e407ad5",
+          "paragraph_ids": [
+            "a-c3bb055c95f42cd59e407ad5:p2"
+          ],
+          "observation": "p2先点出全球南方国家名录占比偏低、申报能力不足的问题，再提出联合申报，明写其作用是降低单一国家的制度成本和技术门槛；后半段又从冲突、灾害、盗窃、走私风险对应到预警—响应—恢复。问题对象、应对动作与改变环节可以一一核对。"
+        }
+      ],
+      "category": "因果对策",
+      "example": "【自编微型演示】报表越填越多，未必是基层不会用系统。若同一指标由不同部门重复索取，症结在采集规则分散；统一指标口径、共享已有数据，才比再组织一次填报培训更接近问题根源。",
+      "misuse": "先列“重复填报”，后只写“强化责任意识”；把与问题无关的宣传、培训、考核拼成万能对策。",
+      "id": "corpus-20261017-5b45fa9bd3dd302deae6",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-ba9ac6845ca19e4c0c7c4463",
+        "a-b9d5ba93f94c38098a53e510",
+        "a-8cbfd143269fad9b7713ee1b",
+        "a-5807ecc6daee7c87a97f3629",
+        "a-3ad15ae0d508d7e606212faf",
+        "a-e0ccc06b2f7ff602e8c352d5",
+        "a-bcead7d4d06f55222040a53b",
+        "a-738917c9cfad4f2e9fca3ef4",
+        "a-a19429b34cdb7a69814cda04",
+        "a-8c9c0485cb659d324b6af6ec",
+        "a-5449eaa3f0a25b1d371c232b",
+        "a-c3bb055c95f42cd59e407ad5"
+      ],
+      "source_fingerprints": [
+        "ebc440ecc7f784ff4ace44333b6d04b7f24c34b71c4518654b1a6efbb879e7c0",
+        "958441245d314bdae8954187ad28103f5cbc946d2728749b84b6e9334c7294c9",
+        "787480bda0eca0a87d9fef57b818da969b962c94f532aab8ef882aac86b4f622",
+        "532a8543e99c61a2eedaa0387a45ddbc9a17bec9bffc947dd87a1982f7ef4270",
+        "cb946498c2047232b330938045c27c0714ef2463d77f8d7f1d54b5380256ed63",
+        "b7e7ab9894f441852a2ba06d67382fe40d8ae49b0ecdd4bf41eb6a36f2c5c3ce",
+        "513be1b3de3764dff2ff5a69f6884b2d8ffb3697bb0d7d67e435098e9b4a1635",
+        "80a1568cc79a8b79145a947003758cb7f9d3729fc88c2e6c869b9dd8fdb15dd6",
+        "1ac39be1eacdd3bc04377ad908924f553535bc7d17ebb8da2aa07fe31792d59e",
+        "aac0a93600f54f0c5684c4fa29320b770f7774dd474eac3342c41f1b3f654d8d",
+        "c73cd0b4eb3021bf891877c1352508f4bdfbfa4562bf9806ae4818fd02695879",
+        "e2ae08b184b6b61c0f3ed2a9c6a60447445f712c236a6ca0bd3529aee32f288e"
+      ],
+      "source_versions": {
+        "a-ba9ac6845ca19e4c0c7c4463": "ebc440ecc7f784ff4ace44333b6d04b7f24c34b71c4518654b1a6efbb879e7c0",
+        "a-b9d5ba93f94c38098a53e510": "958441245d314bdae8954187ad28103f5cbc946d2728749b84b6e9334c7294c9",
+        "a-8cbfd143269fad9b7713ee1b": "787480bda0eca0a87d9fef57b818da969b962c94f532aab8ef882aac86b4f622",
+        "a-5807ecc6daee7c87a97f3629": "532a8543e99c61a2eedaa0387a45ddbc9a17bec9bffc947dd87a1982f7ef4270",
+        "a-3ad15ae0d508d7e606212faf": "cb946498c2047232b330938045c27c0714ef2463d77f8d7f1d54b5380256ed63",
+        "a-e0ccc06b2f7ff602e8c352d5": "b7e7ab9894f441852a2ba06d67382fe40d8ae49b0ecdd4bf41eb6a36f2c5c3ce",
+        "a-bcead7d4d06f55222040a53b": "513be1b3de3764dff2ff5a69f6884b2d8ffb3697bb0d7d67e435098e9b4a1635",
+        "a-738917c9cfad4f2e9fca3ef4": "80a1568cc79a8b79145a947003758cb7f9d3729fc88c2e6c869b9dd8fdb15dd6",
+        "a-a19429b34cdb7a69814cda04": "1ac39be1eacdd3bc04377ad908924f553535bc7d17ebb8da2aa07fe31792d59e",
+        "a-8c9c0485cb659d324b6af6ec": "aac0a93600f54f0c5684c4fa29320b770f7774dd474eac3342c41f1b3f654d8d",
+        "a-5449eaa3f0a25b1d371c232b": "c73cd0b4eb3021bf891877c1352508f4bdfbfa4562bf9806ae4818fd02695879",
+        "a-c3bb055c95f42cd59e407ad5": "e2ae08b184b6b61c0f3ed2a9c6a60447445f712c236a6ca0bd3529aee32f288e"
+      },
+      "source_metadata": [
+        {
+          "id": "a-ba9ac6845ca19e4c0c7c4463",
+          "title": "让基层干部轻装上阵",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-12/01/c_1130224019.htm",
+          "publication": "2024-12-01 09:00:00",
+          "author": "庄 杰"
+        },
+        {
+          "id": "a-b9d5ba93f94c38098a53e510",
+          "title": "切实整治形式主义为基层减负",
+          "journal": "求是",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250914/c6e536fc1266476da41d591fd0e72360/c.html",
+          "publication": "2025-09-16 09:00:00",
+          "author": "徐向东 马立成 郭素娇"
+        },
+        {
+          "id": "a-8cbfd143269fad9b7713ee1b",
+          "title": "建立优质文化资源直达基层供需适配机制",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/20241213/85defc5ce4644c45939d0d55a1a7dad1/c.html",
+          "publication": "2024-12-14 21:30:35",
+          "author": "龚剑飞 盛方富"
+        },
+        {
+          "id": "a-5807ecc6daee7c87a97f3629",
+          "title": "因地制宜拓展流域经济模式",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260414/217a969ebbb149fc82dcd0a0572c99dd/c.html",
+          "publication": "2026-04-14 10:52:16",
+          "author": "易 淼"
+        },
+        {
+          "id": "a-3ad15ae0d508d7e606212faf",
+          "title": "把青年就业摆在更加突出位置",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260515/dedf9a6ee48c46ffbd1ab4b42cd25a77/c.html",
+          "publication": "2026-05-16 09:00:00",
+          "author": "廉 思"
+        },
+        {
+          "id": "a-e0ccc06b2f7ff602e8c352d5",
+          "title": "从文化遗产保护看政绩观",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260630/0b1e35291e4b427493243d2c2536c165/c.html",
+          "publication": "2026-07-01 09:00:00",
+          "author": "文 平"
+        },
+        {
+          "id": "a-bcead7d4d06f55222040a53b",
+          "title": "数字艺术：融科技之力，展艺术之美",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260430/39cb499a31e04a73857bdb1234655aa8/c.html",
+          "publication": "2026-05-01 09:00:00",
+          "author": "吕伟毅"
+        },
+        {
+          "id": "a-738917c9cfad4f2e9fca3ef4",
+          "title": "防范应对自然灾害重在加强预防准备",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260815/215b4d24edcc4a65a4b201f59ba43aa1/c.html",
+          "publication": "2026-08-16 09:00:00",
+          "author": "马宝成"
+        },
+        {
+          "id": "a-a19429b34cdb7a69814cda04",
+          "title": "持续促进青年群体高质量充分就业",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260512/9ebb76d0ae2d4842b54f9c2e33d4b76e/c.html",
+          "publication": "2026-05-12 11:01:27",
+          "author": "王泽润"
+        },
+        {
+          "id": "a-8c9c0485cb659d324b6af6ec",
+          "title": "人工智能在基础教育领域的应用及治理",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250714/db8506d3fee541ec97f952f2ed5b8b74/c.html",
+          "publication": "2025-07-14 10:27:04",
+          "author": "王 佳"
+        },
+        {
+          "id": "a-5449eaa3f0a25b1d371c232b",
+          "title": "统筹施策协力同心稳就业",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250728/b85d1436a1a44d8a9740dc3bd9b9e2ab/c.html",
+          "publication": "2025-07-28 10:50:16",
+          "author": "陈 云"
+        },
+        {
+          "id": "a-c3bb055c95f42cd59e407ad5",
+          "title": "促进全球南方文化遗产保护（专题深思）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185515.html",
+          "publication": "2026-10-14",
+          "author": "刘铁娃"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "求是:6",
+          "红旗文稿:4"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "求是",
+          "scope_note": "问题—成因不能由训练者擅自补造；本次记录的是各文已经写出的联系。青年就业与遗产保护提出的制度措施属于文章主张，未当作全国已落地成效。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "红旗文稿",
+          "scope_note": "文中有政策建议与探索措施，迁移须服从主体权限，不能把作者探索建议包装成现行法律规定。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "人民日报",
+          "scope_note": "补充“由问题追到成因，让对策逐项回应”；占比偏低不等于已证明全部成因，原文将能力、成本和门槛作为可响应的环节，联合申报仍是探索性建议。"
+        }
+      ]
+    },
+    {
+      "name": "补出措施到结果之间的机制链",
+      "purpose": "说明某项行动通过哪些中间变化产生作用，避免案例后只说充分说明、平台建成就说治理有效。",
+      "steps": [
+        "指出原有阻碍，确认哪项动作真正改变了这一环节。",
+        "写清承接主体和处理过程，说明成本、能力、信息或行为发生了什么变化。",
+        "将中间变化连接到相应效果，区分已发生结果与合理预期。",
+        "根据材料限定推广范围；只有结果而无过程时，不补造因果全链条。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "只有结果、没有过程材料时，不宜把相关关系写成确定因果；政策事实也不能被推定为全群体效果。",
+      "refs": [
+        {
+          "id": "a-50b9a9021fec3110f55e4d3b:p4",
+          "quote": "小果、次果变成了果酱、果酒"
+        },
+        {
+          "id": "a-83848f98104c55f9349cc2b7:p3",
+          "quote": "有触动，才有可能改变。"
+        },
+        {
+          "id": "a-77304642377b00451e9a40d1:p8",
+          "quote": "进而摊薄创新成本。"
+        },
+        {
+          "id": "a-4220ec1e71668a716efa18ed:p6",
+          "quote": "清单之外事项先由应用智能驳回"
+        },
+        {
+          "id": "a-260cbf5f8a312e7b133996d2:p9",
+          "quote": "叠加指挥调度系统短信指令、在线标绘等功能"
+        },
+        {
+          "id": "a-f280396258028e9348ff0dcd:p8",
+          "quote": "最终，分选好的可回收物通过压缩打包成为再生资源。"
+        },
+        {
+          "id": "a-1489ed7f469b51b734fccc7b:p11",
+          "quote": "封山禁伐，统一保护经营1200多株古桃树"
+        },
+        {
+          "id": "a-1896654ff649b29ceaa920e2:p4",
+          "quote": "作为单机设备供应商，如果不能实现功能的升级，就面临地位降级的风险。"
+        },
+        {
+          "id": "a-7a94425ad5349fbefe419f4c:p9",
+          "quote": "使文旅场景具备了“理解”与“响应”能力"
+        },
+        {
+          "id": "a-8c9c0485cb659d324b6af6ec:p5",
+          "quote": "以可视化学习报告消除信息不对称"
+        },
+        {
+          "id": "a-254d2d84975eb916dd50289d:p4",
+          "quote": "人们愿意使用、欣赏，传承者便更有动力精进技艺、继续创作。"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-50b9a9021fec3110f55e4d3b",
+          "paragraph_ids": [
+            "a-50b9a9021fec3110f55e4d3b:p3",
+            "a-50b9a9021fec3110f55e4d3b:p4",
+            "a-50b9a9021fec3110f55e4d3b:p6"
+          ],
+          "observation": "先指出初级销售和保鲜期导致的议价弱势，再说明加工产品、冷链延长销售期、稳定渠道怎样改变价值实现。迁移时应写出“措施改变瓶颈，再形成效果”，不能只抄“延链增值”。"
+        },
+        {
+          "article_id": "a-83848f98104c55f9349cc2b7",
+          "paragraph_ids": [
+            "a-83848f98104c55f9349cc2b7:p3",
+            "a-83848f98104c55f9349cc2b7:p4"
+          ],
+          "observation": "政策宣讲没有触动当事人，走访家庭、促成探望后才唤起改变意愿，接着提炼法治实践的温度。该链条把情感支持的作用落在当事人心理与行动的中间环节。"
+        },
+        {
+          "article_id": "a-77304642377b00451e9a40d1",
+          "paragraph_ids": [
+            "a-77304642377b00451e9a40d1:p7",
+            "a-77304642377b00451e9a40d1:p8"
+          ],
+          "observation": "先展示跨地区企事业单位、高校协同的组织事实，再解释产业配套、应用场景、投入回报与创新成本的联系。材料细节用于回答“支撑如何发生”。"
+        },
+        {
+          "article_id": "a-4220ec1e71668a716efa18ed",
+          "paragraph_ids": [
+            "a-4220ec1e71668a716efa18ed:p6",
+            "a-4220ec1e71668a716efa18ed:p7",
+            "a-4220ec1e71668a716efa18ed:p8"
+          ],
+          "observation": "p6写清单标准、智能驳回和人工审核，p7把无执法权村庄遇到工业渣土事项放入流程，并给出职责外任务减少数据；p8再写数据复用怎样节约服务时间。这里的论证依赖权责筛选与流转机制，而不只依赖应用存在。"
+        },
+        {
+          "article_id": "a-260cbf5f8a312e7b133996d2",
+          "paragraph_ids": [
+            "a-260cbf5f8a312e7b133996d2:p8",
+            "a-260cbf5f8a312e7b133996d2:p9"
+          ],
+          "observation": "p8说明三级联动，p9用森林防火把传感器接入、驾驶舱呈现、指挥调度和火险排查能力串联，使数字赋能具有中间环节。"
+        },
+        {
+          "article_id": "a-f280396258028e9348ff0dcd",
+          "paragraph_ids": [
+            "a-f280396258028e9348ff0dcd:p7",
+            "a-f280396258028e9348ff0dcd:p8",
+            "a-f280396258028e9348ff0dcd:p9"
+          ],
+          "observation": "p7先解释低值物回收困境，p8顺序写消杀、预处理、智能筛分、压缩及下游再利用，p9才抽象为协同模式。可迁移的是从瓶颈到流程到效果的因果组织。"
+        },
+        {
+          "article_id": "a-1489ed7f469b51b734fccc7b",
+          "paragraph_ids": [
+            "a-1489ed7f469b51b734fccc7b:p3",
+            "a-1489ed7f469b51b734fccc7b:p4",
+            "a-1489ed7f469b51b734fccc7b:p9",
+            "a-1489ed7f469b51b734fccc7b:p10",
+            "a-1489ed7f469b51b734fccc7b:p11",
+            "a-1489ed7f469b51b734fccc7b:p12"
+          ],
+          "observation": "支持旧方法步骤1—3：先呈现风沙与伐木收入有限的旧状态，再写管护、封山禁伐、古树统一经营、村貌整治和品牌建设，接上游客、集体收入与家庭收入；p12进一步交代垃圾积分兑换如何把保护行为接入日常激励。生态价值并非只靠一句口号自动变现。"
+        },
+        {
+          "article_id": "a-1896654ff649b29ceaa920e2",
+          "paragraph_ids": [
+            "a-1896654ff649b29ceaa920e2:p4",
+            "a-1896654ff649b29ceaa920e2:p5",
+            "a-1896654ff649b29ceaa920e2:p9",
+            "a-1896654ff649b29ceaa920e2:p10"
+          ],
+          "observation": "支持旧方法步骤1—3：p4交代一站式需求上升使单机供应面临降级风险，p5写设备控制系统与生产管控系统结合，p9—10再把匹配现代物流服务的要求落实为视觉识别、无人驾驶等应用。连接需求变化、功能升级与生产运行，不能省成企业因创新而成功。"
+        },
+        {
+          "article_id": "a-7a94425ad5349fbefe419f4c",
+          "paragraph_ids": [
+            "a-7a94425ad5349fbefe419f4c:p9",
+            "a-7a94425ad5349fbefe419f4c:p10",
+            "a-7a94425ad5349fbefe419f4c:p11"
+          ],
+          "observation": "主题是科技赋能文旅；p9从视觉观光限制写到多感官交互及个性化理解响应，p10将合规采集、脱敏分析接到需求洞察和产品设计，p11接到多元收入及创新网络。支持旧步骤1—3的中间过程，技术名词本身不等于成效。"
+        },
+        {
+          "article_id": "a-8c9c0485cb659d324b6af6ec",
+          "paragraph_ids": [
+            "a-8c9c0485cb659d324b6af6ec:p4",
+            "a-8c9c0485cb659d324b6af6ec:p5",
+            "a-8c9c0485cb659d324b6af6ec:p6"
+          ],
+          "observation": "主题是人工智能基础教育；p5从数据采集分析学习者特征，到诊断和可视报告，再到减少家校信息不对称、改善陪伴协同。支持旧步骤2—3的过程说明；一定程度的限制不能删。"
+        },
+        {
+          "article_id": "a-254d2d84975eb916dd50289d",
+          "paragraph_ids": [
+            "a-254d2d84975eb916dd50289d:p3",
+            "a-254d2d84975eb916dd50289d:p4",
+            "a-254d2d84975eb916dd50289d:p5",
+            "a-254d2d84975eb916dd50289d:p9",
+            "a-254d2d84975eb916dd50289d:p10"
+          ],
+          "observation": "p3写传统纹样进入用品、戏曲融合新形式，p4补出具体联系—愿意使用欣赏—创作动力的中间链；p5用真实契合与保留韵味约束这种转换。p9—10再解释技法互补以及师傅、空间、展示机会如何把热爱转为持续投入。"
+        }
+      ],
+      "category": "证据与因果分析",
+      "example": "【自编微型示例】村里为鲜果增设冷藏点，果农不必在采摘当天低价卖完；销售时间延长，议价空间随之增加。冷链的作用，正在于缓解保鲜期限造成的被动，而非简单多建一处仓库。",
+      "misuse": "写完“建冷库、上平台、办展会”就断言收入翻番，却没有材料证明销售、成本或收益变化。",
+      "id": "corpus-20261017-5bd1bfbbe3c0cdd0de23",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-50b9a9021fec3110f55e4d3b",
+        "a-83848f98104c55f9349cc2b7",
+        "a-77304642377b00451e9a40d1",
+        "a-4220ec1e71668a716efa18ed",
+        "a-260cbf5f8a312e7b133996d2",
+        "a-f280396258028e9348ff0dcd",
+        "a-1489ed7f469b51b734fccc7b",
+        "a-1896654ff649b29ceaa920e2",
+        "a-7a94425ad5349fbefe419f4c",
+        "a-8c9c0485cb659d324b6af6ec",
+        "a-254d2d84975eb916dd50289d"
+      ],
+      "source_fingerprints": [
+        "e0db90d1a0ccf20236150f182a8ed3c3d8a485118d942746bff51766a085b557",
+        "1a2a5ced52a09e6aabbc4c4731715b662956c8b48d99a430708fcebc8c7da380",
+        "1b2dffa955ccba945205de3e5af58fcb2db2a93fb6722eede8b4c820694be3a9",
+        "1288fd4bdb30ab1ffcfa0c10d7e24be99a39ed9686380005a654d8017c591a9e",
+        "a6f0953c8b3505f290e5bb8ccab51c752f325d6584232217a6b6aeaa46f61799",
+        "9576a5db29111dfafdab6250eccffdb694d7d5f8c0e4ce6c9f67e2546f810819",
+        "76bc68eb756e5cea7cf40dd954a5d53168328a9b582b8b1a2ac1500a733c145c",
+        "0ce11a0aed6e771ef8a85bcef0fb8d15df513831a5e38c56a86fff2136afebbb",
+        "457e0b4bd249aa9ad7c3c00a99909cdf14f9db25ef3025522784ac29d61e4b55",
+        "aac0a93600f54f0c5684c4fa29320b770f7774dd474eac3342c41f1b3f654d8d",
+        "27db2da79849bb5f79770d1582f831feb067eabc22d8da2d7985680e8a5bb6df"
+      ],
+      "source_versions": {
+        "a-50b9a9021fec3110f55e4d3b": "e0db90d1a0ccf20236150f182a8ed3c3d8a485118d942746bff51766a085b557",
+        "a-83848f98104c55f9349cc2b7": "1a2a5ced52a09e6aabbc4c4731715b662956c8b48d99a430708fcebc8c7da380",
+        "a-77304642377b00451e9a40d1": "1b2dffa955ccba945205de3e5af58fcb2db2a93fb6722eede8b4c820694be3a9",
+        "a-4220ec1e71668a716efa18ed": "1288fd4bdb30ab1ffcfa0c10d7e24be99a39ed9686380005a654d8017c591a9e",
+        "a-260cbf5f8a312e7b133996d2": "a6f0953c8b3505f290e5bb8ccab51c752f325d6584232217a6b6aeaa46f61799",
+        "a-f280396258028e9348ff0dcd": "9576a5db29111dfafdab6250eccffdb694d7d5f8c0e4ce6c9f67e2546f810819",
+        "a-1489ed7f469b51b734fccc7b": "76bc68eb756e5cea7cf40dd954a5d53168328a9b582b8b1a2ac1500a733c145c",
+        "a-1896654ff649b29ceaa920e2": "0ce11a0aed6e771ef8a85bcef0fb8d15df513831a5e38c56a86fff2136afebbb",
+        "a-7a94425ad5349fbefe419f4c": "457e0b4bd249aa9ad7c3c00a99909cdf14f9db25ef3025522784ac29d61e4b55",
+        "a-8c9c0485cb659d324b6af6ec": "aac0a93600f54f0c5684c4fa29320b770f7774dd474eac3342c41f1b3f654d8d",
+        "a-254d2d84975eb916dd50289d": "27db2da79849bb5f79770d1582f831feb067eabc22d8da2d7985680e8a5bb6df"
+      },
+      "source_metadata": [
+        {
+          "id": "a-50b9a9021fec3110f55e4d3b",
+          "title": "特色产业唤醒新疆沃野（现场评论·天山南北气象新）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109229.html",
+          "publication": "2025-10-14",
+          "author": "李亚楠"
+        },
+        {
+          "id": "a-83848f98104c55f9349cc2b7",
+          "title": "法治越昌明，社会越文明（中国道路中国梦·每一个人都是主角）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109226.html",
+          "publication": "2025-10-14",
+          "author": "王 硕"
+        },
+        {
+          "id": "a-77304642377b00451e9a40d1",
+          "title": "矢志“铸重器”，强国复兴有支撑（评论员观察）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109225.html",
+          "publication": "2025-10-14",
+          "author": "李洪兴"
+        },
+        {
+          "id": "a-4220ec1e71668a716efa18ed",
+          "title": "“浙里兴村治社”：减负增效推动基层善治",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-08/16/c_1130192068.htm",
+          "publication": "2024-08-16 07:57:09",
+          "author": "《求是》杂志记者 周璐铭"
+        },
+        {
+          "id": "a-260cbf5f8a312e7b133996d2",
+          "title": "重庆：以“数治”赋能治理现代化",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-11/16/c_1130219239.htm",
+          "publication": "2024-11-16 08:21:43",
+          "author": "《求是》杂志记者 侯亚景 重庆日报记者 夏 元"
+        },
+        {
+          "id": "a-f280396258028e9348ff0dcd",
+          "title": "厦门：垃圾分类成为低碳生活新时尚",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-11/16/c_1130219246.htm",
+          "publication": "2024-11-16 08:21:43",
+          "author": "《求是》杂志记者 陈有勇"
+        },
+        {
+          "id": "a-1489ed7f469b51b734fccc7b",
+          "title": "林芝：雪域“桃花源”的生态富民画卷",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-11/16/c_1130219255.htm",
+          "publication": "2024-11-16 08:21:43",
+          "author": "《求是》杂志记者 王文婷"
+        },
+        {
+          "id": "a-1896654ff649b29ceaa920e2",
+          "title": "创新擦亮“中国制造”的名片",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-06/16/c_1130162957.htm",
+          "publication": "2024-06-16 08:20:19",
+          "author": "《求是》杂志记者 郭斐然"
+        },
+        {
+          "id": "a-7a94425ad5349fbefe419f4c",
+          "title": "科技创新推动文旅产业高质量发展",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20251215/15fc3a4920544c8ea73eecfd868800ef/c.html",
+          "publication": "2025-12-15 16:24:39",
+          "author": "邢 军"
+        },
+        {
+          "id": "a-8c9c0485cb659d324b6af6ec",
+          "title": "人工智能在基础教育领域的应用及治理",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250714/db8506d3fee541ec97f952f2ed5b8b74/c.html",
+          "publication": "2025-07-14 10:27:04",
+          "author": "王 佳"
+        },
+        {
+          "id": "a-254d2d84975eb916dd50289d",
+          "title": "为一方文化觅得更多知音（评论员观察）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185482.html",
+          "publication": "2026-10-14",
+          "author": "孟繁哲"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "人民日报:2",
+          "求是:2"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "求是",
+          "scope_note": "保留两篇报道的时间与对象；吞吐量和收入也受其他因素影响，新增证据不证明某一技术或保护措施单独造成全部增长。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "红旗文稿",
+          "scope_note": "多为机制阐释和可能作用，不得改写为所有学校、景区均已取得因果验证的结果。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "人民日报",
+          "scope_note": "补充“补出措施到结果之间的机制链”；作者对机制的解释与事实同列，但不能据此宣称已量化验证所有环节，也不能把形式翻新自动当作成功。"
+        }
+      ]
+    },
+    {
+      "name": "结尾回到核心词并收束已证明的关系",
+      "purpose": "让结尾形成篇章闭合，把正文分析浓缩为有根据的判断。",
+      "steps": [
+        "圈出题干、标题或开头中贯穿全文的核心词。",
+        "从正文已论证的关系中提炼一句结论，回用核心词或核心意象。",
+        "需要展望时只延伸正文已有的行动方向，保留其成立条件。",
+        "删除结尾突然出现而正文未讨论的新概念、新案例或宏大保证。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "要求提交工作事项清单、固定公文结语或仅写一个分析段时，不硬套抒情回扣。",
+      "refs": [
+        {
+          "id": "a-29cbe59aaa694b16b825d2d9:p12",
+          "quote": "竞争变竞合，分蛋糕变做蛋糕，统筹局部与整体"
+        },
+        {
+          "id": "a-ce1802cbd995470e173db378:p9",
+          "quote": "烟火不息，饭香常在"
+        },
+        {
+          "id": "a-4fddc582bcf396dac6575a4e:p9",
+          "quote": "定能让更多科创成果落地生花。"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-29cbe59aaa694b16b825d2d9",
+          "paragraph_ids": [
+            "a-29cbe59aaa694b16b825d2d9:p1",
+            "a-29cbe59aaa694b16b825d2d9:p2",
+            "a-29cbe59aaa694b16b825d2d9:p3",
+            "a-29cbe59aaa694b16b825d2d9:p4",
+            "a-29cbe59aaa694b16b825d2d9:p5",
+            "a-29cbe59aaa694b16b825d2d9:p6",
+            "a-29cbe59aaa694b16b825d2d9:p12"
+          ],
+          "observation": "开头提出博弈争议，以蛋糕比喻转入增量发展，正文解释两地互补，末段重提竞合、做蛋糕和局部整体。结尾浓缩已经展开的关系，而不是另加口号。"
+        },
+        {
+          "article_id": "a-ce1802cbd995470e173db378",
+          "paragraph_ids": [
+            "a-ce1802cbd995470e173db378:p1",
+            "a-ce1802cbd995470e173db378:p2",
+            "a-ce1802cbd995470e173db378:p3",
+            "a-ce1802cbd995470e173db378:p4",
+            "a-ce1802cbd995470e173db378:p5",
+            "a-ce1802cbd995470e173db378:p6",
+            "a-ce1802cbd995470e173db378:p7",
+            "a-ce1802cbd995470e173db378:p8",
+            "a-ce1802cbd995470e173db378:p9"
+          ],
+          "observation": "首段烟火、餐饭起笔，中间依次说明生活、家庭、交往、文化和民生，末段回到一餐一饭与烟火饭香；同一意象的意义被正文逐层充实。"
+        },
+        {
+          "article_id": "a-4fddc582bcf396dac6575a4e",
+          "paragraph_ids": [
+            "a-4fddc582bcf396dac6575a4e:p5",
+            "a-4fddc582bcf396dac6575a4e:p6",
+            "a-4fddc582bcf396dac6575a4e:p7",
+            "a-4fddc582bcf396dac6575a4e:p8",
+            "a-4fddc582bcf396dac6575a4e:p9"
+          ],
+          "observation": "正文已讲基础研究、政策支持、配套协同，结尾再用企业、市场、政府的联动收束到成果落地，与题目创新沃土相呼应。迁移时只收束已经证明的支撑条件。"
+        }
+      ],
+      "category": "结尾与篇章照应",
+      "example": "【自编微型示例】便民的刻度，最终落在每个人能否顺利办成事。把技术的速度与人工服务的耐心接起来，窗口前那一步，才能成为群众少跑的一段路。",
+      "misuse": "正文只谈窗口便利，结尾突然宣称产业全面跃升；或者只重复标题，未凝练正文已经证明的关系。",
+      "id": "corpus-20261017-686b137f010841d3c653",
+      "enabled": false,
+      "status": "会话提炼候选，待核验启用",
+      "version": "session-curation-20261017-v1",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-29cbe59aaa694b16b825d2d9",
+        "a-ce1802cbd995470e173db378",
+        "a-4fddc582bcf396dac6575a4e"
+      ],
+      "source_fingerprints": [
+        "2aa7c72267cb291486ea99cccd108908053ffbd1a03178e458939d790850b087",
+        "e47856c3c2d884bf9bdcb6863b806c26de0fe5fa404ca39d53e8eaec4d2211eb",
+        "1993cdd08311be38afbad61c4902c3bdaa9dee48af83578734eefae1216e44e0"
+      ],
+      "source_versions": {
+        "a-29cbe59aaa694b16b825d2d9": "2aa7c72267cb291486ea99cccd108908053ffbd1a03178e458939d790850b087",
+        "a-ce1802cbd995470e173db378": "e47856c3c2d884bf9bdcb6863b806c26de0fe5fa404ca39d53e8eaec4d2211eb",
+        "a-4fddc582bcf396dac6575a4e": "1993cdd08311be38afbad61c4902c3bdaa9dee48af83578734eefae1216e44e0"
+      },
+      "source_metadata": [
+        {
+          "id": "a-29cbe59aaa694b16b825d2d9",
+          "title": "从平陆运河看“竞合”（人民锐评）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185485.html",
+          "publication": "2026-10-14",
+          "author": "常言道"
+        },
+        {
+          "id": "a-ce1802cbd995470e173db378",
+          "title": "烟火不息 饭香常在（金台随笔）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185487.html",
+          "publication": "2026-10-14",
+          "author": "石天琼"
+        },
+        {
+          "id": "a-4fddc582bcf396dac6575a4e",
+          "title": "培厚全面创新的沃土（现场评论）",
+          "journal": "人民日报",
+          "year": 2024,
+          "url": "https://paper.people.com.cn/rmrb/html/2024-10/14/nw.D110000renmrb_20241014_3-05.htm",
+          "publication": "2024-10-14",
+          "author": "李心萍"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "人民日报:8"
+        ]
+      }
+    },
+    {
+      "name": "补足从对象特征到必要性的因果桥",
+      "purpose": "写为什么时不只堆叠重大意义，而要说明对象的特殊属性为何使这项行动必不可少。",
+      "steps": [
+        "先提出本段需要证明的必要性判断。",
+        "给出对象区别于一般情形的一至两个特征。",
+        "解释这些特征怎样产生风险、约束或机会。",
+        "据此推出行动及它能够改变的具体结果。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "只有相关现象而没有作用路径时，不能写成已证实的因果；资料不足时保留可能、一定程度等适当限定。",
+      "refs": [
+        {
+          "id": "a-cab7b5bf8de6538e63168f01:p6",
+          "quote": "基层又是灾害发生的主要承受地区。因此，基层是防灾减灾的第一道防线"
+        },
+        {
+          "id": "a-5807ecc6daee7c87a97f3629:p6",
+          "quote": "流域凭借自然水系的连通性与经济交往的关联性"
+        },
+        {
+          "id": "a-25d65ef4782fe1e3bd35e38a:p4",
+          "quote": "关键核心技术仍在演进、底层创新支撑尚不稳固"
+        },
+        {
+          "id": "a-b413dbff441473876f6acb6c:p4",
+          "quote": "不可再生、不可替代的宝贵资源"
+        },
+        {
+          "id": "a-738917c9cfad4f2e9fca3ef4:p6",
+          "quote": "以确定性准备对冲不确定性风险"
+        },
+        {
+          "id": "a-8865e420da74da704414db1d:p5",
+          "quote": "海洋生态环境品质直接决定人居舒适体验"
+        },
+        {
+          "id": "a-5c823f9198124fbe08f32dcf:p9",
+          "quote": "生态系统一旦遭到破坏，恢复起来就非常困难。"
+        },
+        {
+          "id": "a-d22f8be5030e9db05fc4fdf8:p5",
+          "quote": "单一知识结构越来越难以应对复杂劳动对象"
+        },
+        {
+          "id": "a-c2b0fafabe30c90f2760c968:p7",
+          "quote": "由于研究对象涉及多个领域，文化研究需要多学科共同参与。"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-cab7b5bf8de6538e63168f01",
+          "paragraph_ids": [
+            "a-cab7b5bf8de6538e63168f01:p6"
+          ],
+          "observation": "p6先写基层社区分布广、灾害多样频繁、隐患多源，又指出基层承受灾害，才推出基层是第一道防线、应成为体系重点。必要性来自对象特征，不是只重复重要。"
+        },
+        {
+          "article_id": "a-5807ecc6daee7c87a97f3629",
+          "paragraph_ids": [
+            "a-5807ecc6daee7c87a97f3629:p6"
+          ],
+          "observation": "p6先说流域是空间纽带，再用水系连通和经济交往关联解释城乡、上下游、干支流的联结，进而推出生产流通消费衔接。可迁移的是用中间作用桥接特征与意义。"
+        },
+        {
+          "article_id": "a-25d65ef4782fe1e3bd35e38a",
+          "paragraph_ids": [
+            "a-25d65ef4782fe1e3bd35e38a:p3",
+            "a-25d65ef4782fe1e3bd35e38a:p4",
+            "a-25d65ef4782fe1e3bd35e38a:p5",
+            "a-25d65ef4782fe1e3bd35e38a:p8",
+            "a-25d65ef4782fe1e3bd35e38a:p9"
+          ],
+          "observation": "支持旧方法步骤1—4：p4由未来产业前沿性和底层技术未稳固推出探索验证所需时间，再解释原创突破、迭代与产业跃迁的连接；p8—9以概念热但科学弱、能做样品却难稳定量产说明为何不能只扩项目。"
+        },
+        {
+          "article_id": "a-b413dbff441473876f6acb6c",
+          "paragraph_ids": [
+            "a-b413dbff441473876f6acb6c:p2",
+            "a-b413dbff441473876f6acb6c:p4",
+            "a-b413dbff441473876f6acb6c:p7",
+            "a-b413dbff441473876f6acb6c:p8"
+          ],
+          "observation": "支持旧方法步骤2—4：p2说明遗产承载文明记忆与文化认同，p4指出不可再生、不可替代的对象属性并导向保护优先，p7—8落实系统性保护与监管。文章的援引密集段只辅助说明理由，不据引文数量当作论证质量。"
+        },
+        {
+          "article_id": "a-738917c9cfad4f2e9fca3ef4",
+          "paragraph_ids": [
+            "a-738917c9cfad4f2e9fca3ef4:p1",
+            "a-738917c9cfad4f2e9fca3ef4:p4",
+            "a-738917c9cfad4f2e9fca3ef4:p5",
+            "a-738917c9cfad4f2e9fca3ef4:p6",
+            "a-738917c9cfad4f2e9fca3ef4:p8",
+            "a-738917c9cfad4f2e9fca3ef4:p9"
+          ],
+          "observation": "支持旧方法步骤2—4：p6从主动性、系统性及不确定风险下的冗余准备等属性，推出统筹风险治理、预案、监测、力量和物资的必要性，p8—9再对应为规划设防、预案和储备安排。"
+        },
+        {
+          "article_id": "a-8865e420da74da704414db1d",
+          "paragraph_ids": [
+            "a-8865e420da74da704414db1d:p4",
+            "a-8865e420da74da704414db1d:p5",
+            "a-8865e420da74da704414db1d:p6"
+          ],
+          "observation": "主题是海洋生态；p4海岸风险交织推出系统治理，p5从人口产业集聚、依海生活与污染痛点推出整治必要，p6从承载力易透支推出生态约束。支持旧步骤2—4的对象特征—风险—行动链。"
+        },
+        {
+          "article_id": "a-5c823f9198124fbe08f32dcf",
+          "paragraph_ids": [
+            "a-5c823f9198124fbe08f32dcf:p8",
+            "a-5c823f9198124fbe08f32dcf:p9",
+            "a-5c823f9198124fbe08f32dcf:p10",
+            "a-5c823f9198124fbe08f32dcf:p14"
+          ],
+          "observation": "p8跨部门区域特征说明协同需要，p9以要素依存及受损难恢复解释一体保护必要，p10说向好基础仍不牢，p14据长期复杂性推出刚性制度。支持旧步骤2—4。"
+        },
+        {
+          "article_id": "a-d22f8be5030e9db05fc4fdf8",
+          "paragraph_ids": [
+            "a-d22f8be5030e9db05fc4fdf8:p2",
+            "a-d22f8be5030e9db05fc4fdf8:p3",
+            "a-d22f8be5030e9db05fc4fdf8:p4",
+            "a-d22f8be5030e9db05fc4fdf8:p5",
+            "a-d22f8be5030e9db05fc4fdf8:p6",
+            "a-d22f8be5030e9db05fc4fdf8:p8",
+            "a-d22f8be5030e9db05fc4fdf8:p9",
+            "a-d22f8be5030e9db05fc4fdf8:p10",
+            "a-d22f8be5030e9db05fc4fdf8:p11"
+          ],
+          "observation": "主题是人工智能能力培养；p5由对象复杂且跨学科推出更宽知识结构与整合能力；p6列教育科研人才不适配，p8—11接适应性改革。支持旧步骤2—4，不用时代需要替代因果解释。"
+        },
+        {
+          "article_id": "a-c2b0fafabe30c90f2760c968",
+          "paragraph_ids": [
+            "a-c2b0fafabe30c90f2760c968:p2",
+            "a-c2b0fafabe30c90f2760c968:p7"
+          ],
+          "observation": "p2先交代文化相互关联且研究具有历时、实证、系统等特征；p7从对象跨领域这一特征推出单一学科的局限，说明整合不同学科视角和方法能够开辟领域、提供解释路径，给出融合研究的必要性而非直接喊口号。"
+        }
+      ],
+      "category": "因果论证",
+      "example": "【自编微型演示】老旧小区道路狭窄、独居老人较多，一旦险情发生，转移和救援更易受阻。因此，更新小区不能只修立面，还应优先打通疏散通道、完善上门提醒。",
+      "misuse": "从“社区很重要”直接跳到“必须建设智慧平台”，没有说明平台究竟应对哪种风险。",
+      "id": "corpus-20261017-6dbab81135f429c6e69d",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-cab7b5bf8de6538e63168f01",
+        "a-5807ecc6daee7c87a97f3629",
+        "a-25d65ef4782fe1e3bd35e38a",
+        "a-b413dbff441473876f6acb6c",
+        "a-738917c9cfad4f2e9fca3ef4",
+        "a-8865e420da74da704414db1d",
+        "a-5c823f9198124fbe08f32dcf",
+        "a-d22f8be5030e9db05fc4fdf8",
+        "a-c2b0fafabe30c90f2760c968"
+      ],
+      "source_fingerprints": [
+        "34a60c07c61718eab2aa6f3a12ccb08294c9d44aa39ca691055748312390f4d8",
+        "532a8543e99c61a2eedaa0387a45ddbc9a17bec9bffc947dd87a1982f7ef4270",
+        "3a1cdf65464d02bbd7f1d20c0da747a66376a041624b65a7b191d6271d32b1d2",
+        "68d32a834cd348320c440585cfab32bf98f38aae92319621cbf959c07b0102c0",
+        "80a1568cc79a8b79145a947003758cb7f9d3729fc88c2e6c869b9dd8fdb15dd6",
+        "c5289639fa013a7e59b0729f38a4f1a5ab46f183bde889b9b6190ef926b72fc7",
+        "db9d4e3cf7bd1ab50ef2e7502488aea59603feb4573330f796f41f214958d127",
+        "1470179c1fdcabc9ee7d9f1df0c686b24959ed4977471fef387104ca4733c7dd",
+        "f7e5db303328a5e3da5b5f114dfe2aa7657f39036caf0bc9c2f779e62c0d6ce8"
+      ],
+      "source_versions": {
+        "a-cab7b5bf8de6538e63168f01": "34a60c07c61718eab2aa6f3a12ccb08294c9d44aa39ca691055748312390f4d8",
+        "a-5807ecc6daee7c87a97f3629": "532a8543e99c61a2eedaa0387a45ddbc9a17bec9bffc947dd87a1982f7ef4270",
+        "a-25d65ef4782fe1e3bd35e38a": "3a1cdf65464d02bbd7f1d20c0da747a66376a041624b65a7b191d6271d32b1d2",
+        "a-b413dbff441473876f6acb6c": "68d32a834cd348320c440585cfab32bf98f38aae92319621cbf959c07b0102c0",
+        "a-738917c9cfad4f2e9fca3ef4": "80a1568cc79a8b79145a947003758cb7f9d3729fc88c2e6c869b9dd8fdb15dd6",
+        "a-8865e420da74da704414db1d": "c5289639fa013a7e59b0729f38a4f1a5ab46f183bde889b9b6190ef926b72fc7",
+        "a-5c823f9198124fbe08f32dcf": "db9d4e3cf7bd1ab50ef2e7502488aea59603feb4573330f796f41f214958d127",
+        "a-d22f8be5030e9db05fc4fdf8": "1470179c1fdcabc9ee7d9f1df0c686b24959ed4977471fef387104ca4733c7dd",
+        "a-c2b0fafabe30c90f2760c968": "f7e5db303328a5e3da5b5f114dfe2aa7657f39036caf0bc9c2f779e62c0d6ce8"
+      },
+      "source_metadata": [
+        {
+          "id": "a-cab7b5bf8de6538e63168f01",
+          "title": "扎实推进基层应急管理现代化建设",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/hqwg/2024-06/12/c_1130161402.htm",
+          "publication": "2024-06-12 15:43:50",
+          "author": "马玉娜"
+        },
+        {
+          "id": "a-5807ecc6daee7c87a97f3629",
+          "title": "因地制宜拓展流域经济模式",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260414/217a969ebbb149fc82dcd0a0572c99dd/c.html",
+          "publication": "2026-04-14 10:52:16",
+          "author": "易 淼"
+        },
+        {
+          "id": "a-25d65ef4782fe1e3bd35e38a",
+          "title": "以源头创新夯实未来产业发展根基",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260530/0fd9eeeafb3f41c5a2f4761d1cec59d4/c.html",
+          "publication": "2026-06-01 09:00:00",
+          "author": "张 军"
+        },
+        {
+          "id": "a-b413dbff441473876f6acb6c",
+          "title": "持续加强文化和自然遗产保护传承利用",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-08/15/c_1130192042.htm",
+          "publication": "2024-08-15 09:30:27",
+          "author": "《求是》杂志评论员"
+        },
+        {
+          "id": "a-738917c9cfad4f2e9fca3ef4",
+          "title": "防范应对自然灾害重在加强预防准备",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260815/215b4d24edcc4a65a4b201f59ba43aa1/c.html",
+          "publication": "2026-08-16 09:00:00",
+          "author": "马宝成"
+        },
+        {
+          "id": "a-8865e420da74da704414db1d",
+          "title": "加强海洋生态环境保护",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260527/120a4ad6dd314fd79372c263b143f478/c.html",
+          "publication": "2026-05-27 11:17:01",
+          "author": "王菊英"
+        },
+        {
+          "id": "a-5c823f9198124fbe08f32dcf",
+          "title": "保持加强生态文明建设的战略定力",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250303/37ab52c5ab3d44ceb64eba22bca2c615/c.html",
+          "publication": "2025-03-03 10:10:23",
+          "author": "刘广超"
+        },
+        {
+          "id": "a-d22f8be5030e9db05fc4fdf8",
+          "title": "人工智能时代需要培养什么样的能力",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20261010/85b6086ee4cd4c42aba228c1abf4d8f0/c.html",
+          "publication": "2026-10-10 15:25:43",
+          "author": "卓泽林"
+        },
+        {
+          "id": "a-c2b0fafabe30c90f2760c968",
+          "title": "在深化文化研究中坚定文化自信",
+          "journal": "人民日报",
+          "year": 2024,
+          "url": "https://paper.people.com.cn/rmrb/html/2024-10/14/nw.D110000renmrb_20241014_2-09.htm",
+          "publication": "2024-10-14",
+          "author": "左玉河"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "红旗文稿:3"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "求是",
+          "scope_note": "三个对象的特征不同，不能互换成一套万能必要性模板；灾害防治强调降低风险和损失，不许写成一定消除所有灾害。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "红旗文稿",
+          "scope_note": "对象特征须有材料依据，必要性与预期改善不等于措施已获验证。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "人民日报",
+          "scope_note": "补充“补足从对象特征到必要性的因果桥”；这是原文实际论证动作，不把文章提到的研究方法直接搬成申论写作步骤。"
+        }
+      ]
+    },
+    {
+      "name": "沿共同线索从小场景逐层放大",
+      "purpose": "建立生活细节、群体行为和公共价值之间的连续联系，使小切口能够支撑较大主题。",
+      "steps": [
+        "找到场景中能反复分析的共同线索，如奋斗、饭桌、服务体验。",
+        "先说明这个线索在个人或家庭层面体现什么，再拓展到群体或社会层面。",
+        "每放大一层补一组对应事实或解释，避免由单个个案直接推出全局结论。",
+        "用新层次回应题干核心命题，删去只扩大口号却没有增加论证的句子。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "材料只有孤立个案且不支持群体推广时，只作有限启示；题干限定某一具体问题时不能无限扩大议题。",
+      "refs": [
+        {
+          "id": "a-198eec4e4315f6064c974275:p6",
+          "quote": "各行各业、各条战线几乎都有自己的“时代舞者”"
+        },
+        {
+          "id": "a-ce1802cbd995470e173db378:p3",
+          "quote": "它关乎一家人的日子，也关乎人与人的相处"
+        },
+        {
+          "id": "a-83848f98104c55f9349cc2b7:p9",
+          "quote": "当人民群众在每一个案件中都能感受到公平正义"
+        },
+        {
+          "id": "a-07ab18cc07d71d3361f823ba:p2",
+          "quote": "文化是一种生活"
+        },
+        {
+          "id": "a-07ab18cc07d71d3361f823ba:p3",
+          "quote": "文化是一笔财富"
+        },
+        {
+          "id": "a-07ab18cc07d71d3361f823ba:p4",
+          "quote": "文化更是一扇窗口"
+        },
+        {
+          "id": "a-9490db3f60e5824b2b1a569c:p9",
+          "quote": "由家而乡，由乡而俗。"
+        },
+        {
+          "id": "a-9490db3f60e5824b2b1a569c:p10",
+          "quote": "由俗而心，由心而和。"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-198eec4e4315f6064c974275",
+          "paragraph_ids": [
+            "a-198eec4e4315f6064c974275:p2",
+            "a-198eec4e4315f6064c974275:p3",
+            "a-198eec4e4315f6064c974275:p4",
+            "a-198eec4e4315f6064c974275:p6"
+          ],
+          "observation": "从街舞活动到青年文化表达，再用网球、返乡创业、科研三个不同领域例证扩展“时代舞者”。跨领域仍共享创新、担当与奋斗的线索，而非单凭一场赛事代表所有青年。"
+        },
+        {
+          "article_id": "a-ce1802cbd995470e173db378",
+          "paragraph_ids": [
+            "a-ce1802cbd995470e173db378:p2",
+            "a-ce1802cbd995470e173db378:p3",
+            "a-ce1802cbd995470e173db378:p5",
+            "a-ce1802cbd995470e173db378:p6",
+            "a-ce1802cbd995470e173db378:p7",
+            "a-ce1802cbd995470e173db378:p8"
+          ],
+          "observation": "先铺吃饭问候，接着预告家庭与人际相处；正文按团聚、交往、文化记忆展开，再说明民生供给如何支持日常餐饭。饭桌始终在场，公共价值由具体生活层层连接。"
+        },
+        {
+          "article_id": "a-83848f98104c55f9349cc2b7",
+          "paragraph_ids": [
+            "a-83848f98104c55f9349cc2b7:p3",
+            "a-83848f98104c55f9349cc2b7:p5",
+            "a-83848f98104c55f9349cc2b7:p7",
+            "a-83848f98104c55f9349cc2b7:p9"
+          ],
+          "observation": "通过改造、家事纠纷、援助三个职业场景积累实践，再把个案中的公平正义感受连接到公众法治信仰。宏观判断建立在多类具体服务体验之上。"
+        },
+        {
+          "article_id": "a-07ab18cc07d71d3361f823ba",
+          "paragraph_ids": [
+            "a-07ab18cc07d71d3361f823ba:p1",
+            "a-07ab18cc07d71d3361f823ba:p2",
+            "a-07ab18cc07d71d3361f823ba:p3",
+            "a-07ab18cc07d71d3361f823ba:p4"
+          ],
+          "observation": "支持旧方法步骤1—4：固定文博会这一线索，p2用展示与体验说明文化进入人民生活，p3转到文化加科技创意与产业支撑，p4再到对外交流。三个层次增加的是生活、经济、交流功能，不能仅因句式相似认定有递进。"
+        },
+        {
+          "article_id": "a-9490db3f60e5824b2b1a569c",
+          "paragraph_ids": [
+            "a-9490db3f60e5824b2b1a569c:p5",
+            "a-9490db3f60e5824b2b1a569c:p6",
+            "a-9490db3f60e5824b2b1a569c:p7",
+            "a-9490db3f60e5824b2b1a569c:p9",
+            "a-9490db3f60e5824b2b1a569c:p10",
+            "a-9490db3f60e5824b2b1a569c:p11"
+          ],
+          "observation": "支持旧方法步骤1—4：p5—6把剑川门楣楹联立为共同线索，p7写家训影响，p9写搜集成册和木雕载体进入乡俗，p10写村晚中的参与及共同记忆。层层补载体与活动后才扩大到乡风人心。"
+        }
+      ],
+      "category": "篇章展开与主题深化",
+      "example": "【自编微型示例】一张社区长桌先解决独居老人的吃饭难题，也让邻里在共餐中熟悉起来。若再把助餐、探访与志愿服务衔接起来，热饭提供的便利就能延伸为日常照护的连接。",
+      "misuse": "写一名志愿者帮忙后立即断言整个社会治理已经完善；“从个人到国家”只换名词，没有事实或作用机制连接。",
+      "id": "corpus-20261017-7295945603ae141c9bb4",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-198eec4e4315f6064c974275",
+        "a-ce1802cbd995470e173db378",
+        "a-83848f98104c55f9349cc2b7",
+        "a-07ab18cc07d71d3361f823ba",
+        "a-9490db3f60e5824b2b1a569c"
+      ],
+      "source_fingerprints": [
+        "599756f9a86c4b1613132f66ebc565329da6a9f33c95abcb4e23d6bdba7e747b",
+        "e47856c3c2d884bf9bdcb6863b806c26de0fe5fa404ca39d53e8eaec4d2211eb",
+        "1a2a5ced52a09e6aabbc4c4731715b662956c8b48d99a430708fcebc8c7da380",
+        "d8e3bf7a48ebabde51616987f4b27272137569072772ab15737a9ec3a5ab1cd6",
+        "28d07bf702c68acd5eb7ad2dfbe050d18e8dbfe7a5f79f38096ae368fe3ad5be"
+      ],
+      "source_versions": {
+        "a-198eec4e4315f6064c974275": "599756f9a86c4b1613132f66ebc565329da6a9f33c95abcb4e23d6bdba7e747b",
+        "a-ce1802cbd995470e173db378": "e47856c3c2d884bf9bdcb6863b806c26de0fe5fa404ca39d53e8eaec4d2211eb",
+        "a-83848f98104c55f9349cc2b7": "1a2a5ced52a09e6aabbc4c4731715b662956c8b48d99a430708fcebc8c7da380",
+        "a-07ab18cc07d71d3361f823ba": "d8e3bf7a48ebabde51616987f4b27272137569072772ab15737a9ec3a5ab1cd6",
+        "a-9490db3f60e5824b2b1a569c": "28d07bf702c68acd5eb7ad2dfbe050d18e8dbfe7a5f79f38096ae368fe3ad5be"
+      },
+      "source_metadata": [
+        {
+          "id": "a-198eec4e4315f6064c974275",
+          "title": "扬青春风采，做“时代舞者”（人民时评）",
+          "journal": "人民日报",
+          "year": 2024,
+          "url": "https://paper.people.com.cn/rmrb/html/2024-10/14/nw.D110000renmrb_20241014_7-05.htm",
+          "publication": "2024-10-14",
+          "author": "仇英义"
+        },
+        {
+          "id": "a-ce1802cbd995470e173db378",
+          "title": "烟火不息 饭香常在（金台随笔）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185487.html",
+          "publication": "2026-10-14",
+          "author": "石天琼"
+        },
+        {
+          "id": "a-83848f98104c55f9349cc2b7",
+          "title": "法治越昌明，社会越文明（中国道路中国梦·每一个人都是主角）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109226.html",
+          "publication": "2025-10-14",
+          "author": "王 硕"
+        },
+        {
+          "id": "a-07ab18cc07d71d3361f823ba",
+          "title": "为文化传承发展注入新动能",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-06/01/c_1130154159.htm",
+          "publication": "2024-06-01 09:00:00",
+          "author": "《南方》杂志编辑部"
+        },
+        {
+          "id": "a-9490db3f60e5824b2b1a569c",
+          "title": "以优秀楹联文化涵育淳朴乡风",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260731/548cc000e1f444c5b850e8bdd95ae027/c.html",
+          "publication": "2026-08-01 09:00:00",
+          "author": "杨婷"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "人民日报:7"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "求是",
+          "scope_note": "《文博会》一文是连续节选，尾段注明原载来源；这里只观察现存正文四段。楹联报道的观看点赞统计不作教化成效证据，个案不足以证明所有乡村可复制同等效果。"
+        }
+      ]
+    },
+    {
+      "name": "用个案解释变化，用总体证据校准代表性",
+      "purpose": "让读者既看到改善如何发生，也知道个案能支持多大范围的判断。",
+      "steps": [
+        "选一个能体现核心机制的个案，写清原状态、具体改变和实际结果。",
+        "分析个案中的改变为何支持分论点，不以感叹代替解释。",
+        "紧接相关范围的统计或多点事实，检验个案是否有更广覆盖。",
+        "保留统计的时间、对象和口径，不把局部改善扩写为处处如此。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "无总体证据时可做个案论证，但应限定结论；不得自行补出比例或将一位受访者意见写成群众共识。",
+      "refs": [
+        {
+          "id": "a-c7b33d0202a66ba45e51d825:p9",
+          "quote": "我建议增加‘非货币’一词。"
+        },
+        {
+          "id": "a-c7b33d0202a66ba45e51d825:p11",
+          "quote": "其中132条被已通过的14部法律采纳。"
+        },
+        {
+          "id": "a-f280396258028e9348ff0dcd:p5",
+          "quote": "金安社区是厦门创新开展垃圾分类工作的生动缩影。"
+        },
+        {
+          "id": "a-5d6594a0f28c0414d277837f:p9",
+          "quote": "全省城市地下管网事故发生率下降60%、风险排查效率提高70%"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-c7b33d0202a66ba45e51d825",
+          "paragraph_ids": [
+            "a-c7b33d0202a66ba45e51d825:p8",
+            "a-c7b33d0202a66ba45e51d825:p9",
+            "a-c7b33d0202a66ba45e51d825:p10",
+            "a-c7b33d0202a66ba45e51d825:p11"
+          ],
+          "observation": "p8—10先把一条修法建议的提出、理由、采纳及参与者感受展开，p11再给出20部草案、1848条建议和132条采纳数据。总体数据扩大证据范围，却不能推出每条意见均被采纳。"
+        },
+        {
+          "article_id": "a-f280396258028e9348ff0dcd",
+          "paragraph_ids": [
+            "a-f280396258028e9348ff0dcd:p3",
+            "a-f280396258028e9348ff0dcd:p4",
+            "a-f280396258028e9348ff0dcd:p5"
+          ],
+          "observation": "p3—4先解释金安社区点位优化与参与激励，p5用全市知晓率、准确率、资源利用率及全链条覆盖接续，构成社区机制与市域覆盖的两层支撑。不同指标口径不能互换。"
+        },
+        {
+          "article_id": "a-5d6594a0f28c0414d277837f",
+          "paragraph_ids": [
+            "a-5d6594a0f28c0414d277837f:p1",
+            "a-5d6594a0f28c0414d277837f:p6",
+            "a-5d6594a0f28c0414d277837f:p7",
+            "a-5d6594a0f28c0414d277837f:p8",
+            "a-5d6594a0f28c0414d277837f:p9",
+            "a-5d6594a0f28c0414d277837f:p12"
+          ],
+          "observation": "支持旧方法步骤1—4：p1给铜陵处置泄漏个案，p6—7解释合肥监测体系，p8说明全省16市覆盖及按水系、幅员调整，p9给截至2024年11月底的全省数据，p12再补池州现场。个案、机制、跨市事实、范围数据分别承担可感、可解释、可检验的任务。"
+        }
+      ],
+      "category": "证据组织",
+      "example": "【自编微型演示】居民建议增设午间窗口，社区试行后，上班族可以趁午休办事。若材料还给出全区多个窗口同类改革及等待时间下降的数据，便可进一步说明这种便利具有一定覆盖，而不能只凭一人称赞认定全区满意。",
+      "misuse": "连讲三个“点赞”故事却无机制分析；把回收利用率写成分类准确率；把建议数量当成全部被采纳的数量。",
+      "id": "corpus-20261017-8566bec8b55f6c5cb65e",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-c7b33d0202a66ba45e51d825",
+        "a-f280396258028e9348ff0dcd",
+        "a-5d6594a0f28c0414d277837f"
+      ],
+      "source_fingerprints": [
+        "9d5fef37c684400ecbd66bc5fc7a2209b19f20935dd1b84ef3269d031fd5f1e6",
+        "9576a5db29111dfafdab6250eccffdb694d7d5f8c0e4ce6c9f67e2546f810819",
+        "dd4f5be8e1d3011718a90d9a500321cc76c5cb5c36a2834aebcc8d6671c3370e"
+      ],
+      "source_versions": {
+        "a-c7b33d0202a66ba45e51d825": "9d5fef37c684400ecbd66bc5fc7a2209b19f20935dd1b84ef3269d031fd5f1e6",
+        "a-f280396258028e9348ff0dcd": "9576a5db29111dfafdab6250eccffdb694d7d5f8c0e4ce6c9f67e2546f810819",
+        "a-5d6594a0f28c0414d277837f": "dd4f5be8e1d3011718a90d9a500321cc76c5cb5c36a2834aebcc8d6671c3370e"
+      },
+      "source_metadata": [
+        {
+          "id": "a-c7b33d0202a66ba45e51d825",
+          "title": "群众“金点子”乘上立法直通车",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-08/16/c_1130192069.htm",
+          "publication": "2024-08-16 07:57:09",
+          "author": "《求是》杂志记者 旷思思 《当代党员》杂志记者 别 致"
+        },
+        {
+          "id": "a-f280396258028e9348ff0dcd",
+          "title": "厦门：垃圾分类成为低碳生活新时尚",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-11/16/c_1130219246.htm",
+          "publication": "2024-11-16 08:21:43",
+          "author": "《求是》杂志记者 陈有勇"
+        },
+        {
+          "id": "a-5d6594a0f28c0414d277837f",
+          "title": "“数智”城市 诗意栖居",
+          "journal": "求是",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250114/da2af6c0b449478e8982196db8168d07/c.html",
+          "publication": "2025-01-16 09:00:00",
+          "author": "《求是》杂志记者 郭斐然"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "求是:3"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "求是",
+          "scope_note": "新增证据是同一报道内的多层材料相互校准；全省数据口径是地下管网事故与排查效率，不扩展成所有城市风险均下降，也不是独立因果实验。"
+        }
+      ]
+    },
+    {
+      "name": "以具体条件和越界后果限定主张",
+      "purpose": "肯定已有价值后说明必要前提与风险，防止有条件的主张被写成无条件结论。",
+      "steps": [
+        "明确材料已支持的价值及肯定对象。",
+        "找出该主张可能被误读成的绝对说法，标出不能省略的条件。",
+        "用材料中的风险或反向后果说明为何需要边界，不凭空补造反方。",
+        "回到有边界的正面主张，提出与风险对应的防偏动作或推进次序。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "材料没有风险依据、任务只要求单向归纳且篇幅很短时，不机械添加反面段；边界涉及现行法律时须依给定材料或核实依据。",
+      "refs": [
+        {
+          "id": "a-fe31e4bd953bf1f6108ab62d:p9",
+          "quote": "信任的赋予，从来不是无条件的单向让渡"
+        },
+        {
+          "id": "a-51763e08c69d7a8038bbb647:p3",
+          "quote": "防止命名简单化、随意性、盲目性"
+        },
+        {
+          "id": "a-1e8a8ae8bbae0772bb87c03d:p4",
+          "quote": "把“敢闯”等同于“蛮干”"
+        },
+        {
+          "id": "a-eb87baabfaa9aa1f11e1330e:p11",
+          "quote": "在新产业、新模式并未确立、新动能尚未形成之前"
+        },
+        {
+          "id": "a-0ddf735e4e43b2f482fcba92:p10",
+          "quote": "传统产业是现代化产业体系的基础"
+        },
+        {
+          "id": "a-40cf9a0586795ed2411179a9:p5",
+          "quote": "以水定绿，避免过度开采和浪费"
+        },
+        {
+          "id": "a-01496f5c9e324fd043069539:p17",
+          "quote": "避免其就业替代效应短期内集中释放。"
+        },
+        {
+          "id": "a-a1ff0a2313fa5d7e7f5d5b11:p19",
+          "quote": "既要尽力做好并最大限度地满足群众需求，又要遵循客观规律和实际能力"
+        },
+        {
+          "id": "a-a312d0b6edee56e1a8cf92a8:p4",
+          "quote": "若无十分把握，不要轻易更改。"
+        },
+        {
+          "id": "a-254d2d84975eb916dd50289d:p8",
+          "quote": "讲得通俗，不是把文化讲浅。"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-fe31e4bd953bf1f6108ab62d",
+          "paragraph_ids": [
+            "a-fe31e4bd953bf1f6108ab62d:p4",
+            "a-fe31e4bd953bf1f6108ab62d:p8",
+            "a-fe31e4bd953bf1f6108ab62d:p9"
+          ],
+          "observation": "从房东帮助守约租客肯定规则与关怀可兼容，再限定包容以履约意愿、正视问题和积极沟通为前提，区分无心之失与恶意违规。该段主动封住“包容等于纵容”的推论漏洞。"
+        },
+        {
+          "article_id": "a-51763e08c69d7a8038bbb647",
+          "paragraph_ids": [
+            "a-51763e08c69d7a8038bbb647:p1",
+            "a-51763e08c69d7a8038bbb647:p3"
+          ],
+          "observation": "开头肯定命名工作成效，第三段转入随意改名可能割断文脉的风险，再提出与历史对话、向居民征集建议。限制条件服务于命名的原有目标，而非另起一套主题。"
+        },
+        {
+          "article_id": "a-1e8a8ae8bbae0772bb87c03d",
+          "paragraph_ids": [
+            "a-1e8a8ae8bbae0772bb87c03d:p3",
+            "a-1e8a8ae8bbae0772bb87c03d:p4",
+            "a-1e8a8ae8bbae0772bb87c03d:p5"
+          ],
+          "observation": "先展示改革经验，再列闭眼摸、盲目乱摸、表面创新的偏差，追到实事求是与系统思维不足，继而提出调研与论证。迁移时应从偏差原因推出修正动作。"
+        },
+        {
+          "article_id": "a-eb87baabfaa9aa1f11e1330e",
+          "paragraph_ids": [
+            "a-eb87baabfaa9aa1f11e1330e:p11"
+          ],
+          "observation": "p11先立“新动能未形成”的时序条件，说明过急破旧会损害持续性与稳定性，并用一些国家产业空心化作反向警示，才得出先立后破。可迁移的是条件化主张，而非遇题必写新旧。"
+        },
+        {
+          "article_id": "a-0ddf735e4e43b2f482fcba92",
+          "paragraph_ids": [
+            "a-0ddf735e4e43b2f482fcba92:p4",
+            "a-0ddf735e4e43b2f482fcba92:p10",
+            "a-0ddf735e4e43b2f482fcba92:p11"
+          ],
+          "observation": "p4排除发展新质生产力等于放弃传统产业的误解，p10解释传统产业提供基础和土壤，并用产业空心化说明忽视它的代价，p11再按不同发展阶段分配行动。边界由支撑关系论证。"
+        },
+        {
+          "article_id": "a-40cf9a0586795ed2411179a9",
+          "paragraph_ids": [
+            "a-40cf9a0586795ed2411179a9:p3",
+            "a-40cf9a0586795ed2411179a9:p4",
+            "a-40cf9a0586795ed2411179a9:p5",
+            "a-40cf9a0586795ed2411179a9:p6",
+            "a-40cf9a0586795ed2411179a9:p15"
+          ],
+          "observation": "主题是扩绿兴绿护绿；p3肯定规模绿化，p4要求承载力评估，p5以立地、植被规律与水资源限定树种规模，指出过度开采后果，p6用成活留存校正数量。支持旧步骤1—4，并非反对植树。"
+        },
+        {
+          "article_id": "a-01496f5c9e324fd043069539",
+          "paragraph_ids": [
+            "a-01496f5c9e324fd043069539:p3",
+            "a-01496f5c9e324fd043069539:p9",
+            "a-01496f5c9e324fd043069539:p10",
+            "a-01496f5c9e324fd043069539:p11",
+            "a-01496f5c9e324fd043069539:p12",
+            "a-01496f5c9e324fd043069539:p15",
+            "a-01496f5c9e324fd043069539:p17",
+            "a-01496f5c9e324fd043069539:p18"
+          ],
+          "observation": "先肯定技术创造岗位等机遇，p9—12补不同群体转型风险，p15明确深度速度承受度平衡，p17以评估、试点和转岗培训限制短期集中替代。支持旧步骤2—4。"
+        },
+        {
+          "article_id": "a-a1ff0a2313fa5d7e7f5d5b11",
+          "paragraph_ids": [
+            "a-a1ff0a2313fa5d7e7f5d5b11:p17",
+            "a-a1ff0a2313fa5d7e7f5d5b11:p18",
+            "a-a1ff0a2313fa5d7e7f5d5b11:p19"
+          ],
+          "observation": "p17回应急难愁盼，p18要求重点与合理预期，p19明确能力约束和轻重缓急，再回到持续实惠。支持旧步骤1—2、4；不能借量力而行虚构群众不应有的需求。"
+        },
+        {
+          "article_id": "a-a312d0b6edee56e1a8cf92a8",
+          "paragraph_ids": [
+            "a-a312d0b6edee56e1a8cf92a8:p2",
+            "a-a312d0b6edee56e1a8cf92a8:p3",
+            "a-a312d0b6edee56e1a8cf92a8:p4",
+            "a-a312d0b6edee56e1a8cf92a8:p5"
+          ],
+          "observation": "p2肯定政府动员，p3说明声势不等于自觉阅读，p4用地方品牌积累难恢复说明不可追热点轻改路径，再回到因地制宜和延续有效活动。支持旧步骤2—4的边界及防偏。"
+        },
+        {
+          "article_id": "a-254d2d84975eb916dd50289d",
+          "paragraph_ids": [
+            "a-254d2d84975eb916dd50289d:p3",
+            "a-254d2d84975eb916dd50289d:p4",
+            "a-254d2d84975eb916dd50289d:p5",
+            "a-254d2d84975eb916dd50289d:p6",
+            "a-254d2d84975eb916dd50289d:p7",
+            "a-254d2d84975eb916dd50289d:p8"
+          ],
+          "observation": "p3—4先肯定传统适应当下生活的价值，p5排除仅印纹样或加声光电等形式化误读，以真实契合和保留韵味给创新设条件；p6—7肯定清晰表达，p8再区分通俗与浅薄，要求讲来源和独到智慧。限制语回应前文可能出现的过度外推。"
+        }
+      ],
+      "category": "条件与边界分析",
+      "example": "【自编微型示例】为暂时遇困的守约商户提供缓缴安排，有助于稳定经营；但缓缴须以主动说明困难、提出还款计划为前提。对长期逃避责任者仍应依法依约处理，才能使帮助保持公平。",
+      "misuse": "把人情关怀泛化为任何违约都应免责；或者每写一个成绩就无依据地加一句“但是也存在问题”。",
+      "id": "corpus-20261017-88019466a792ca57bf8e",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-fe31e4bd953bf1f6108ab62d",
+        "a-51763e08c69d7a8038bbb647",
+        "a-1e8a8ae8bbae0772bb87c03d",
+        "a-eb87baabfaa9aa1f11e1330e",
+        "a-0ddf735e4e43b2f482fcba92",
+        "a-40cf9a0586795ed2411179a9",
+        "a-01496f5c9e324fd043069539",
+        "a-a1ff0a2313fa5d7e7f5d5b11",
+        "a-a312d0b6edee56e1a8cf92a8",
+        "a-254d2d84975eb916dd50289d"
+      ],
+      "source_fingerprints": [
+        "716639511b0d5aa1dcb3dd928d23a639a0c5bf7eb91a1a681fe21f66f8a6a317",
+        "547edc35b6d07821f3f2761f104b29ec393b873c3e2fec573c69094915af86df",
+        "9269b7dc0ac77ba21b3bbc9e648b563e90782805063432794c38d61c3598b6e3",
+        "6c63b92ab38f6132387d2ef8457ef392f8ee5b22aa6e60d4b78b812eb3b7061e",
+        "1ea93ca3efeb1b6c3c3b396795b1cfe13889bc10d0803ec0a5b1d1c66da25eff",
+        "7105ab0acef60e700e1e1a224f91c01a2b0cc30122f13031131ae44a4d2ae66d",
+        "a78ab859dac11d4fe80846f0033087e3998fe4d2dbf100d2e11eb81f89265f06",
+        "2979ba78931902e8016c9d82f2d3443b37f158623c6282d6099bd94e328a1078",
+        "8077ba9a01a42a1e1addde5e6e7b244b29956aaa48db3280bf3465d0c3f698c8",
+        "27db2da79849bb5f79770d1582f831feb067eabc22d8da2d7985680e8a5bb6df"
+      ],
+      "source_versions": {
+        "a-fe31e4bd953bf1f6108ab62d": "716639511b0d5aa1dcb3dd928d23a639a0c5bf7eb91a1a681fe21f66f8a6a317",
+        "a-51763e08c69d7a8038bbb647": "547edc35b6d07821f3f2761f104b29ec393b873c3e2fec573c69094915af86df",
+        "a-1e8a8ae8bbae0772bb87c03d": "9269b7dc0ac77ba21b3bbc9e648b563e90782805063432794c38d61c3598b6e3",
+        "a-eb87baabfaa9aa1f11e1330e": "6c63b92ab38f6132387d2ef8457ef392f8ee5b22aa6e60d4b78b812eb3b7061e",
+        "a-0ddf735e4e43b2f482fcba92": "1ea93ca3efeb1b6c3c3b396795b1cfe13889bc10d0803ec0a5b1d1c66da25eff",
+        "a-40cf9a0586795ed2411179a9": "7105ab0acef60e700e1e1a224f91c01a2b0cc30122f13031131ae44a4d2ae66d",
+        "a-01496f5c9e324fd043069539": "a78ab859dac11d4fe80846f0033087e3998fe4d2dbf100d2e11eb81f89265f06",
+        "a-a1ff0a2313fa5d7e7f5d5b11": "2979ba78931902e8016c9d82f2d3443b37f158623c6282d6099bd94e328a1078",
+        "a-a312d0b6edee56e1a8cf92a8": "8077ba9a01a42a1e1addde5e6e7b244b29956aaa48db3280bf3465d0c3f698c8",
+        "a-254d2d84975eb916dd50289d": "27db2da79849bb5f79770d1582f831feb067eabc22d8da2d7985680e8a5bb6df"
+      },
+      "source_metadata": [
+        {
+          "id": "a-fe31e4bd953bf1f6108ab62d",
+          "title": "规则筑底线，信任聚人心（暖闻热评）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185483.html",
+          "publication": "2026-10-14",
+          "author": "孔德淇"
+        },
+        {
+          "id": "a-51763e08c69d7a8038bbb647",
+          "title": "让乡村“有名”更“扬名”（纵横）",
+          "journal": "人民日报",
+          "year": 2024,
+          "url": "https://paper.people.com.cn/rmrb/html/2024-10/14/nw.D110000renmrb_20241014_6-05.htm",
+          "publication": "2024-10-14",
+          "author": "周 磊"
+        },
+        {
+          "id": "a-1e8a8ae8bbae0772bb87c03d",
+          "title": "摸准“过河的石头”（思想纵横）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109251.html",
+          "publication": "2025-10-14",
+          "author": "孙志龙"
+        },
+        {
+          "id": "a-eb87baabfaa9aa1f11e1330e",
+          "title": "必须统筹好培育新动能和更新旧动能的关系",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250127/3f6b93df579f475f93df1393f5b592c7/c.html",
+          "publication": "2025-01-27 11:21:45",
+          "author": "曹 立"
+        },
+        {
+          "id": "a-0ddf735e4e43b2f482fcba92",
+          "title": "因地制宜发展新质生产力",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/hqwg/2024-07/27/c_1130185881.htm",
+          "publication": "2024-07-27 11:23:31",
+          "author": "朱安东 黄怡暄"
+        },
+        {
+          "id": "a-40cf9a0586795ed2411179a9",
+          "title": "“扩绿、兴绿、护绿”并举 筑牢美丽中国生态根基",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/hqwg/2024-05/14/c_1130144680.htm",
+          "publication": "2024-05-14 15:48:11",
+          "author": "刘广超"
+        },
+        {
+          "id": "a-01496f5c9e324fd043069539",
+          "title": "人工智能对就业的影响及对策",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250714/ef84841650ce4dbab6d8fedaad6bdd47/c.html",
+          "publication": "2025-07-14 10:27:44",
+          "author": "李 韬"
+        },
+        {
+          "id": "a-a1ff0a2313fa5d7e7f5d5b11",
+          "title": "中国式现代化民生为大",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/hqwg/2024-06/27/c_1130169281.htm",
+          "publication": "2024-06-27 10:41:46",
+          "author": "张远新"
+        },
+        {
+          "id": "a-a312d0b6edee56e1a8cf92a8",
+          "title": "“全民阅读”该如何提倡",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260711/fad0fa88544b4993a5a428c233125831/c.html",
+          "publication": "2026-07-11 14:50:10",
+          "author": "陈平原"
+        },
+        {
+          "id": "a-254d2d84975eb916dd50289d",
+          "title": "为一方文化觅得更多知音（评论员观察）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185482.html",
+          "publication": "2026-10-14",
+          "author": "孟繁哲"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "人民日报:5",
+          "红旗文稿:5"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "红旗文稿",
+          "scope_note": "边界须有材料条件和后果；资源、就业转换、财政能力、品牌积累四种限制各有对象，不自行夸大后果。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "人民日报",
+          "scope_note": "补充“以具体条件和越界后果限定主张”；这不是对传统/创新机械各打五十大板，而是为正面主张补上可以操作的防偏条件。"
+        }
+      ]
+    },
+    {
+      "name": "从具体场景提出需要论证的中心命题",
+      "purpose": "用与主题相关的事实提出问题，再以中心判断回答，使叙事承担破题作用。",
+      "steps": [
+        "从给定材料选择能体现核心矛盾的场景，保留人物、动作及一个关键结果。",
+        "说明这件事提出了什么问题，或紧接一句能由事实支持的启示。",
+        "用明确主张回答问题，必要时解释场景背后的规则、组织或服务机制。",
+        "检查正文是否持续证明该主张，删除只增热闹而不增加论证的细节。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "没有可靠场景材料、题干要求直接解释概念或极短篇幅的写作，不宜硬编现场或延迟亮出观点。",
+      "refs": [
+        {
+          "id": "a-4fddc582bcf396dac6575a4e:p3",
+          "quote": "又快又好，背后是什么？"
+        },
+        {
+          "id": "a-50b9a9021fec3110f55e4d3b:p2",
+          "quote": "以市场为导向种、以品牌为引擎卖"
+        },
+        {
+          "id": "a-77304642377b00451e9a40d1:p3",
+          "quote": "让“大家伙”与“小生活”有了交集。"
+        },
+        {
+          "id": "a-c7b33d0202a66ba45e51d825:p3",
+          "quote": "一边听吴女士“诉苦”，一边打开手机"
+        },
+        {
+          "id": "a-4220ec1e71668a716efa18ed:p2",
+          "quote": "以前手机上有几十个工作群"
+        },
+        {
+          "id": "a-5d6594a0f28c0414d277837f:p1",
+          "quote": "工作人员迅速研判，推送预警信息"
+        },
+        {
+          "id": "a-58609454e086678f7e29ecac:p2",
+          "quote": "这段历史和今天的我们有什么关系？"
+        },
+        {
+          "id": "a-5396dcf44bc062f5251d22d0:p1",
+          "quote": "人文素养究竟意味着什么？"
+        },
+        {
+          "id": "a-254d2d84975eb916dd50289d:p2",
+          "quote": "它们如何跨越地域、走近更多人？"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-4fddc582bcf396dac6575a4e",
+          "paragraph_ids": [
+            "a-4fddc582bcf396dac6575a4e:p2",
+            "a-4fddc582bcf396dac6575a4e:p3",
+            "a-4fddc582bcf396dac6575a4e:p4"
+          ],
+          "observation": "从大桥合龙现场及施工速度切入，紧接设问并回答技术创新，再拆解两种桥型的矛盾。场景提出的“又快又好”成为下文解释对象，迁移时应让开头事实产生一个待解释的问题。"
+        },
+        {
+          "article_id": "a-50b9a9021fec3110f55e4d3b",
+          "paragraph_ids": [
+            "a-50b9a9021fec3110f55e4d3b:p1",
+            "a-50b9a9021fec3110f55e4d3b:p2"
+          ],
+          "observation": "首段并列小麦、新梅、食用菌的产销变化，次段立即归纳市场、品牌、产业链的路径。其可迁移动作是“现场事实后马上给出判断”，而非照抄农业主题。"
+        },
+        {
+          "article_id": "a-77304642377b00451e9a40d1",
+          "paragraph_ids": [
+            "a-77304642377b00451e9a40d1:p3",
+            "a-77304642377b00451e9a40d1:p4"
+          ],
+          "observation": "用邮轮欢送视频连接读者生活，再从制造、设计、运营解释重器的复合价值。小切口与大命题之间有中间分析，不能直接由热闹场面跳到宏大结论。"
+        },
+        {
+          "article_id": "a-c7b33d0202a66ba45e51d825",
+          "paragraph_ids": [
+            "a-c7b33d0202a66ba45e51d825:p1",
+            "a-c7b33d0202a66ba45e51d825:p2",
+            "a-c7b33d0202a66ba45e51d825:p3",
+            "a-c7b33d0202a66ba45e51d825:p4",
+            "a-c7b33d0202a66ba45e51d825:p5",
+            "a-c7b33d0202a66ba45e51d825:p6",
+            "a-c7b33d0202a66ba45e51d825:p7"
+          ],
+          "observation": "p1—3写居民诉堵与信息员记录，p4交代信息员职责，p5—7才转入立法联系点及群众参与机制。可迁移的是“微观动作—制度解释—主题”，不是因文章出现走访就称其为调研写法。"
+        },
+        {
+          "article_id": "a-4220ec1e71668a716efa18ed",
+          "paragraph_ids": [
+            "a-4220ec1e71668a716efa18ed:p1",
+            "a-4220ec1e71668a716efa18ed:p2",
+            "a-4220ec1e71668a716efa18ed:p3",
+            "a-4220ec1e71668a716efa18ed:p4"
+          ],
+          "observation": "p1—2从村书记早读手机应用及旧工作群困境切入，p3直接揭示任务闭环系统，p4再放入基层治理背景。场景承担提出效率问题的任务。"
+        },
+        {
+          "article_id": "a-5d6594a0f28c0414d277837f",
+          "paragraph_ids": [
+            "a-5d6594a0f28c0414d277837f:p1",
+            "a-5d6594a0f28c0414d277837f:p2",
+            "a-5d6594a0f28c0414d277837f:p3",
+            "a-5d6594a0f28c0414d277837f:p6"
+          ],
+          "observation": "支持旧方法步骤1—3：p1从管网报警、协调处置的具体现场起笔，p2把一件警情转为城市生命线能否全天候守护安全的普遍问题，p3提出数字赋能方向，p6回到风险感知和协同处置体系。场景承担提出问题的任务。"
+        },
+        {
+          "article_id": "a-58609454e086678f7e29ecac",
+          "paragraph_ids": [
+            "a-58609454e086678f7e29ecac:p2",
+            "a-58609454e086678f7e29ecac:p3",
+            "a-58609454e086678f7e29ecac:p5",
+            "a-58609454e086678f7e29ecac:p7",
+            "a-58609454e086678f7e29ecac:p9"
+          ],
+          "observation": "支持旧方法步骤2—4：p2由课堂对话提出当代青年与长征精神的关系问题；p3讲同龄人的选择，p5分析学生日常困惑，p7写实践育人，p9明确回答开篇提问。可迁移的是问题对后文的约束，不是把历史故事当作装饰。"
+        },
+        {
+          "article_id": "a-5396dcf44bc062f5251d22d0",
+          "paragraph_ids": [
+            "a-5396dcf44bc062f5251d22d0:p1",
+            "a-5396dcf44bc062f5251d22d0:p2",
+            "a-5396dcf44bc062f5251d22d0:p3",
+            "a-5396dcf44bc062f5251d22d0:p4",
+            "a-5396dcf44bc062f5251d22d0:p5",
+            "a-5396dcf44bc062f5251d22d0:p6",
+            "a-5396dcf44bc062f5251d22d0:p7"
+          ],
+          "observation": "主题是人文与科技；p1并置两位数学家的文学兴趣、专业成就与共同特征，再追问人文素养对创新意味着什么。p2讲灵感作用，p3—4转入现实不足及原因，p6补作用机制。支持旧步骤1—4的场景提问、中心命题及全文回应。"
+        },
+        {
+          "article_id": "a-254d2d84975eb916dd50289d",
+          "paragraph_ids": [
+            "a-254d2d84975eb916dd50289d:p1",
+            "a-254d2d84975eb916dd50289d:p2",
+            "a-254d2d84975eb916dd50289d:p3",
+            "a-254d2d84975eb916dd50289d:p6",
+            "a-254d2d84975eb916dd50289d:p9"
+          ],
+          "observation": "p1写延吉双语招牌的可见场景及识店寻路功能；p2将其转换成地方文化如何跨越地域的问题，并提出适应生活、与不同人群交流的中心判断。后文分别写使用欣赏、表达理解、共创支持，开头问题持续约束正文。"
+        }
+      ],
+      "category": "开头与破题",
+      "example": "【自编微型示例】办事大厅里，老人拿着旧手机在扫码入口徘徊。窗口越来越智能，为何仍有人办不成事？便民服务既要提高办理速度，也要降低使用门槛。",
+      "misuse": "用三四个热闹场景铺满首段，却不提出问题；或开头写志愿活动，正文突然转为产业升级。",
+      "id": "corpus-20261017-894db02ad191e751960b",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-4fddc582bcf396dac6575a4e",
+        "a-50b9a9021fec3110f55e4d3b",
+        "a-77304642377b00451e9a40d1",
+        "a-c7b33d0202a66ba45e51d825",
+        "a-4220ec1e71668a716efa18ed",
+        "a-5d6594a0f28c0414d277837f",
+        "a-58609454e086678f7e29ecac",
+        "a-5396dcf44bc062f5251d22d0",
+        "a-254d2d84975eb916dd50289d"
+      ],
+      "source_fingerprints": [
+        "1993cdd08311be38afbad61c4902c3bdaa9dee48af83578734eefae1216e44e0",
+        "e0db90d1a0ccf20236150f182a8ed3c3d8a485118d942746bff51766a085b557",
+        "1b2dffa955ccba945205de3e5af58fcb2db2a93fb6722eede8b4c820694be3a9",
+        "9d5fef37c684400ecbd66bc5fc7a2209b19f20935dd1b84ef3269d031fd5f1e6",
+        "1288fd4bdb30ab1ffcfa0c10d7e24be99a39ed9686380005a654d8017c591a9e",
+        "dd4f5be8e1d3011718a90d9a500321cc76c5cb5c36a2834aebcc8d6671c3370e",
+        "4f2831b2b8edb36c634a4f106602c6d4f1c3353a81d2cbdd5638632c46061ab3",
+        "ba128fd14d8c5845983b73b54cbb345df20410d02977115811f21c151536ab96",
+        "27db2da79849bb5f79770d1582f831feb067eabc22d8da2d7985680e8a5bb6df"
+      ],
+      "source_versions": {
+        "a-4fddc582bcf396dac6575a4e": "1993cdd08311be38afbad61c4902c3bdaa9dee48af83578734eefae1216e44e0",
+        "a-50b9a9021fec3110f55e4d3b": "e0db90d1a0ccf20236150f182a8ed3c3d8a485118d942746bff51766a085b557",
+        "a-77304642377b00451e9a40d1": "1b2dffa955ccba945205de3e5af58fcb2db2a93fb6722eede8b4c820694be3a9",
+        "a-c7b33d0202a66ba45e51d825": "9d5fef37c684400ecbd66bc5fc7a2209b19f20935dd1b84ef3269d031fd5f1e6",
+        "a-4220ec1e71668a716efa18ed": "1288fd4bdb30ab1ffcfa0c10d7e24be99a39ed9686380005a654d8017c591a9e",
+        "a-5d6594a0f28c0414d277837f": "dd4f5be8e1d3011718a90d9a500321cc76c5cb5c36a2834aebcc8d6671c3370e",
+        "a-58609454e086678f7e29ecac": "4f2831b2b8edb36c634a4f106602c6d4f1c3353a81d2cbdd5638632c46061ab3",
+        "a-5396dcf44bc062f5251d22d0": "ba128fd14d8c5845983b73b54cbb345df20410d02977115811f21c151536ab96",
+        "a-254d2d84975eb916dd50289d": "27db2da79849bb5f79770d1582f831feb067eabc22d8da2d7985680e8a5bb6df"
+      },
+      "source_metadata": [
+        {
+          "id": "a-4fddc582bcf396dac6575a4e",
+          "title": "培厚全面创新的沃土（现场评论）",
+          "journal": "人民日报",
+          "year": 2024,
+          "url": "https://paper.people.com.cn/rmrb/html/2024-10/14/nw.D110000renmrb_20241014_3-05.htm",
+          "publication": "2024-10-14",
+          "author": "李心萍"
+        },
+        {
+          "id": "a-50b9a9021fec3110f55e4d3b",
+          "title": "特色产业唤醒新疆沃野（现场评论·天山南北气象新）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109229.html",
+          "publication": "2025-10-14",
+          "author": "李亚楠"
+        },
+        {
+          "id": "a-77304642377b00451e9a40d1",
+          "title": "矢志“铸重器”，强国复兴有支撑（评论员观察）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109225.html",
+          "publication": "2025-10-14",
+          "author": "李洪兴"
+        },
+        {
+          "id": "a-c7b33d0202a66ba45e51d825",
+          "title": "群众“金点子”乘上立法直通车",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-08/16/c_1130192069.htm",
+          "publication": "2024-08-16 07:57:09",
+          "author": "《求是》杂志记者 旷思思 《当代党员》杂志记者 别 致"
+        },
+        {
+          "id": "a-4220ec1e71668a716efa18ed",
+          "title": "“浙里兴村治社”：减负增效推动基层善治",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-08/16/c_1130192068.htm",
+          "publication": "2024-08-16 07:57:09",
+          "author": "《求是》杂志记者 周璐铭"
+        },
+        {
+          "id": "a-5d6594a0f28c0414d277837f",
+          "title": "“数智”城市 诗意栖居",
+          "journal": "求是",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250114/da2af6c0b449478e8982196db8168d07/c.html",
+          "publication": "2025-01-16 09:00:00",
+          "author": "《求是》杂志记者 郭斐然"
+        },
+        {
+          "id": "a-58609454e086678f7e29ecac",
+          "title": "在青年人心里“种火”",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260930/fb671ebc0457456885b1e03e718d8204/c.html",
+          "publication": "2026-10-01 09:00:00",
+          "author": "刘洋"
+        },
+        {
+          "id": "a-5396dcf44bc062f5251d22d0",
+          "title": "让人文精神滋养科技创新",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20261010/0c8e78a3eafe4eefa581b05003a355eb/c.html",
+          "publication": "2026-10-10 15:25:58",
+          "author": "思 力"
+        },
+        {
+          "id": "a-254d2d84975eb916dd50289d",
+          "title": "为一方文化觅得更多知音（评论员观察）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185482.html",
+          "publication": "2026-10-14",
+          "author": "孟繁哲"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "人民日报:1",
+          "求是:1"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "求是",
+          "scope_note": "场景引题补了城市治理与思政教育两种文体；教师自身经验只说明其教学理解，不能据此断言所有青年均有相同反应。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "红旗文稿",
+          "scope_note": "人物故事承担引出问题的功能，不能仅凭爱好证明获奖因果；人物奖项等事实未作外网核验。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "人民日报",
+          "scope_note": "补充“从具体场景提出需要论证的中心命题”的跨主题证据；场景不是装饰，启示也不是仅凭一面墙推出普遍成效。"
+        }
+      ]
+    },
+    {
+      "name": "让比喻与论证对象逐项对应",
+      "purpose": "用熟悉形象解释抽象机制，同时保留比喻背后的实际动作。",
+      "steps": [
+        "先确定要解释的真实关系，如资源怎样增值、探索怎样校正。",
+        "选择有对应功能的日常形象，并说明其分别指向什么。",
+        "紧跟具体事实或因果解释，使读者能把形象还原为工作动作。",
+        "检查延伸比喻是否仍与事实对应，不能用形象的自然规律替代论证。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "材料专业含义不能被形象准确承载、或比喻会造成法律与技术误解时，优先用直接解释。",
+      "refs": [
+        {
+          "id": "a-50b9a9021fec3110f55e4d3b:p4",
+          "quote": "精深加工是“转换器”。"
+        },
+        {
+          "id": "a-50b9a9021fec3110f55e4d3b:p5",
+          "quote": "品牌建设是“放大器”。"
+        },
+        {
+          "id": "a-1e8a8ae8bbae0772bb87c03d:p1",
+          "quote": "“石头”是规律的载体、解题的办法、群众的期盼"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-50b9a9021fec3110f55e4d3b",
+          "paragraph_ids": [
+            "a-50b9a9021fec3110f55e4d3b:p4",
+            "a-50b9a9021fec3110f55e4d3b:p5"
+          ],
+          "observation": "加工称为转换器，随后解释原料变产品、资源优势变经济优势；品牌称为放大器，随后解释品质认证、市场需求与产品增值。两个形象分别承担不同机制，没有靠修辞代替过程。"
+        },
+        {
+          "article_id": "a-1e8a8ae8bbae0772bb87c03d",
+          "paragraph_ids": [
+            "a-1e8a8ae8bbae0772bb87c03d:p1",
+            "a-1e8a8ae8bbae0772bb87c03d:p4",
+            "a-1e8a8ae8bbae0772bb87c03d:p5",
+            "a-1e8a8ae8bbae0772bb87c03d:p6"
+          ],
+          "observation": "开篇界定石头的所指，后文把摸不准落实为失真调研、盲目套用等，把摸准落实为调研和可行性论证；结尾提醒环境与需求变化。比喻贯穿但始终被具体行为校准。"
+        }
+      ],
+      "category": "通俗表达与说理",
+      "example": "【自编微型示例】冷链像延长销售时间的“缓冲带”：它让果农可以分批上市，减少集中出售时的被动。缓冲的是时间压力，能否增收还要看市场需求与储运成本。",
+      "misuse": "一段同时堆满引擎、翅膀、桥梁、灯塔，却没有解释任何实际联系；把“种子必会发芽”当作政策必然成功的证明。",
+      "id": "corpus-20261017-986b819dde8c30035224",
+      "enabled": false,
+      "status": "会话提炼候选，待核验启用",
+      "version": "session-curation-20261017-v1",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-50b9a9021fec3110f55e4d3b",
+        "a-1e8a8ae8bbae0772bb87c03d"
+      ],
+      "source_fingerprints": [
+        "e0db90d1a0ccf20236150f182a8ed3c3d8a485118d942746bff51766a085b557",
+        "9269b7dc0ac77ba21b3bbc9e648b563e90782805063432794c38d61c3598b6e3"
+      ],
+      "source_versions": {
+        "a-50b9a9021fec3110f55e4d3b": "e0db90d1a0ccf20236150f182a8ed3c3d8a485118d942746bff51766a085b557",
+        "a-1e8a8ae8bbae0772bb87c03d": "9269b7dc0ac77ba21b3bbc9e648b563e90782805063432794c38d61c3598b6e3"
+      },
+      "source_metadata": [
+        {
+          "id": "a-50b9a9021fec3110f55e4d3b",
+          "title": "特色产业唤醒新疆沃野（现场评论·天山南北气象新）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109229.html",
+          "publication": "2025-10-14",
+          "author": "李亚楠"
+        },
+        {
+          "id": "a-1e8a8ae8bbae0772bb87c03d",
+          "title": "摸准“过河的石头”（思想纵横）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109251.html",
+          "publication": "2025-10-14",
+          "author": "孙志龙"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "人民日报:6"
+        ]
+      }
+    },
+    {
+      "name": "先界定概念，再设判断标尺",
+      "purpose": "防止全文围绕一个抽象词空转，把中心主张转成可辨别的对象和衡量尺度。",
+      "steps": [
+        "圈出题干中容易混用的核心概念，说明它具体指什么。",
+        "从材料抽出这个概念成立所需的关键属性，删掉与本题无关的百科介绍。",
+        "把属性转成一条可判断的标尺，如是否匹配需求、是否改善体验。",
+        "后文选事实时用同一标尺解释事实为何能支持主张。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "题干概念明确且正文很短时，不另写大段术语定义；材料未提供的概念边界不能自行当成权威解释。",
+      "refs": [
+        {
+          "id": "a-eb87baabfaa9aa1f11e1330e:p3",
+          "quote": "新动能和旧动能是指经济发展中的不同动力来源。"
+        },
+        {
+          "id": "a-8cbfd143269fad9b7713ee1b:p8",
+          "quote": "供需动态适配成为优质文化资源直达基层的首要考量因素"
+        },
+        {
+          "id": "a-bcead7d4d06f55222040a53b:p2",
+          "quote": "以可交互性、可复制性和虚拟性为基本特征"
+        },
+        {
+          "id": "a-bcead7d4d06f55222040a53b:p10",
+          "quote": "可感知、可参与、可共鸣"
+        },
+        {
+          "id": "a-24430b3db9c91698f7fdfa4c:p8",
+          "quote": "“能力”是诸“力”协同运作所达成的整体状态。"
+        },
+        {
+          "id": "a-e4d2faccf2369422b18a7761:p4",
+          "quote": "有鉴别地加以对待,有扬弃地予以继承"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-eb87baabfaa9aa1f11e1330e",
+          "paragraph_ids": [
+            "a-eb87baabfaa9aa1f11e1330e:p3",
+            "a-eb87baabfaa9aa1f11e1330e:p5",
+            "a-eb87baabfaa9aa1f11e1330e:p9"
+          ],
+          "observation": "p3分别解释新、旧动能及新动能的创新属性，p5用形成机制展开，p9再谈相互依存。概念界定承担后续关系论证的基础，不能只背新旧术语。"
+        },
+        {
+          "article_id": "a-8cbfd143269fad9b7713ee1b",
+          "paragraph_ids": [
+            "a-8cbfd143269fad9b7713ee1b:p3",
+            "a-8cbfd143269fad9b7713ee1b:p8",
+            "a-8cbfd143269fad9b7713ee1b:p14"
+          ],
+          "observation": "p3把直达基层拆为资源质量与供给方式，p8以供给和需求是否匹配界定好不好，p14据此选择需求反馈和菜单式服务。可迁移的是“界定—评价尺度—据此选策”。"
+        },
+        {
+          "article_id": "a-bcead7d4d06f55222040a53b",
+          "paragraph_ids": [
+            "a-bcead7d4d06f55222040a53b:p1",
+            "a-bcead7d4d06f55222040a53b:p2",
+            "a-bcead7d4d06f55222040a53b:p9",
+            "a-bcead7d4d06f55222040a53b:p10"
+          ],
+          "observation": "支持旧方法步骤1—4：p1—2先说明数字艺术的媒介、机制、审美特征并排除把它缩成电脑画画的误读；p9—10继而以文化内涵、观众能否共鸣作为判断尺度，用同一尺度批评符号拼贴并提出深层融通。"
+        },
+        {
+          "article_id": "a-24430b3db9c91698f7fdfa4c",
+          "paragraph_ids": [
+            "a-24430b3db9c91698f7fdfa4c:p8",
+            "a-24430b3db9c91698f7fdfa4c:p9",
+            "a-24430b3db9c91698f7fdfa4c:p10",
+            "a-24430b3db9c91698f7fdfa4c:p11",
+            "a-24430b3db9c91698f7fdfa4c:p12",
+            "a-24430b3db9c91698f7fdfa4c:p14",
+            "a-24430b3db9c91698f7fdfa4c:p15",
+            "a-24430b3db9c91698f7fdfa4c:p16",
+            "a-24430b3db9c91698f7fdfa4c:p17",
+            "a-24430b3db9c91698f7fdfa4c:p18"
+          ],
+          "observation": "主题是海洋科技自主创新；实际写作先将能力界定为系统能力，再拆为驱动、融合、保障、治理四类，后续路径各有承接。支持旧步骤1—2的概念拆解与步骤4的同尺度贯穿，不能只摘四个标题。"
+        },
+        {
+          "article_id": "a-e4d2faccf2369422b18a7761",
+          "paragraph_ids": [
+            "a-e4d2faccf2369422b18a7761:p4",
+            "a-e4d2faccf2369422b18a7761:p12",
+            "a-e4d2faccf2369422b18a7761:p13",
+            "a-e4d2faccf2369422b18a7761:p14"
+          ],
+          "observation": "主题是文化两创；p4分别界定转化与发展，以是否保有借鉴价值、能否适应时代区分应扬弃和应转化的内容，后文展开表达更新与遗产保护。支持旧步骤2—4的属性—标尺—后文应用。"
+        }
+      ],
+      "category": "立意与概念",
+      "example": "【自编微型演示】公共服务的便利，既包括办得快，也包括找得到、用得上。评价预约系统，应看它是否减少等待，也看不会操作手机的人能否顺利获得帮助。",
+      "misuse": "把“高质量就是质量高”当作定义；先提出适配需求的标尺，后面却只罗列场馆数量。",
+      "id": "corpus-20261017-a2174b8e9cfd678fc497",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-eb87baabfaa9aa1f11e1330e",
+        "a-8cbfd143269fad9b7713ee1b",
+        "a-bcead7d4d06f55222040a53b",
+        "a-24430b3db9c91698f7fdfa4c",
+        "a-e4d2faccf2369422b18a7761"
+      ],
+      "source_fingerprints": [
+        "6c63b92ab38f6132387d2ef8457ef392f8ee5b22aa6e60d4b78b812eb3b7061e",
+        "787480bda0eca0a87d9fef57b818da969b962c94f532aab8ef882aac86b4f622",
+        "513be1b3de3764dff2ff5a69f6884b2d8ffb3697bb0d7d67e435098e9b4a1635",
+        "2c432226c69799cef4a8618c11201dfc8a1b04ce6757715f05744fc0282f48f1",
+        "ae99ce857d40da4ca01c86aaadad90067ad8d2e26f863ec0fcc9c86c30b7b2f3"
+      ],
+      "source_versions": {
+        "a-eb87baabfaa9aa1f11e1330e": "6c63b92ab38f6132387d2ef8457ef392f8ee5b22aa6e60d4b78b812eb3b7061e",
+        "a-8cbfd143269fad9b7713ee1b": "787480bda0eca0a87d9fef57b818da969b962c94f532aab8ef882aac86b4f622",
+        "a-bcead7d4d06f55222040a53b": "513be1b3de3764dff2ff5a69f6884b2d8ffb3697bb0d7d67e435098e9b4a1635",
+        "a-24430b3db9c91698f7fdfa4c": "2c432226c69799cef4a8618c11201dfc8a1b04ce6757715f05744fc0282f48f1",
+        "a-e4d2faccf2369422b18a7761": "ae99ce857d40da4ca01c86aaadad90067ad8d2e26f863ec0fcc9c86c30b7b2f3"
+      },
+      "source_metadata": [
+        {
+          "id": "a-eb87baabfaa9aa1f11e1330e",
+          "title": "必须统筹好培育新动能和更新旧动能的关系",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250127/3f6b93df579f475f93df1393f5b592c7/c.html",
+          "publication": "2025-01-27 11:21:45",
+          "author": "曹 立"
+        },
+        {
+          "id": "a-8cbfd143269fad9b7713ee1b",
+          "title": "建立优质文化资源直达基层供需适配机制",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/20241213/85defc5ce4644c45939d0d55a1a7dad1/c.html",
+          "publication": "2024-12-14 21:30:35",
+          "author": "龚剑飞 盛方富"
+        },
+        {
+          "id": "a-bcead7d4d06f55222040a53b",
+          "title": "数字艺术：融科技之力，展艺术之美",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260430/39cb499a31e04a73857bdb1234655aa8/c.html",
+          "publication": "2026-05-01 09:00:00",
+          "author": "吕伟毅"
+        },
+        {
+          "id": "a-24430b3db9c91698f7fdfa4c",
+          "title": "提高海洋科技自主创新能力",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260527/cbe7a38fd0144910ab89f3ffdf322696/c.html",
+          "publication": "2026-05-27 11:17:00",
+          "author": "刘曙光"
+        },
+        {
+          "id": "a-e4d2faccf2369422b18a7761",
+          "title": "在创造性转化和创新性发展中赓续中华文脉",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/20241227/5e302ac4b0c2485282b8333ffecc8efa/c.html",
+          "publication": "2024-12-27 09:52:32",
+          "author": "刘存福 周谋灵"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "红旗文稿:1"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "求是",
+          "scope_note": "只补充数字文化领域的概念—标尺—选策证据，不把文章的专业定义推广为所有技术艺术的唯一学理定义。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "红旗文稿",
+          "scope_note": "只补证据，保留旧步骤；材料中的政策概念不能移用为任何题目的统一定义。"
+        }
+      ]
+    },
+    {
+      "name": "用同一维度的前后反差解释转变",
+      "purpose": "让比较承担论证任务，通过原状、转折动作和结果的对应说明变化为什么发生。",
+      "steps": [
+        "先确定一个比较维度，如销售形态、行动方法或能力表现。",
+        "交代原来的具体限制，不把过去笼统写成“一无是处”。",
+        "指出改变过程中的关键动作，前后用同一维度对应。",
+        "从反差中归纳条件或方法，避免只用成败结果给人物贴标签。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "前后对象、统计口径或条件不可比，或仅有单一时间点材料时，不强造对照。",
+      "refs": [
+        {
+          "id": "a-3a7ebeb4ecb0ab20fdc9e34a:p4",
+          "quote": "在数不尽的失败中反思总结"
+        },
+        {
+          "id": "a-50b9a9021fec3110f55e4d3b:p4",
+          "quote": "曾因保鲜期短而遭遇果商压价的新梅，如今被抢着收"
+        },
+        {
+          "id": "a-ce1802cbd995470e173db378:p4",
+          "quote": "过去，人们盼的是三餐有着落、吃得饱；如今，越来越多人讲究营养均衡"
+        },
+        {
+          "id": "a-bcead7d4d06f55222040a53b:p4",
+          "quote": "将“观看”变为“置身”"
+        },
+        {
+          "id": "a-1489ed7f469b51b734fccc7b:p11",
+          "quote": "实现了从伐木向护林、从村庄到景区的蝶变"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-3a7ebeb4ecb0ab20fdc9e34a",
+          "paragraph_ids": [
+            "a-3a7ebeb4ecb0ab20fdc9e34a:p3",
+            "a-3a7ebeb4ecb0ab20fdc9e34a:p4"
+          ],
+          "observation": "先有世锦赛高难度成绩，再写两届冬奥会失利与反思，最后呈现北京冬奥会完成动作。并非把“失败—成功”当必然规律，而是用长期训练和复盘说明耐得住寂寞的含义。"
+        },
+        {
+          "article_id": "a-50b9a9021fec3110f55e4d3b",
+          "paragraph_ids": [
+            "a-50b9a9021fec3110f55e4d3b:p3",
+            "a-50b9a9021fec3110f55e4d3b:p4"
+          ],
+          "observation": "始终围绕农产品销售价值比较：原来初级出售、因保鲜被压价，后来加工为多类产品、获得增值；中间的加工环节解释反差。"
+        },
+        {
+          "article_id": "a-ce1802cbd995470e173db378",
+          "paragraph_ids": [
+            "a-ce1802cbd995470e173db378:p4"
+          ],
+          "observation": "按吃得饱与营养、应季、口味的需要变化比较过去和现在，由餐食需求转变说明生活水平提升。迁移时应明确对照维度，而不是堆砌新旧形容词。"
+        },
+        {
+          "article_id": "a-bcead7d4d06f55222040a53b",
+          "paragraph_ids": [
+            "a-bcead7d4d06f55222040a53b:p3",
+            "a-bcead7d4d06f55222040a53b:p4",
+            "a-bcead7d4d06f55222040a53b:p5"
+          ],
+          "observation": "支持旧方法步骤1—4：三个段落分别固定创作主体、审美参与方式、生产组织方式三个比较维度；每段交代传统状态、数字技术或平台带来的动作变化及新状态，避免只贴传统落后、数字先进的标签。"
+        },
+        {
+          "article_id": "a-1489ed7f469b51b734fccc7b",
+          "paragraph_ids": [
+            "a-1489ed7f469b51b734fccc7b:p10",
+            "a-1489ed7f469b51b734fccc7b:p11",
+            "a-1489ed7f469b51b734fccc7b:p12"
+          ],
+          "observation": "支持旧方法步骤1—4：p11在生计与生态关系这一维度，对照过去伐木耗损资源、收入有限与如今护林经营获得收益，并说明禁伐、统一经营、品牌等中间动作；p12补充保护激励。前后反差用于说明转变条件。"
+        }
+      ],
+      "category": "比较与转折论证",
+      "example": "【自编微型示例】过去报修要逐户打电话，如今居民可一次登记、统一派单。变化的关键不是多了一块屏幕，而是工单集中后减少了重复联系，使维修人员能够按片区安排路线。",
+      "misuse": "前半写村庄人口少，后半写游客收入高，却不说明二者比较的共同维度；把坚持写成一定成功，省略风险和条件。",
+      "id": "corpus-20261017-a5cda0e24b80e4ed1708",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-3a7ebeb4ecb0ab20fdc9e34a",
+        "a-50b9a9021fec3110f55e4d3b",
+        "a-ce1802cbd995470e173db378",
+        "a-bcead7d4d06f55222040a53b",
+        "a-1489ed7f469b51b734fccc7b"
+      ],
+      "source_fingerprints": [
+        "2c3e94f050987e6c42806246c899a5ee4994112fe6080e1499e4e5ea2fb44ce3",
+        "e0db90d1a0ccf20236150f182a8ed3c3d8a485118d942746bff51766a085b557",
+        "e47856c3c2d884bf9bdcb6863b806c26de0fe5fa404ca39d53e8eaec4d2211eb",
+        "513be1b3de3764dff2ff5a69f6884b2d8ffb3697bb0d7d67e435098e9b4a1635",
+        "76bc68eb756e5cea7cf40dd954a5d53168328a9b582b8b1a2ac1500a733c145c"
+      ],
+      "source_versions": {
+        "a-3a7ebeb4ecb0ab20fdc9e34a": "2c3e94f050987e6c42806246c899a5ee4994112fe6080e1499e4e5ea2fb44ce3",
+        "a-50b9a9021fec3110f55e4d3b": "e0db90d1a0ccf20236150f182a8ed3c3d8a485118d942746bff51766a085b557",
+        "a-ce1802cbd995470e173db378": "e47856c3c2d884bf9bdcb6863b806c26de0fe5fa404ca39d53e8eaec4d2211eb",
+        "a-bcead7d4d06f55222040a53b": "513be1b3de3764dff2ff5a69f6884b2d8ffb3697bb0d7d67e435098e9b4a1635",
+        "a-1489ed7f469b51b734fccc7b": "76bc68eb756e5cea7cf40dd954a5d53168328a9b582b8b1a2ac1500a733c145c"
+      },
+      "source_metadata": [
+        {
+          "id": "a-3a7ebeb4ecb0ab20fdc9e34a",
+          "title": "耐得住寂寞才能赢得来掌声（中国道路中国梦·奋力跑好历史的接力棒）",
+          "journal": "人民日报",
+          "year": 2024,
+          "url": "https://paper.people.com.cn/rmrb/html/2024-10/14/nw.D110000renmrb_20241014_4-05.htm",
+          "publication": "2024-10-14",
+          "author": "齐广璞"
+        },
+        {
+          "id": "a-50b9a9021fec3110f55e4d3b",
+          "title": "特色产业唤醒新疆沃野（现场评论·天山南北气象新）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109229.html",
+          "publication": "2025-10-14",
+          "author": "李亚楠"
+        },
+        {
+          "id": "a-ce1802cbd995470e173db378",
+          "title": "烟火不息 饭香常在（金台随笔）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185487.html",
+          "publication": "2026-10-14",
+          "author": "石天琼"
+        },
+        {
+          "id": "a-bcead7d4d06f55222040a53b",
+          "title": "数字艺术：融科技之力，展艺术之美",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260430/39cb499a31e04a73857bdb1234655aa8/c.html",
+          "publication": "2026-05-01 09:00:00",
+          "author": "吕伟毅"
+        },
+        {
+          "id": "a-1489ed7f469b51b734fccc7b",
+          "title": "林芝：雪域“桃花源”的生态富民画卷",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-11/16/c_1130219255.htm",
+          "publication": "2024-11-16 08:21:43",
+          "author": "《求是》杂志记者 王文婷"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "人民日报:3"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "求是",
+          "scope_note": "数字艺术段落是作者对类型趋势的概括，不代表所有传统艺术均无协同或沉浸体验；林芝案例保持地方范围。"
+        }
+      ]
+    },
+    {
+      "name": "主张—具体动作—作用结果构成段内闭环",
+      "purpose": "把要怎么做的句子变成论证段，让读者看出动作为何能服务分论点。",
+      "steps": [
+        "段首先给出一个能被本段证明的行动主张。",
+        "补充两三个与主张直接相关的具体动作或材料事实。",
+        "解释这些动作怎样引发某种变化，而不只写“成效显著”。",
+        "以结果回扣本段主张，检查是否推出了材料没有支持的过大效果。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "结果只有预期依据时使用能够、有助于等表述，不能说成已发生的成效；不要求每段机械采用同样句式。",
+      "refs": [
+        {
+          "id": "a-9e194bf78c2b401da0b0b85c:p3",
+          "quote": "所从事的研究就会更接地气、更有热气。"
+        },
+        {
+          "id": "a-31af1548e07a38cc4db3ece0:p12",
+          "quote": "使调查研究成为检视问题、转变作风、提高本领、增强责任担当的过程"
+        },
+        {
+          "id": "a-d99d96842dcf960899604053:p4",
+          "quote": "建立长效治理机制，巩固生态环境治理成效。"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-9e194bf78c2b401da0b0b85c",
+          "paragraph_ids": [
+            "a-9e194bf78c2b401da0b0b85c:p2",
+            "a-9e194bf78c2b401da0b0b85c:p3",
+            "a-9e194bf78c2b401da0b0b85c:p4"
+          ],
+          "observation": "p2—4分别由情怀、学习、服务的句首主张进入动作与解释，再以“当……就……”收束相应作用；p3具体写从百姓办法提炼经验，回到研究贴近实际。这是作者在组织论证，不因主题讲研究就命名为调研法。"
+        },
+        {
+          "article_id": "a-31af1548e07a38cc4db3ece0",
+          "paragraph_ids": [
+            "a-31af1548e07a38cc4db3ece0:p4",
+            "a-31af1548e07a38cc4db3ece0:p5",
+            "a-31af1548e07a38cc4db3ece0:p12"
+          ],
+          "observation": "p12从发现问题进入座谈问卷、清单和分期整改，再回到作风本领与针对性；p4、p5也以具体接触群众的动作引出服务效果。可迁移的是行动与作用之间的解释闭环，不能照抄原文长排比。"
+        },
+        {
+          "article_id": "a-d99d96842dcf960899604053",
+          "paragraph_ids": [
+            "a-d99d96842dcf960899604053:p4"
+          ],
+          "observation": "p4段首先提出长效机制的行动主张，继而解释机制保障的必要性、列出监测分析、法规完善、区域共治等具体动作，最后用北京2024年PM2.5浓度及达标情况回扣治理成效，形成同一段的主张—动作—结果。指标只支撑该时点和该项环境变化，不能独占归因。"
+        },
+        {
+          "article_id": "a-d99d96842dcf960899604053",
+          "paragraph_ids": [
+            "a-d99d96842dcf960899604053:p5",
+            "a-d99d96842dcf960899604053:p6"
+          ],
+          "observation": "p5由系统治理主张进入跨部门评估、产业能源交通措施，再用深圳说明减污降碳的双重目标；p6由生态空间保护的主张，经公园绿道与修复动作，落到栖息地和公共休闲空间的双重用途。各段均有自身证明对象。"
+        }
+      ],
+      "category": "段落展开",
+      "example": "【自编微型演示】让公共服务听得见反馈，就要给居民留下稳定的提意见渠道。意见有登记、问题有回应，部门才能发现办理流程中反复卡住的环节，服务改进也就有了具体方向。",
+      "misuse": "写完“建立平台、加强培训、完善机制”即结束，没有一句解释它们解决什么；把“就会”当作任何措施必然成功的保证。",
+      "id": "corpus-20261017-adc02216c6e30c2aeb25",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-9e194bf78c2b401da0b0b85c",
+        "a-31af1548e07a38cc4db3ece0",
+        "a-d99d96842dcf960899604053"
+      ],
+      "source_fingerprints": [
+        "e225de70e205946870a070a2a38299702a4dbc8ce800a936532d2a359815ab86",
+        "ba470f0d41c233b4b77474ee25a973cf4d310fb478445ac8471f3ccb78e6d303",
+        "1ad88f5cfaaf43ab7cb04cb7380236959f075c8b987d0ac951fb53722940643b"
+      ],
+      "source_versions": {
+        "a-9e194bf78c2b401da0b0b85c": "e225de70e205946870a070a2a38299702a4dbc8ce800a936532d2a359815ab86",
+        "a-31af1548e07a38cc4db3ece0": "ba470f0d41c233b4b77474ee25a973cf4d310fb478445ac8471f3ccb78e6d303",
+        "a-d99d96842dcf960899604053": "1ad88f5cfaaf43ab7cb04cb7380236959f075c8b987d0ac951fb53722940643b"
+      },
+      "source_metadata": [
+        {
+          "id": "a-9e194bf78c2b401da0b0b85c",
+          "title": "把学问写进群众心坎里",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250113/11ff61d5eeb54ff184f6c15835cc67b0/c.html",
+          "publication": "2025-01-13 11:26:54",
+          "author": "徐本禹"
+        },
+        {
+          "id": "a-31af1548e07a38cc4db3ece0",
+          "title": "坚持问题导向 提高调查研究实效",
+          "journal": "红旗文稿",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/hqwg/2024-02/08/c_1130075941.htm",
+          "publication": "2024-02-08 10:14:56",
+          "author": "唐伟尧"
+        },
+        {
+          "id": "a-d99d96842dcf960899604053",
+          "title": "着力建设绿色低碳的美丽城市（专题深思）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109252.html",
+          "publication": "2025-10-14",
+          "author": "周冯琦"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "红旗文稿:7"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "人民日报",
+          "scope_note": "补充“主张—具体动作—作用结果构成段内闭环”；不把建议性内容当作已经取得的效果，历史数字保留文章时点。"
+        }
+      ]
+    },
+    {
+      "name": "从纠治问题递进到释放效能与群众认同",
+      "purpose": "让多段论证形成推进关系，回答治理行动最终为了什么。",
+      "steps": [
+        "第一层说明纠正了什么失衡、阻碍或不良行为。",
+        "第二层解释释放出的时间、资源或信任怎样支持正常履责与发展。",
+        "第三层以群众实际便利或评价检验最终价值。",
+        "用过渡句写明前后关系，并避免把同期变化全部当作单一政策效果。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "材料只有同层并列措施或没有后续效能证据时，不把它们强排为递进链。",
+      "refs": [
+        {
+          "id": "a-4220ec1e71668a716efa18ed:p10",
+          "quote": "减负是手段，增效是目的。"
+        },
+        {
+          "id": "a-f2a88c6e79b53219c87fe30f:p5",
+          "quote": "歪风邪气少了空间，担当作为者更能放开手脚。"
+        },
+        {
+          "id": "a-f2a88c6e79b53219c87fe30f:p6",
+          "quote": "作风之变成效如何，人民心中有杆秤。"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-4220ec1e71668a716efa18ed",
+          "paragraph_ids": [
+            "a-4220ec1e71668a716efa18ed:p6",
+            "a-4220ec1e71668a716efa18ed:p7",
+            "a-4220ec1e71668a716efa18ed:p8",
+            "a-4220ec1e71668a716efa18ed:p10",
+            "a-4220ec1e71668a716efa18ed:p11",
+            "a-4220ec1e71668a716efa18ed:p12",
+            "a-4220ec1e71668a716efa18ed:p13"
+          ],
+          "observation": "p6—8先论职责筛选和数据复用减负，p10以手段目的转折引出资源下沉与揭榜创业，p12—13再转向民情处置和造福群众。结构从减少无谓事务推进到增能，再到群众需求，不能将收入增长全部归因为应用。"
+        },
+        {
+          "article_id": "a-f2a88c6e79b53219c87fe30f",
+          "paragraph_ids": [
+            "a-f2a88c6e79b53219c87fe30f:p4",
+            "a-f2a88c6e79b53219c87fe30f:p5",
+            "a-f2a88c6e79b53219c87fe30f:p6",
+            "a-f2a88c6e79b53219c87fe30f:p7"
+          ],
+          "observation": "p4呈现由具体问题纠治到干部行为变化，p5转到担当及营商便利，p6再用群众反馈与调查作价值检验，p7转入长期坚持。层次推进靠作用关系，不只是时间先后。"
+        }
+      ],
+      "category": "篇章结构",
+      "example": "【自编微型演示】清理重复报表，先让社区人员腾出时间；把这段时间用于上门排查，才能及早发现独居老人困难；再看问题办结与老人反馈，才知道减负是否转成了服务增效。",
+      "misuse": "把“精简会议—整合报表—减少检查”三个同层措施硬说成递进；仅因两项数据同期改善便写成必然因果。",
+      "id": "corpus-20261017-be06f92cadc28c679b62",
+      "enabled": false,
+      "status": "会话提炼候选，待核验启用",
+      "version": "session-curation-20261017-v1",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-4220ec1e71668a716efa18ed",
+        "a-f2a88c6e79b53219c87fe30f"
+      ],
+      "source_fingerprints": [
+        "1288fd4bdb30ab1ffcfa0c10d7e24be99a39ed9686380005a654d8017c591a9e",
+        "9db73be1b2fceb3848c4bb67112978276f5905cd8b2724171e92e08fb3dadd2c"
+      ],
+      "source_versions": {
+        "a-4220ec1e71668a716efa18ed": "1288fd4bdb30ab1ffcfa0c10d7e24be99a39ed9686380005a654d8017c591a9e",
+        "a-f2a88c6e79b53219c87fe30f": "9db73be1b2fceb3848c4bb67112978276f5905cd8b2724171e92e08fb3dadd2c"
+      },
+      "source_metadata": [
+        {
+          "id": "a-4220ec1e71668a716efa18ed",
+          "title": "“浙里兴村治社”：减负增效推动基层善治",
+          "journal": "求是",
+          "year": 2024,
+          "url": "https://www.qstheory.cn/dukan/qs/2024-08/16/c_1130192068.htm",
+          "publication": "2024-08-16 07:57:09",
+          "author": "《求是》杂志记者 周璐铭"
+        },
+        {
+          "id": "a-f2a88c6e79b53219c87fe30f",
+          "title": "八项规定小切口 撬动作风大变革",
+          "journal": "求是",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250415/fbd3c49b0ecf4438a557d9455e3186a7/c.html",
+          "publication": "2025-04-16 09:00:00",
+          "author": "陈 宇"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "求是:7"
+        ]
+      }
+    },
+    {
+      "name": "用功能、作用通道和条件论证双方关系",
+      "purpose": "把关系命题写成可说明的相互作用，避免两端好处各列一遍后笼统宣布相辅相成。",
+      "steps": [
+        "分别说明两个要素的功能或所解决的问题，找到本题共同目标。",
+        "写清一方通过什么动作、资源或规则支持、校正或约束另一方。",
+        "材料支持双向关系时再写反向作用；只支持单向影响时不强凑对称。",
+        "补充连接条件、阶段或边界，说明何种安排使共同目标得以实现。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "材料没有实际关联、只问单一对象或存在不能消除的冲突时，不强写协同共赢；法定权限和程序依给定材料，不以一般关系判断代替。",
+      "refs": [
+        {
+          "id": "a-1e8a8ae8bbae0772bb87c03d:p2",
+          "quote": "“摸着石头过河”的经验不断完善顶层设计方案"
+        },
+        {
+          "id": "a-5eb2e2d00230c67e022768ef:p4",
+          "quote": "虽然介质不同，但内核相通、目标相同"
+        },
+        {
+          "id": "a-29cbe59aaa694b16b825d2d9:p6",
+          "quote": "促成了区域航运格局的互补优化"
+        },
+        {
+          "id": "a-438aaeba2c83290bf229c11e:p6",
+          "quote": "政府行为越规范，市场作用就越有效。"
+        },
+        {
+          "id": "a-7115c8f7f83f950b61f2abdd:p20",
+          "quote": "当然，发展新质生产力不是要忽视、放弃传统产业"
+        },
+        {
+          "id": "a-eb87baabfaa9aa1f11e1330e:p9",
+          "quote": "新动能的发展建立在旧动能的基础之上，而旧动能的更新又需要新动能的推动。"
+        },
+        {
+          "id": "a-7a1428d8c6814894cefdc824:p6",
+          "quote": "为人文精神的传承与发展提供支撑与动力"
+        },
+        {
+          "id": "a-c55f34d8709818808408c07f:p6",
+          "quote": "自主创新是开放合作的根基，开放合作是自主创新的助力"
+        },
+        {
+          "id": "a-bcead7d4d06f55222040a53b:p3",
+          "quote": "机器负责学习与生成，人负责创意、判断与升华"
+        },
+        {
+          "id": "a-5396dcf44bc062f5251d22d0:p6",
+          "quote": "已从外围的规训者，转变为内嵌的共创者。"
+        },
+        {
+          "id": "a-5c823f9198124fbe08f32dcf:p9",
+          "quote": "任何一个环节的动作，都会影响到其他环节"
+        },
+        {
+          "id": "a-27965fb3647779cdf195ab93:p8",
+          "quote": "物的支撑为人的发展提供载体"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-1e8a8ae8bbae0772bb87c03d",
+          "paragraph_ids": [
+            "a-1e8a8ae8bbae0772bb87c03d:p2"
+          ],
+          "observation": "分别界定顶层设计重整体战略、基层探索重试验，再写方向指引和经验反馈的双向关系，并用授权、制度化交代法治条件。可迁移的是“角色—作用—条件”的关系论证。"
+        },
+        {
+          "article_id": "a-5eb2e2d00230c67e022768ef",
+          "paragraph_ids": [
+            "a-5eb2e2d00230c67e022768ef:p3",
+            "a-5eb2e2d00230c67e022768ef:p4",
+            "a-5eb2e2d00230c67e022768ef:p5"
+          ],
+          "observation": "先承认数字阅读的便利与碎片化风险，再说明传统深阅读培养专注、思辨和共情能力，这些能力反过来支撑数字阅读。共同内核使结合有理由，能力如何迁移使结合有内容。"
+        },
+        {
+          "article_id": "a-29cbe59aaa694b16b825d2d9",
+          "paragraph_ids": [
+            "a-29cbe59aaa694b16b825d2d9:p4",
+            "a-29cbe59aaa694b16b825d2d9:p5",
+            "a-29cbe59aaa694b16b825d2d9:p6"
+          ],
+          "observation": "分别分析广西货类和成本优势、广东港口业务基础，再说明通道分流缓堵和出口路径增加如何惠及广东。通过业务差异与运输网络联系解释竞合，而非仅喊合作共赢。"
+        },
+        {
+          "article_id": "a-438aaeba2c83290bf229c11e",
+          "paragraph_ids": [
+            "a-438aaeba2c83290bf229c11e:p6",
+            "a-438aaeba2c83290bf229c11e:p9",
+            "a-438aaeba2c83290bf229c11e:p11"
+          ],
+          "observation": "p6用有所为与有所不为界定政府作用，再以政府规范促进市场有效作结；p9分别写培育新产业与传统产业升级，目标是动能平稳接续；p11把规模优势与质量提升联系起来。每一对都有具体关系，非简单并列词语。"
+        },
+        {
+          "article_id": "a-7115c8f7f83f950b61f2abdd",
+          "paragraph_ids": [
+            "a-7115c8f7f83f950b61f2abdd:p20",
+            "a-7115c8f7f83f950b61f2abdd:p29",
+            "a-7115c8f7f83f950b61f2abdd:p42",
+            "a-7115c8f7f83f950b61f2abdd:p45"
+          ],
+          "observation": "p20先肯定创新，再排除放弃传统产业与统一模式，转入资源禀赋等条件；p29以设问纠正新质生产力等于新兴产业的误解；p45分写两种创新及融合通道。迁移时须自己明确协同机制，不能照搬经济表述到所有主题。"
+        },
+        {
+          "article_id": "a-eb87baabfaa9aa1f11e1330e",
+          "paragraph_ids": [
+            "a-eb87baabfaa9aa1f11e1330e:p9",
+            "a-eb87baabfaa9aa1f11e1330e:p10",
+            "a-eb87baabfaa9aa1f11e1330e:p11"
+          ],
+          "observation": "p9连续写旧动能为新动能提供基础、新动能推动旧动能更新，并补充动态转化；p10据此提出双引擎，p11加上接续次序。双向箭头直接承担统筹关系的论证。"
+        },
+        {
+          "article_id": "a-7a1428d8c6814894cefdc824",
+          "paragraph_ids": [
+            "a-7a1428d8c6814894cefdc824:p5",
+            "a-7a1428d8c6814894cefdc824:p6",
+            "a-7a1428d8c6814894cefdc824:p9"
+          ],
+          "observation": "p5解释人文以价值和伦理框架约束科技风险，p6反过来解释技术以新媒介支撑人文表达，p9把人文作用落实为审查和监管。可迁移的是两端作用各有机制，非简单并列定义。"
+        },
+        {
+          "article_id": "a-c55f34d8709818808408c07f",
+          "paragraph_ids": [
+            "a-c55f34d8709818808408c07f:p2",
+            "a-c55f34d8709818808408c07f:p3",
+            "a-c55f34d8709818808408c07f:p4",
+            "a-c55f34d8709818808408c07f:p6"
+          ],
+          "observation": "支持旧方法步骤1—4：p3交代自主技术防止受制于人的功能，p4说明开源框架、分散人才和全球治理为何需要合作，p6再收束二者关系。结论前先有作用通道与安全可控条件，不能只抄辩证统一。"
+        },
+        {
+          "article_id": "a-bcead7d4d06f55222040a53b",
+          "paragraph_ids": [
+            "a-bcead7d4d06f55222040a53b:p2",
+            "a-bcead7d4d06f55222040a53b:p3",
+            "a-bcead7d4d06f55222040a53b:p4",
+            "a-bcead7d4d06f55222040a53b:p9"
+          ],
+          "observation": "支持旧方法步骤1—3：p3先分配人和机器在创作中的功能，再以观众敲击乐器生成影像说明协同过程，p9限定不能让技术指标压过文化内涵。可迁移的是分工、连接和目标约束。"
+        },
+        {
+          "article_id": "a-5396dcf44bc062f5251d22d0",
+          "paragraph_ids": [
+            "a-5396dcf44bc062f5251d22d0:p2",
+            "a-5396dcf44bc062f5251d22d0:p4",
+            "a-5396dcf44bc062f5251d22d0:p5",
+            "a-5396dcf44bc062f5251d22d0:p6"
+          ],
+          "observation": "p2说人文想象与科学理性的碰撞，p4解释学科壁垒怎样压缩创新空间，p6用哲学追问融入模型训练的过程说明人文参与技术通道。支持旧步骤1—2，主要是人文对科技的支持，不强凑双向对称。"
+        },
+        {
+          "article_id": "a-5c823f9198124fbe08f32dcf",
+          "paragraph_ids": [
+            "a-5c823f9198124fbe08f32dcf:p8",
+            "a-5c823f9198124fbe08f32dcf:p9",
+            "a-5c823f9198124fbe08f32dcf:p13"
+          ],
+          "observation": "主题是生态战略定力；p8说部门区域相互约束，p9写山水土林草依存及局部动作影响其他环节，p13推出整体保护修复。支持旧步骤1—2、4：由功能依存解释整体安排。"
+        },
+        {
+          "article_id": "a-27965fb3647779cdf195ab93",
+          "paragraph_ids": [
+            "a-27965fb3647779cdf195ab93:p8"
+          ],
+          "observation": "p8不是分别赞美“物”“人”，而先以教育、医疗、养老、培训说明共同目标，再说明人力资本对生产率与供需两侧的作用，继而写物提供载体、人提升物的效能，完成双向功能说明。文中协同效果是作者的关系论证，不是给出量化测量。"
+        }
+      ],
+      "category": "关系命题论证",
+      "example": "【自编微型示例】线上系统擅长集中受理、追踪进度，人工窗口能够解释复杂事项、协助特殊群体。把窗口受理也纳入同一工单，才能让两种渠道共享进度，使效率与可及性相互支撑。",
+      "misuse": "分别写“数字阅读好”“纸质阅读好”后直接说二者结合，始终没有解释读者的能力怎样在两类阅读间发挥作用。",
+      "id": "corpus-20261017-dfc3de7fe362f8164086",
+      "enabled": false,
+      "status": "第二轮已补证据，待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-1e8a8ae8bbae0772bb87c03d",
+        "a-5eb2e2d00230c67e022768ef",
+        "a-29cbe59aaa694b16b825d2d9",
+        "a-438aaeba2c83290bf229c11e",
+        "a-7115c8f7f83f950b61f2abdd",
+        "a-eb87baabfaa9aa1f11e1330e",
+        "a-7a1428d8c6814894cefdc824",
+        "a-c55f34d8709818808408c07f",
+        "a-bcead7d4d06f55222040a53b",
+        "a-5396dcf44bc062f5251d22d0",
+        "a-5c823f9198124fbe08f32dcf",
+        "a-27965fb3647779cdf195ab93"
+      ],
+      "source_fingerprints": [
+        "9269b7dc0ac77ba21b3bbc9e648b563e90782805063432794c38d61c3598b6e3",
+        "01ce6b9068fa2880f0615a17dde86f9fa026d856b1fbad8195ed6148b9cd0d24",
+        "2aa7c72267cb291486ea99cccd108908053ffbd1a03178e458939d790850b087",
+        "5fd02af68b77ad35ac38927f01cdbf6c6fbbe30c5e41e6468a8a69e7d09b3072",
+        "9e90f78d8c206313557aa0bd89e365e1ecd456c8bde164a59eb38d9464f942cc",
+        "6c63b92ab38f6132387d2ef8457ef392f8ee5b22aa6e60d4b78b812eb3b7061e",
+        "ceedb56cec75c0d4dbc230b459d799e2cb96a1a8585383372edb53b162d86b52",
+        "7f20fa7b5c8aed5eb51f35e8c986629ef2c818f9e3896868b281338232cfbf4e",
+        "513be1b3de3764dff2ff5a69f6884b2d8ffb3697bb0d7d67e435098e9b4a1635",
+        "ba128fd14d8c5845983b73b54cbb345df20410d02977115811f21c151536ab96",
+        "db9d4e3cf7bd1ab50ef2e7502488aea59603feb4573330f796f41f214958d127",
+        "de9450335a9199bcfdf006264e5ae208ca87b26d3ef5a009e2712e5fea9482a9"
+      ],
+      "source_versions": {
+        "a-1e8a8ae8bbae0772bb87c03d": "9269b7dc0ac77ba21b3bbc9e648b563e90782805063432794c38d61c3598b6e3",
+        "a-5eb2e2d00230c67e022768ef": "01ce6b9068fa2880f0615a17dde86f9fa026d856b1fbad8195ed6148b9cd0d24",
+        "a-29cbe59aaa694b16b825d2d9": "2aa7c72267cb291486ea99cccd108908053ffbd1a03178e458939d790850b087",
+        "a-438aaeba2c83290bf229c11e": "5fd02af68b77ad35ac38927f01cdbf6c6fbbe30c5e41e6468a8a69e7d09b3072",
+        "a-7115c8f7f83f950b61f2abdd": "9e90f78d8c206313557aa0bd89e365e1ecd456c8bde164a59eb38d9464f942cc",
+        "a-eb87baabfaa9aa1f11e1330e": "6c63b92ab38f6132387d2ef8457ef392f8ee5b22aa6e60d4b78b812eb3b7061e",
+        "a-7a1428d8c6814894cefdc824": "ceedb56cec75c0d4dbc230b459d799e2cb96a1a8585383372edb53b162d86b52",
+        "a-c55f34d8709818808408c07f": "7f20fa7b5c8aed5eb51f35e8c986629ef2c818f9e3896868b281338232cfbf4e",
+        "a-bcead7d4d06f55222040a53b": "513be1b3de3764dff2ff5a69f6884b2d8ffb3697bb0d7d67e435098e9b4a1635",
+        "a-5396dcf44bc062f5251d22d0": "ba128fd14d8c5845983b73b54cbb345df20410d02977115811f21c151536ab96",
+        "a-5c823f9198124fbe08f32dcf": "db9d4e3cf7bd1ab50ef2e7502488aea59603feb4573330f796f41f214958d127",
+        "a-27965fb3647779cdf195ab93": "de9450335a9199bcfdf006264e5ae208ca87b26d3ef5a009e2712e5fea9482a9"
+      },
+      "source_metadata": [
+        {
+          "id": "a-1e8a8ae8bbae0772bb87c03d",
+          "title": "摸准“过河的石头”（思想纵横）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109251.html",
+          "publication": "2025-10-14",
+          "author": "孙志龙"
+        },
+        {
+          "id": "a-5eb2e2d00230c67e022768ef",
+          "title": "把数字阅读和传统阅读结合起来（思想纵横）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185514.html",
+          "publication": "2026-10-14",
+          "author": "张文彦"
+        },
+        {
+          "id": "a-29cbe59aaa694b16b825d2d9",
+          "title": "从平陆运河看“竞合”（人民锐评）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185485.html",
+          "publication": "2026-10-14",
+          "author": "常言道"
+        },
+        {
+          "id": "a-438aaeba2c83290bf229c11e",
+          "title": "经济工作必须统筹好几对重要关系",
+          "journal": "求是",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250228/38bbd5e750c944abb05dbd63e83a6be4/c.html",
+          "publication": "2025-02-28 15:00:06",
+          "author": "习近平"
+        },
+        {
+          "id": "a-7115c8f7f83f950b61f2abdd",
+          "title": "因地制宜发展新质生产力",
+          "journal": "求是",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20251114/1eaed05f562144a3948dd858f25bbcf7/c.html",
+          "publication": "2025-11-15 15:00:34",
+          "author": "习近平"
+        },
+        {
+          "id": "a-eb87baabfaa9aa1f11e1330e",
+          "title": "必须统筹好培育新动能和更新旧动能的关系",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250127/3f6b93df579f475f93df1393f5b592c7/c.html",
+          "publication": "2025-01-27 11:21:45",
+          "author": "曹 立"
+        },
+        {
+          "id": "a-7a1428d8c6814894cefdc824",
+          "title": "如何审视科技与人文的关系",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260313/0eae28f9c7c24e4788f17b2bf09eb141/c.html",
+          "publication": "2026-03-13 10:43:17",
+          "author": "王 俊"
+        },
+        {
+          "id": "a-c55f34d8709818808408c07f",
+          "title": "关于人工智能发展的几点思考",
+          "journal": "求是",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250830/d5ab6794f39f4da0986ba97456e6e2cc/c.html",
+          "publication": "2025-09-01 09:00:00",
+          "author": "苟护生"
+        },
+        {
+          "id": "a-bcead7d4d06f55222040a53b",
+          "title": "数字艺术：融科技之力，展艺术之美",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260430/39cb499a31e04a73857bdb1234655aa8/c.html",
+          "publication": "2026-05-01 09:00:00",
+          "author": "吕伟毅"
+        },
+        {
+          "id": "a-5396dcf44bc062f5251d22d0",
+          "title": "让人文精神滋养科技创新",
+          "journal": "红旗文稿",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20261010/0c8e78a3eafe4eefa581b05003a355eb/c.html",
+          "publication": "2026-10-10 15:25:58",
+          "author": "思 力"
+        },
+        {
+          "id": "a-5c823f9198124fbe08f32dcf",
+          "title": "保持加强生态文明建设的战略定力",
+          "journal": "红旗文稿",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250303/37ab52c5ab3d44ceb64eba22bca2c615/c.html",
+          "publication": "2025-03-03 10:10:23",
+          "author": "刘广超"
+        },
+        {
+          "id": "a-27965fb3647779cdf195ab93",
+          "title": "以投资优化支撑产业升级（人民时评）",
+          "journal": "人民日报",
+          "year": 2026,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202610/14/content_30185481.html",
+          "publication": "2026-10-14",
+          "author": "刘元春"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "人民日报:4",
+          "求是:4",
+          "红旗文稿:2"
+        ],
+        "last_evidence_batch": "20261017-round2"
+      },
+      "evidence_expansions": [
+        {
+          "batch": "20261017-round2",
+          "journal": "求是",
+          "scope_note": "只迁移关系的证明方式；不采用该人工智能文章中未经本次核验的机构资助案例，亦不把人机关系强写成完全对称互换。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "红旗文稿",
+          "scope_note": "迁移关系通道，不能用相互促进四字代替分析；文中技术案例有效性未作外部核验。"
+        },
+        {
+          "batch": "20261017-round2",
+          "journal": "人民日报",
+          "scope_note": "补充“用功能、作用通道和条件论证双方关系”；限定在正文写出的载体、素质和效能联系，不把“1+1＞2”当统计证据或要求关系命题都写成对称。"
+        }
+      ]
+    },
+    {
+      "name": "结尾从已证主张落到尚需持续的任务",
+      "purpose": "保持结论的可信度，让收束承接正文而非突然拔高。",
+      "steps": [
+        "用一句话回扣正文已经证明的中心判断。",
+        "根据文中事实说明仍需保持或补足的环节，区分已有成效与未完任务。",
+        "提出与主张同方向的后续行动或坚持要求。",
+        "删除正文未论证的新宏论和绝对化完成宣言。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "题干要求只论证既定观点且篇幅紧张时，可简短回扣，不必生添问题；没有依据时不编造缺陷。",
+      "refs": [
+        {
+          "id": "a-1247304cf83a6947a4978199:p10",
+          "quote": "目前，我们的工作仍存在不小差距。"
+        },
+        {
+          "id": "a-f2a88c6e79b53219c87fe30f:p7",
+          "quote": "作风建设是攻坚战、持久战，任何时候都不能松懈"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-1247304cf83a6947a4978199",
+          "paragraph_ids": [
+            "a-1247304cf83a6947a4978199:p9",
+            "a-1247304cf83a6947a4978199:p10"
+          ],
+          "observation": "p9以道路、排水、供暖实际改变完成论证，p10承认配套及基本公共服务差距，再承诺紧盯诉求。结尾既不抹去成效，也不把三个故事写成全部民生问题已解决。"
+        },
+        {
+          "article_id": "a-f2a88c6e79b53219c87fe30f",
+          "paragraph_ids": [
+            "a-f2a88c6e79b53219c87fe30f:p6",
+            "a-f2a88c6e79b53219c87fe30f:p7"
+          ],
+          "observation": "p6已呈现群众肯定，p7仍以攻坚战、持久战转向持续用劲，呼应全文作风建设主题。可迁移的是用长期性约束成功叙事，不是机械在每篇末尾都加一句任重道远。"
+        }
+      ],
+      "category": "结尾收束",
+      "example": "【自编微型演示】窗口延时服务缓解了下班后办事难，但材料显示跨部门事项仍有衔接障碍。把便利延伸到更多环节，仍要从办结体验出发，逐一打通流程。",
+      "misuse": "正文只证明一个窗口改善，结尾却声称公共服务已全面现代化；没有材料依据却例行编出三条短板。",
+      "id": "corpus-20261017-e178844cc722f4495f52",
+      "enabled": false,
+      "status": "会话提炼候选，待核验启用",
+      "version": "session-curation-20261017-v1",
+      "created_at": "2026-10-17",
+      "source_article_ids": [
+        "a-1247304cf83a6947a4978199",
+        "a-f2a88c6e79b53219c87fe30f"
+      ],
+      "source_fingerprints": [
+        "09a4bb5b36eb66776d7328eb1b672e2b9f799b70135cb9c59f1fab86ee0c2fa1",
+        "9db73be1b2fceb3848c4bb67112978276f5905cd8b2724171e92e08fb3dadd2c"
+      ],
+      "source_versions": {
+        "a-1247304cf83a6947a4978199": "09a4bb5b36eb66776d7328eb1b672e2b9f799b70135cb9c59f1fab86ee0c2fa1",
+        "a-f2a88c6e79b53219c87fe30f": "9db73be1b2fceb3848c4bb67112978276f5905cd8b2724171e92e08fb3dadd2c"
+      },
+      "source_metadata": [
+        {
+          "id": "a-1247304cf83a6947a4978199",
+          "title": "踏踏实实为群众办事就是政绩",
+          "journal": "求是",
+          "year": 2026,
+          "url": "https://www.qstheory.cn/20260530/846ff985a5584729a1e3b8611326efe4/c.html",
+          "publication": "2026-06-01 09:00:00",
+          "author": "郭康伟"
+        },
+        {
+          "id": "a-f2a88c6e79b53219c87fe30f",
+          "title": "八项规定小切口 撬动作风大变革",
+          "journal": "求是",
+          "year": 2025,
+          "url": "https://www.qstheory.cn/20250415/fbd3c49b0ecf4438a557d9455e3186a7/c.html",
+          "publication": "2025-04-16 09:00:00",
+          "author": "陈 宇"
+        }
+      ],
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "basis": "本地正文精读；步骤与示例为本项目教学设计，非刊方声明或官方评分标准",
+        "member_methods": [
+          "求是:8"
+        ]
+      }
+    },
+    {
+      "name": "把中心命题拆为承担不同证明任务的分论点",
+      "purpose": "让各部分共同回答中心问题，同时各自增加不能被其他部分替代的内容，减少分论点换词重复。",
+      "steps": [
+        "把题干核心主张写成一句话，指出全文需要解释或证明的对象。",
+        "围绕该对象划分有材料支撑的角度，为每个分论点标注它单独回答的问题。",
+        "给每个分论点配置与该问题直接对应的事实或解释；检查证据是否被不加分析地重复使用。",
+        "用总领句、分题或段首句标明分工，检查合起来能否覆盖中心主张，删去偏离和重复。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "只需证明一个局部判断的短段、不具备多个可靠角度的材料，不强凑三点；分论点数量不照搬原文。",
+      "refs": [
+        {
+          "id": "a-30b5095a019db695bc10eb51:p1",
+          "quote": "牢牢把握教育的政治属性、人民属性、战略属性"
+        },
+        {
+          "id": "a-3ba12330d1f772da8067de82:p1",
+          "quote": "更要积极发掘蕴含其中的精神追求。"
+        },
+        {
+          "id": "a-30b5095a019db695bc10eb51:p2",
+          "quote": "坚守初心谋教育"
+        },
+        {
+          "id": "a-30b5095a019db695bc10eb51:p5",
+          "quote": "扎根中国办教育"
+        },
+        {
+          "id": "a-30b5095a019db695bc10eb51:p8",
+          "quote": "立足全局兴教育"
+        },
+        {
+          "id": "a-3ba12330d1f772da8067de82:p2",
+          "quote": "师法自然。"
+        },
+        {
+          "id": "a-3ba12330d1f772da8067de82:p3",
+          "quote": "注重人伦。"
+        },
+        {
+          "id": "a-3ba12330d1f772da8067de82:p4",
+          "quote": "追求美感。"
+        },
+        {
+          "id": "a-3ba12330d1f772da8067de82:p5",
+          "quote": "多元交融。"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-30b5095a019db695bc10eb51",
+          "paragraph_ids": [
+            "a-30b5095a019db695bc10eb51:p1",
+            "a-30b5095a019db695bc10eb51:p2",
+            "a-30b5095a019db695bc10eb51:p3",
+            "a-30b5095a019db695bc10eb51:p4",
+            "a-30b5095a019db695bc10eb51:p5",
+            "a-30b5095a019db695bc10eb51:p6",
+            "a-30b5095a019db695bc10eb51:p7",
+            "a-30b5095a019db695bc10eb51:p8",
+            "a-30b5095a019db695bc10eb51:p9",
+            "a-30b5095a019db695bc10eb51:p10",
+            "a-30b5095a019db695bc10eb51:p11",
+            "a-30b5095a019db695bc10eb51:p12",
+            "a-30b5095a019db695bc10eb51:p13"
+          ],
+          "observation": "p1总领三种属性；p2—4回答方向与育人目标，p5—7回答人民需要、公平和可及，p8—10回答国家全局、先导基础与支撑，三组各有理由及行动，不是相同口号的复述；p11—13再把已阐释的属性收拢到高校实践。分题不是简单主题标签，正文承担不同证明任务。"
+        },
+        {
+          "article_id": "a-3ba12330d1f772da8067de82",
+          "paragraph_ids": [
+            "a-3ba12330d1f772da8067de82:p1",
+            "a-3ba12330d1f772da8067de82:p2",
+            "a-3ba12330d1f772da8067de82:p3",
+            "a-3ba12330d1f772da8067de82:p4",
+            "a-3ba12330d1f772da8067de82:p5"
+          ],
+          "observation": "p1限定研究对象为传统建筑蕴含的精神追求；p2以选址用料色彩解释师法自然，p3以院落祠堂街巷解释人伦，p4以布局造型装饰及士匠合作解释美感，p5以地域民族和历史变化解释多元交融。四部分围绕同一中心而证据功能不同。"
+        }
+      ],
+      "category": "分论点与篇章结构",
+      "example": "【自编微型演示】论证“让服务更可及”时，可分别说明“入口能找到”“手续能完成”“特殊困难有人接住”。第一部分用指引事实，第二部分用流程衔接事实，第三部分用人工协助事实；三段分别证明一种障碍如何降低。",
+      "misuse": "把“提升便利、提高便捷、增强方便”当作三个分论点，三段都使用同一排队案例而不增加分析；或为凑齐三点扩写材料没有的领域。",
+      "id": "corpus-r2-00f8227a28083100a64a",
+      "enabled": false,
+      "status": "第二轮提炼候选，已入库待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "batch": "20261017-round2",
+        "basis": "本地文章全文续读；步骤和示例为本项目设计，非刊方自述或官方评分规则",
+        "member_methods": [
+          "人民日报:new:1"
+        ]
+      },
+      "source_article_ids": [
+        "a-30b5095a019db695bc10eb51",
+        "a-3ba12330d1f772da8067de82"
+      ],
+      "source_fingerprints": [
+        "9d05eaeb67d8cae2f79dc3c466bc3309e9494fee34708b8e29c69919f9dd8f54",
+        "0a766cc4c7f548283982d59e82d57b2fda77ba30f7b86e4b64c9de35bf237653"
+      ],
+      "source_versions": {
+        "a-30b5095a019db695bc10eb51": "9d05eaeb67d8cae2f79dc3c466bc3309e9494fee34708b8e29c69919f9dd8f54",
+        "a-3ba12330d1f772da8067de82": "0a766cc4c7f548283982d59e82d57b2fda77ba30f7b86e4b64c9de35bf237653"
+      },
+      "source_metadata": [
+        {
+          "id": "a-30b5095a019db695bc10eb51",
+          "title": "牢牢把握教育的政治属性人民属性战略属性（深入学习贯彻习近平新时代中国特色社会主义思想）",
+          "journal": "人民日报",
+          "year": 2024,
+          "url": "https://paper.people.com.cn/rmrb/html/2024-10/14/nw.D110000renmrb_20241014_1-09.htm",
+          "publication": "2024-10-14",
+          "author": "张东刚 林尚立"
+        },
+        {
+          "id": "a-3ba12330d1f772da8067de82",
+          "title": "积极发掘中国传统建筑的精神追求",
+          "journal": "人民日报",
+          "year": 2024,
+          "url": "https://paper.people.com.cn/rmrb/html/2024-10/14/nw.D110000renmrb_20241014_3-09.htm",
+          "publication": "2024-10-14",
+          "author": "易学尧"
+        }
+      ]
+    },
+    {
+      "name": "用承接段说明论证任务如何转向下一层",
+      "purpose": "在意义、现状、路径等层次之间交代承接关系，使读者知道前文已回答什么、后文还需解决什么。",
+      "steps": [
+        "标明前一部分已经完成的判断，如说明必要性或呈现已有进展。",
+        "找出与下一部分直接相关的未完问题或任务依据，保留原文能够支持的范围。",
+        "用一个短过渡交代为何转向下一层，并明确接下来要分析的问题。",
+        "让后一部分实际回应这个任务，检查过渡是否承前启后，避免仅用“此外”“综上”代替逻辑联系。"
+      ],
+      "applicable_types": [
+        "文章写作"
+      ],
+      "not_applicable": "单一论证段或层次已紧密相连的短文，不另加冗长过渡；材料没有问题依据时，不能为转入对策虚构短板。",
+      "refs": [
+        {
+          "id": "a-d0600b20000448c101a28824:p14",
+          "quote": "这些问题既是挑战，也是下一步改革的重点。"
+        },
+        {
+          "id": "a-d99d96842dcf960899604053:p3",
+          "quote": "具体而言，推动建设绿色低碳的美丽城市可从以下几个方面着力。"
+        }
+      ],
+      "evidence_notes": [
+        {
+          "article_id": "a-d0600b20000448c101a28824",
+          "paragraph_ids": [
+            "a-d0600b20000448c101a28824:p8",
+            "a-d0600b20000448c101a28824:p9",
+            "a-d0600b20000448c101a28824:p10",
+            "a-d0600b20000448c101a28824:p11",
+            "a-d0600b20000448c101a28824:p12",
+            "a-d0600b20000448c101a28824:p13",
+            "a-d0600b20000448c101a28824:p14",
+            "a-d0600b20000448c101a28824:p15",
+            "a-d0600b20000448c101a28824:p16",
+            "a-d0600b20000448c101a28824:p17",
+            "a-d0600b20000448c101a28824:p18",
+            "a-d0600b20000448c101a28824:p19",
+            "a-d0600b20000448c101a28824:p20",
+            "a-d0600b20000448c101a28824:p21",
+            "a-d0600b20000448c101a28824:p22"
+          ],
+          "observation": "p8—13呈现体系、规则、设施、规模的进展；p14以协同衔接仍不足限制“已有成效”的外推，并明确它们是改革重点；p15—16据此转入纵深推进，p17—22实际展开制度、设施、市场、监管、开放等安排。p14既承认前文，又给后文必要性与任务。"
+        },
+        {
+          "article_id": "a-d99d96842dcf960899604053",
+          "paragraph_ids": [
+            "a-d99d96842dcf960899604053:p1",
+            "a-d99d96842dcf960899604053:p2",
+            "a-d99d96842dcf960899604053:p3",
+            "a-d99d96842dcf960899604053:p4",
+            "a-d99d96842dcf960899604053:p5",
+            "a-d99d96842dcf960899604053:p6"
+          ],
+          "observation": "p1提出命题，p2集中回答发展方式、民生与全球治理层面的意义；p3换入任务依据并明示接下来讨论有效途径，p4—6再分别展开机制、系统协同和生物多样性。这里过渡将“为何做”转换为“从何处着力”，没有凭空编造一套失败叙事。"
+        }
+      ],
+      "category": "铺垫转承与篇章衔接",
+      "example": "【自编微型演示】材料显示预约服务减少了平均等候，但跨部门事项仍常在补材料时中断。已有的速度改善，下一步要延伸为全流程的顺畅。因而，讨论服务优化还需转向信息共享和材料衔接。",
+      "misuse": "在“成效显著”之后只接一句“下面提出对策”，没有说明对策依据；或为了制造转折，否定刚刚由事实证明的成效。",
+      "id": "corpus-r2-7231ef0987ff305dbe9a",
+      "enabled": false,
+      "status": "第二轮提炼候选，已入库待核验启用",
+      "version": "session-curation-20261017-round2",
+      "created_at": "2026-10-17",
+      "curation": {
+        "agent": "当前会话GPT辅助归纳",
+        "human_reviewed": false,
+        "batch": "20261017-round2",
+        "basis": "本地文章全文续读；步骤和示例为本项目设计，非刊方自述或官方评分规则",
+        "member_methods": [
+          "人民日报:new:2"
+        ]
+      },
+      "source_article_ids": [
+        "a-d0600b20000448c101a28824",
+        "a-d99d96842dcf960899604053"
+      ],
+      "source_fingerprints": [
+        "ec2ec350d9a782cdaa9280f9dfae4c5d0bff4f7368463a01820562f9d86260dd",
+        "1ad88f5cfaaf43ab7cb04cb7380236959f075c8b987d0ac951fb53722940643b"
+      ],
+      "source_versions": {
+        "a-d0600b20000448c101a28824": "ec2ec350d9a782cdaa9280f9dfae4c5d0bff4f7368463a01820562f9d86260dd",
+        "a-d99d96842dcf960899604053": "1ad88f5cfaaf43ab7cb04cb7380236959f075c8b987d0ac951fb53722940643b"
+      },
+      "source_metadata": [
+        {
+          "id": "a-d0600b20000448c101a28824",
+          "title": "加快建设全国统一电力市场（深入学习贯彻习近平新时代中国特色社会主义思想·学习《习近平经济文选》第一卷专家谈）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109250.html",
+          "publication": "2025-10-14",
+          "author": "黄 涛 郑润祺"
+        },
+        {
+          "id": "a-d99d96842dcf960899604053",
+          "title": "着力建设绿色低碳的美丽城市（专题深思）",
+          "journal": "人民日报",
+          "year": 2025,
+          "url": "https://paper.people.com.cn/rmrb/pc/content/202510/14/content_30109252.html",
+          "publication": "2025-10-14",
+          "author": "周冯琦"
+        }
+      ]
+    }
+  ]
+}

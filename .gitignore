@@ -1,0 +1,41 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# --- Build output (regenerated; never versioned) ---
+dist/
+build/
+build-tmp/
+*.spec
+
+# --- Validation / audit artifacts (large, machine specific) ---
+validation/
+source/validation/
+validation-artifacts/
+*.log
+
+# --- Databases ---
+# The 262 MB corpus seed is supplied out of band; see README "源码与重建".
+# User data, drafts, backups and probe databases never belong in version control.
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
+# --- Release binaries ---
+*.exe
+*.msi
+*.zip
+*.7z
+*.sha256
+
+# --- Local scratch ---
+scratch/
+tmp/
