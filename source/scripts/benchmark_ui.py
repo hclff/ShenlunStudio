@@ -1,3 +1,7 @@
+# pyright: reportImplicitRelativeImport=false
+# This script is executed as `python scripts/benchmark_ui.py`, never imported as
+# part of a package, so its `shenlun` imports below are absolute against the
+# repository root appended to sys.path at line 21 -- not implicit-relative ones.
 """Baseline benchmark: cold start, page switching, refresh cost and memory.
 
 Runs the real workbench against a throwaway data directory copied from the
@@ -107,7 +111,11 @@ def main(argv=None):
     # Isolate the measurement from the 262 MB daily auto backup.
     AutoBackupManager(store).configure(enabled=False)
 
-    app = QApplication.instance() or QApplication(sys.argv[:1])
+    app = QApplication.instance()
+    # instance() is typed as QCoreApplication | None, but the process is known to
+    # be this script, so narrow instead of trusting the union on setFont().
+    if not isinstance(app, QApplication):
+        app = QApplication(sys.argv[:1])
     app.setFont(QFont('Microsoft YaHei UI', 10))
 
     window, report['window_construct_seconds'] = timed(lambda: MainWindow(store))

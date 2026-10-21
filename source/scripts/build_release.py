@@ -61,7 +61,10 @@ def main():
                '--paths', str(ROOT), '--icon',str(app_icon_path),'--version-file',str(version_file),'--add-data', str(seed)+os.pathsep+'assets',
                '--add-data',str(ROOT/'assets'/'ui')+os.pathsep+'assets/ui',
                '--add-data',str(article_methods)+os.pathsep+'assets',
-               '--hidden-import', 'keyring.backends.Windows', '--collect-submodules', 'keyring.backends']
+               '--hidden-import', 'keyring.backends.Windows', '--collect-submodules', 'keyring.backends',
+               # Migration steps are imported by name at runtime; without this the
+               # frozen application starts without them and fails on first open.
+               '--collect-submodules', 'shenlun.migrations']
     for module in ('PyQt5','PyQt6','PySide2','numpy','pandas','scipy','matplotlib','tkinter',
                    'IPython','notebook','sympy','torch','cv2','pytest'):
         command += ['--exclude-module', module]

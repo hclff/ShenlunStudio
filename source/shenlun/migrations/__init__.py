@@ -26,7 +26,14 @@ class MigrationTooNewError(MigrationError):
 
 
 def _step(name):
-    return importlib.import_module('.' + name, __name__).apply
+    # Steps are imported by name, so a frozen build must collect this package's
+    # submodules explicitly (scripts/build_release.py does).
+    try:
+        module = importlib.import_module('.' + name, __name__)
+    except ImportError as exc:
+        raise MigrationError('数据库升级步骤模块无法导入：' + name +
+                             '；请使用 --collect-submodules shenlun.migrations 重新打包。') from exc
+    return module.apply
 
 
 STEPS = (

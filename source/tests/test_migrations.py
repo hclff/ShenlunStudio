@@ -1,11 +1,13 @@
 """Ordered schema upgrades: version stamp, pre-migration backup, rollback."""
 import json
 import sqlite3
+from pathlib import Path
 
 import pytest
 
-from shenlun.migrations import (SCHEMA_VERSION, MigrationTooNewError, ensure_schema,
-                                migrate)
+from shenlun import migrations
+from shenlun.migrations import (SCHEMA_VERSION, STEPS, MigrationTooNewError,
+                                ensure_schema, migrate)
 from shenlun.storage import Store
 
 
@@ -194,6 +196,15 @@ def test_startup_reports_a_too_new_database_without_a_traceback(tmp_path):
     assert store is None
     assert messages and '升级程序' in messages[0]
     assert message == messages[0]
+
+
+def test_every_step_file_is_registered_for_packaging():
+    """A step file missing from STEPS would never run, and a registered step
+    without a file breaks startup: PyInstaller must collect the submodules."""
+    directory = Path(migrations.__file__).parent
+    on_disk = sorted(path.stem for path in directory.glob('[0-9][0-9][0-9][0-9]_*.py'))
+    registered = ['%04d_%s' % (number, name) for number, name, _ in STEPS]
+    assert on_disk == registered
 
 
 def test_migrate_returns_only_newly_applied_steps(tmp_path):
