@@ -22,6 +22,14 @@ Projected columns live in the same row as their authoritative JSON and are writt
 
 Paged list APIs keep the ordering of their unpaged counterparts: `list_reviews_page`, `count_reviews`, `usage_details`, `list_questions_page`, `count_questions`. `list_questions` delegates to `list_questions_page`. `list_review_plans` filters and sorts in SQL on the plan projections and batches attempt counts; `query` still matches title, source, question text and tags only.
 
+## Module layout (1.0 additive)
+
+Five large modules are packages whose `__init__` keeps every previous import path: `shenlun/service/` (`prompts`, `text`, `core`, `grading`, `tasks`, `extraction`, `admin`) exposes `AppService` as a facade over mixins; `shenlun/ui/intake/` (`controls`, `options`, `source_preview`, `preview`, `mixin`), `shenlun/ui/library/` (`corpus`, `imports`, `methods`), `shenlun/ui/assessment/` (`editor`, `rubric`, `workflow`, `export`) and `shenlun/ui/teaching/` (`constants`, `dialogs`, `panel`, `mixin`) do the same for their mixins and dialogs. Submodules never import their own package at module level; a function-level `from . import X` is only used where a host may replace a package attribute at runtime (`library.import_people_range`).
+
+`MainWindow` composes the same mixin names as before, so method precedence is unchanged: the newly split mixins are listed before the pre-existing mixins they used to shadow.
+
+`ui/common/dialogs.py` owns the confirmation semantics: `confirm_destructive`, `confirm_billable`, `confirm_discard` and `confirm_question` always pass `Yes|No` with `defaultButton=No` and return `True` only for an explicit Yes. New confirmations must use these helpers; the remaining direct `QMessageBox.question` call sites still carry their own button arguments.
+
 ## Store(path: Path)
 
 `upsert_article(article:dict)->str`; `get_article(id:str)->dict|None`; `list_articles(query='',journal='',kind='',limit=200)->list[dict]` (metadata including body permitted, sorted deterministically); `stats()->dict` keys articles,available,unavailable,unique_bodies,analyses,cards,reviews.

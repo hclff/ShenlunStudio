@@ -5,132 +5,33 @@ from pathlib import Path
 import sqlite3
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (QCheckBox, QComboBox, QDialog, QDialogButtonBox,
-    QFileDialog, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QListWidget,
-    QListWidgetItem, QMessageBox, QInputDialog, QScrollArea, QSplitter, QTabWidget, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QDialog,
+    QFileDialog,
+    QFormLayout,
+    QHBoxLayout,
+    QLineEdit,
+    QListWidget,
+    QListWidgetItem,
+    QMessageBox,
+    QInputDialog,
+    QScrollArea,
+    QSplitter,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget)
 
-from ..domain import RUBRICS
-from ..intake import FILE_FILTER, read_inputs
-from ..teaching import (SOURCE_FIELDS, normalize_teaching_selection,
-    resolve_teaching_guidance, validate_teaching_method)
-from .widgets import button, editor
-from .method_batch import TeachingBatchMixin
-from .method_filters import MethodFilterBar
+from ...domain import RUBRICS
+from ...intake import FILE_FILTER, read_inputs
+from ...teaching import SOURCE_FIELDS, validate_teaching_method
+from ..widgets import button, editor
+from ..method_batch import TeachingBatchMixin
+from ..method_filters import MethodFilterBar
 
-
-SCOPES = [('正文片段 · full_text', 'full_text'), ('索引正文 · index_text', 'index_text'),
-          ('目录 · 不可启用', 'catalog'), ('学员笔记 · 不可启用', 'student_note')]
-MODES = [('关闭', 'off'), ('综合已审核方法', 'combined'), ('指定一个来源', 'source'), ('比较 2–3 个来源', 'compare')]
-STATUS = {'draft': '草稿 · 待本地审核', 'enabled': '已启用', 'disabled': '已停用 · 待重新审核'}
-
-
-def label(text):
-    widget = QLabel(text)
-    widget.setWordWrap(True)
-    widget.setTextFormat(Qt.TextFormat.PlainText)
-    return widget
-
-
-def dialog_buttons(dialog, layout, text='确认'):
-    buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
-    buttons.button(QDialogButtonBox.StandardButton.Ok).setText(text)
-    buttons.button(QDialogButtonBox.StandardButton.Cancel).setText('取消')
-    buttons.accepted.connect(dialog.accept); buttons.rejected.connect(dialog.reject)
-    layout.addWidget(buttons)
-    return buttons
-
-
-class TeachingReviewDialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle('审核并启用'); self.resize(540, 360)
-        layout = QVBoxLayout(self)
-        layout.addWidget(label('核对来源、引文和适用范围。'))
-        form = QFormLayout(); self.reviewer = QLineEdit(); self.reviewer.setMaxLength(200)
-        self.note = editor(placeholder='填写核对说明…')
-        form.addRow('审核人', self.reviewer); form.addRow('审核说明', self.note)
-        layout.addLayout(form); self.message = label('请填写审核人和说明。'); layout.addWidget(self.message)
-        dialog_buttons(self, layout, '继续')
-
-    def accept(self):
-        if not self.reviewer.text().strip() or not self.note.toPlainText().strip():
-            self.message.setText('请填写审核人和说明。'); return
-        if len(self.note.toPlainText()) > 4000:
-            self.message.setText('审核说明不能超过 4000 字。'); return
-        super().accept()
-
-
-class TeachingJsonPreviewDialog(QDialog):
-    def __init__(self, records, filename, parent=None):
-        super().__init__(parent); self.setWindowTitle('导入预览'); self.resize(740, 580)
-        layout = QVBoxLayout(self)
-        layout.addWidget(label(f'{filename} · {len(records)} 条；导入后为停用草稿。'))
-        preview = editor(readonly=True); preview.setPlainText(json.dumps(records, ensure_ascii=False, indent=2))
-        layout.addWidget(preview, 1); dialog_buttons(self, layout, '导入')
-
-
-class TeachingSourcePreviewDialog(QDialog):
-    def __init__(self, batch, parent=None):
-        super().__init__(parent); self.setWindowTitle('来源片段'); self.resize(760, 580)
-        layout = QVBoxLayout(self)
-        layout.addWidget(label('请核对识别文字，最多 4000 字。'))
-        sources = '\n'.join(f'{p.source} · 第 {p.number} 页 · {p.method}' for p in batch.pages)
-        self.provenance = editor(readonly=True); self.provenance.setMaximumHeight(95)
-        self.provenance.setPlainText(sources + '\n' + '\n'.join(batch.errors)); layout.addWidget(self.provenance)
-        self.text = editor(); self.text.setPlainText('\n\n'.join(p.text for p in batch.pages if p.text))
-        layout.addWidget(self.text, 1); self.message = label('取消不会修改当前内容。'); layout.addWidget(self.message)
-        dialog_buttons(self, layout, '使用此片段')
-
-    def accept(self):
-        if not self.text.toPlainText().strip() or len(self.text.toPlainText()) > 4000:
-            self.message.setText('请选择 1–4000 字的来源片段后确认。'); return
-        super().accept()
-
-
-class TeachingSelectionDialog(QDialog):
-    def __init__(self, store, parent=None):
-        super().__init__(parent); self.store = store; self.host = parent
-        self.setWindowTitle('批改中的方法辅助'); self.resize(600, 570)
-        layout = QVBoxLayout(self)
-        layout.addWidget(label('仅使用已启用且适合本题的方法，最多 6 项。'))
-        self.mode = QComboBox()
-        for text, value in MODES: self.mode.addItem(text, value)
-        layout.addWidget(self.mode)
-        scroll = QScrollArea(); scroll.setWidgetResizable(True); body = QWidget(); owners_layout = QVBoxLayout(body)
-        self.owner_checks = {}
-        counts = {}
-        for row in store.list_teaching_methods(True): counts[row['owner_id']] = counts.get(row['owner_id'], 0) + 1
-        for owner in store.list_teaching_owners():
-            check = QCheckBox(owner['name'])
-            check.setToolTip(f'{owner["description"]}\n已启用 {counts.get(owner["id"], 0)}')
-            self.owner_checks[owner['id']] = check; owners_layout.addWidget(check)
-        scroll.setWidget(body); layout.addWidget(scroll, 1)
-        self.message = label('指定 1 项；比较 2–3 项。'); layout.addWidget(self.message)
-        try: selected = normalize_teaching_selection(store.get_setting('teaching_selection'))
-        except ValueError: selected = normalize_teaching_selection(None)
-        self.mode.setCurrentIndex(self.mode.findData(selected['mode']))
-        if any(identity not in self.owner_checks for identity in selected['owner_ids']):
-            selected = normalize_teaching_selection(None)
-            self.mode.setCurrentIndex(self.mode.findData(selected['mode']))
-        for identity in selected['owner_ids']: self.owner_checks[identity].setChecked(True)
-        self.mode.currentIndexChanged.connect(self.update_mode); self.update_mode()
-        dialog_buttons(self, layout, '保存本机选择')
-
-    def update_mode(self):
-        explicit = self.mode.currentData() in ('source', 'compare')
-        for check in self.owner_checks.values(): check.setEnabled(explicit)
-
-    def accept(self):
-        if getattr(self.host, 'workers', set()): self.message.setText('请先完成或取消正在运行的任务。'); return
-        try:
-            selection = normalize_teaching_selection({'mode': self.mode.currentData(),
-                'owner_ids': [key for key, check in self.owner_checks.items() if check.isChecked()]})
-            live = {o['id'] for o in self.store.list_teaching_owners()}
-            if any(identity not in live for identity in selection['owner_ids']):
-                raise ValueError('主体已变化，请重新打开选择窗口。')
-            self.store.set_setting('teaching_selection', selection)
-        except (ValueError, TypeError, OSError, sqlite3.Error) as exc: self.message.setText(str(exc)); return
-        super().accept()
+from .constants import SCOPES, STATUS, label
+from .dialogs import TeachingJsonPreviewDialog, TeachingReviewDialog, TeachingSourcePreviewDialog
 
 
 class TeachingPanel(TeachingBatchMixin,QWidget):
@@ -465,7 +366,7 @@ class TeachingPanel(TeachingBatchMixin,QWidget):
         if self.guarded():return
         if self.dirty:
             self.say('请先保存当前修改或明确放弃，再打开已删除列表。');return
-        from .article_method_editor import MethodTrashDialog
+        from ..article_method_editor import MethodTrashDialog
         try:
             dialog=MethodTrashDialog(self.store,'teaching',self)
             if dialog.exec()==QDialog.DialogCode.Accepted:
@@ -525,69 +426,3 @@ class TeachingPanel(TeachingBatchMixin,QWidget):
                 self.source_excerpt.setPlainText(text); self.say('片段已写入编辑区，请填写来源定位并核对精确引文后保存。')
         self.host.start_job('读取本机方法来源', lambda progress, cancel: read_inputs(paths, progress=progress,
             cancel=cancel, retain_failed=True), preview, domains=())
-
-
-class TeachingUiMixin:
-    def preflight_teaching(self, submission):
-        try:
-            from ..method_presets import resolve_method_choice
-            return resolve_method_choice(self.store, submission)['teaching_snapshot']
-        except (ValueError, TypeError) as exc:
-            try:
-                selection = normalize_teaching_selection(self.store.get_setting('teaching_selection'))
-                names = {o['id']: o['name'] for o in self.store.list_teaching_owners(include_deleted=True)}
-                prefix = '、'.join(names.get(o,o) for o in selection['owner_ids'])
-            except (ValueError, TypeError): prefix = ''
-            raise ValueError((prefix + '：' if prefix else '') + str(exc)) from None
-
-    def show_teaching_selection(self):
-        if self.workers: self.notify('请先完成或取消正在运行的任务。'); return
-        dialog = TeachingSelectionDialog(self.store, self)
-        if dialog.exec() == QDialog.DialogCode.Accepted: self.refresh_teaching_summary()
-
-    def refresh_teaching_summary(self, *args):
-        if not hasattr(self, 'teaching_summary'): return
-        self.teaching_summary.setToolTip('')
-        from ..method_presets import normalize_method_choice,resolve_method_choice
-        try:
-            choice=normalize_method_choice(self.store.get_setting('method_choice'))
-            if choice['mode']!='auto':
-                selected=resolve_method_choice(self.store,{'question_type':self.question_type.currentText()},choice)
-                if choice['mode']=='off':text='方法辅助：关闭（教学与文章方法）'
-                else:text='方法组合：'+selected['preset']['name']+' · 本次实际使用名单可预览'
-                self.teaching_summary.setText(text)
-                self.refresh_method_preset_preview()
-                return
-        except (ValueError,TypeError) as exc:
-            self.teaching_summary.setText('方法组合不可用：'+str(exc));self.teaching_summary.setToolTip(str(exc))
-            self.refresh_method_preset_preview();return
-        try:
-            selection = normalize_teaching_selection(self.store.get_setting('teaching_selection'))
-            title = dict((value, text) for text, value in MODES)[selection['mode']]
-            if selection['mode'] == 'off': text = '方法辅助：关闭'
-            else:
-                snapshot = resolve_teaching_guidance(self.store, {'question_type': self.question_type.currentText()}, selection)
-                if not snapshot: text = '方法辅助：综合 · 当前题型无可用已审核方法，照常批改'
-                else:
-                    names = {o['id']:o['name'] for o in self.store.list_teaching_owners(include_deleted=True)}
-                    owners = list(dict.fromkeys(r['owner_id'] for r in snapshot['methods']))
-                    text = f'方法辅助：{title} · {len(snapshot["methods"])} 张 · ' + '、'.join(names.get(o,o) for o in owners)
-            self.teaching_summary.setText(text)
-        except (ValueError, TypeError) as exc:
-            try:
-                selected = normalize_teaching_selection(self.store.get_setting('teaching_selection'))
-                names = {o['id']:o['name'] for o in self.store.list_teaching_owners(include_deleted=True)}
-                choice = '、'.join(names.get(o,o) for o in selected['owner_ids'])
-            except (ValueError, TypeError): choice = '无效选择'
-            self.teaching_summary.setText('方法辅助：' + choice + ' · 当前题型无匹配的已审核方法；批改前须处理。')
-            self.teaching_summary.setToolTip(str(exc))
-        self.refresh_method_preset_preview()
-
-    def refresh_teaching_busy(self):
-        busy = bool(self.workers)
-        if hasattr(self, 'teaching_select_button'): self.teaching_select_button.setEnabled(not busy)
-        if hasattr(self, 'teaching_panel'): self.teaching_panel.setEnabled(not busy)
-        if hasattr(self, 'enable_method_button'):
-            self.update_method_actions()
-        self.refresh_method_preset_busy()
-

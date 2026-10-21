@@ -9,7 +9,7 @@ import time
 import pytest
 from PySide6.QtCore import Qt
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication, QDialog, QMessageBox
+from PySide6.QtWidgets import QApplication, QDialog, QLabel, QMessageBox
 
 from shenlun.storage import Store
 from shenlun.ui import MainWindow
@@ -85,23 +85,23 @@ def test_default_catalog_separate_from_publication_api_and_owner_names_visible(h
 def test_teaching_dialogs_use_compact_guidance(host):
     mod = ui()
     review = mod.TeachingReviewDialog(host)
-    review_text = ' '.join(label.text() for label in review.findChildren(mod.QLabel))
+    review_text = ' '.join(label.text() for label in review.findChildren(QLabel))
     assert '核对来源、引文和适用范围。' in review_text
     assert '官方认证' not in review_text and '教师本人' not in review_text
     selection = mod.TeachingSelectionDialog(host.store, host)
-    selection_text = ' '.join(label.text() for label in selection.findChildren(mod.QLabel))
+    selection_text = ' '.join(label.text() for label in selection.findChildren(QLabel))
     assert '最多 6 项。' in selection_text
     assert '教师本人' not in selection_text and '平均打分' not in selection_text
     preview = mod.TeachingJsonPreviewDialog([method()], 'methods.json', host)
-    preview_text = ' '.join(label.text() for label in preview.findChildren(mod.QLabel))
+    preview_text = ' '.join(label.text() for label in preview.findChildren(QLabel))
     assert '导入后为停用草稿。' in preview_text
     from shenlun.intake import ImportBatch, InputPage
     source = mod.TeachingSourcePreviewDialog(
         ImportBatch([InputPage('scan.png', 1, '材料文字', '本机 OCR')]), host)
-    source_text = ' '.join(label.text() for label in source.findChildren(mod.QLabel))
+    source_text = ' '.join(label.text() for label in source.findChildren(QLabel))
     assert '请核对识别文字，最多 4000 字。' in source_text
     all_copy = ' '.join((review_text, selection_text, preview_text, source_text,
-                         ' '.join(label.text() for label in panel(host).findChildren(mod.QLabel))))
+                         ' '.join(label.text() for label in panel(host).findChildren(QLabel))))
     for redundant in ('GitHub 社区整理', '社区条目', '教师本人', '教师认证',
                       '官方认证', '仓库声称', '原始课程', '平均打分'):
         assert redundant not in all_copy
