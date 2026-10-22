@@ -2,14 +2,17 @@
 import json
 from html import escape
 
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QDialog,
     QDialogButtonBox,
+    QHeaderView,
     QLabel,
     QListWidget,
     QSplitter,
     QTabWidget,
     QTextBrowser,
+    QTreeWidget,
     QVBoxLayout,
     QWidget)
 
@@ -141,6 +144,23 @@ class RubricMixin:
         self.result_report.anchorClicked.connect(self.open_result_link)
         self.result_report.setHtml('<h2>从一份原答开始</h2><p>完成批改后，这里会显示审题、分项评价、材料证据和下一步训练建议。</p><p>缺少题干或材料时，只诊断表达与结构，不生成训练总分。</p>')
         self.result_tabs.addTab(self.result_report, '训练报告')
+        self.result_trace = QTreeWidget()
+        self.result_trace.setHeaderLabels(['维度 / 证据', '依据与建议', '核实'])
+        self.result_trace.setWordWrap(True)
+        self.result_trace.setUniformRowHeights(False)
+        self.result_trace.setTextElideMode(Qt.TextElideMode.ElideNone)
+        self.result_trace.setAlternatingRowColors(True)
+        header = self.result_trace.header()
+        header.setStretchLastSection(False)
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Interactive)
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.Interactive)
+        self.result_trace.setColumnWidth(0, 240)
+        self.result_trace.setColumnWidth(2, 190)
+        self.result_trace.itemDoubleClicked.connect(lambda item, _column: self.open_trace_item(item))
+        self.result_trace.setToolTip('按维度说明分数来源；双击证据行回到原答对应位置，分数不因单条批注单独调整。')
+        self.result_tabs.addTab(self.result_trace, '评分依据')
+        self.result_tabs.currentChanged.connect(lambda _index: self.fit_trace_rows())
         annotated = QSplitter()
         self.annotated_result = annotated
         self.result_original = editor(readonly=True)
@@ -148,6 +168,7 @@ class RubricMixin:
         self.annotation_list = QListWidget()
         self.annotation_list.setMaximumWidth(310)
         self.annotation_list.currentRowChanged.connect(self.select_annotation)
+        self.annotation_list.itemChanged.connect(lambda _item: self.update_recheck_actions())
         annotated.addWidget(self.result_original)
         annotated.addWidget(self.annotation_list)
         self.result_tabs.addTab(annotated, '原答与批注')
@@ -161,12 +182,21 @@ class RubricMixin:
         layout.addWidget(self.result_tabs, 1)
         self.revision_status = QLabel('暂无批改记录')
         self.revision_status.setWordWrap(True)
-        layout.addWidget(self.revision_status)
+        self.generate_revision_button = button('生成修改稿（不重新评分）', self.generate_revision)
+        self.generate_revision_button.setToolTip('仅调用改写模型，沿用已保存的原答与评分；不会重新评分或改动已有批注。')
+        self.generate_revision_button.setVisible(False)
+        status_row = row(self.revision_status, self.generate_revision_button)
+        status_row.setStretch(0, 1)
+        layout.addLayout(status_row)
         self.export_report_button = button('导出 HTML / TXT / JSON', self.export_current)
         self.export_pdf_button = button('导出 PDF', self.export_pdf)
         self.export_report_button.setEnabled(False)
         self.export_pdf_button.setEnabled(False)
         exports = row(self.export_report_button, self.export_pdf_button)
+        self.recheck_button = button('复核所选批注…', self.recheck_selected)
+        self.recheck_button.setEnabled(False)
+        self.recheck_button.setToolTip('勾选「原答与批注」中的条目后可用；只复核所选批注，不改动原报告分数、批注文本与修改稿。')
+        exports.addWidget(self.recheck_button)
         self.add_review_goals_button = button('加入复习…',self.show_review_goals)
         self.add_review_goals_button.setEnabled(False)
         self.add_review_goals_button.setToolTip('请先保存并载入报告。')

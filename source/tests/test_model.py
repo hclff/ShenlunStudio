@@ -12,14 +12,16 @@ def server():
     class Handler(BaseHTTPRequestHandler):
         status, response, requests = 200, {}, []
         response_script = None
+        status_script = None
         def log_message(self, *args):
             pass
         def do_POST(self):
             body = json.loads(self.rfile.read(int(self.headers['Content-Length'])))
             self.requests.append((self.path, body, self.headers.get('Authorization')))
             response = self.response_script.pop(0) if self.response_script else self.response
+            status = self.status_script.pop(0) if self.status_script else self.status
             encoded = json.dumps(response).encode()
-            self.send_response(self.status)
+            self.send_response(status)
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(encoded)
@@ -105,6 +107,29 @@ def test_provider_parameter_compatibility_is_configurable(server):
     body=h.requests[0][1]
     assert body['max_completion_tokens']==5000
     assert 'max_tokens' not in body and 'temperature' not in body
+
+
+def test_unknown_token_parameter_name_retries_with_alias(server):
+    url,h=server
+    h.status_script=[400,200]
+    h.response_script=[{'error':{'param':'max_tokens','message':"Unsupported parameter: 'max_tokens' is not supported with this model."}},
+                       {'choices':[{'message':{'content':'{"ok":true}'}}]}]
+    c=ModelClient({'base_url':url,'model':'reasoning-provider','token_parameter':'max_tokens'},'')
+    assert c.complete('s',{})['data']=={'ok':True}
+    assert h.requests[0][1]['max_tokens']==5000
+    assert h.requests[1][1]['max_completion_tokens']==5000
+    assert 'max_tokens' not in h.requests[1][1]
+    assert c.config['token_parameter']=='max_completion_tokens'
+
+
+def test_declared_token_limit_does_not_retry_other_parameter(server):
+    url,h=server
+    h.status=400
+    h.response={'error':{'param':'max_tokens','message':'max_tokens must be less than or equal to 4096'}}
+    c=ModelClient({'base_url':url,'model':'m','token_parameter':'max_tokens'},'')
+    with pytest.raises(ModelError,match='4096'):
+        c.complete('s',{})
+    assert len(h.requests)==1
 
 
 @pytest.mark.parametrize('content', [
@@ -225,8 +250,8 @@ def test_cancellation_after_empty_reply_prevents_recovery_upload(server, tmp_pat
     service = AppService(store, {'base_url':url,'model':'fixture'}, '')
     cancel = threading.Event()
     record = service._record_response_usage
-    def record_and_cancel(response):
-        record(response)
+    def record_and_cancel(response, prompt_version=None):
+        record(response, prompt_version)
         cancel.set()
     monkeypatch.setattr(service, '_record_response_usage', record_and_cancel)
     with pytest.raises(CancelledError):

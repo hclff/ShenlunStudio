@@ -18,7 +18,7 @@ from .widgets import button, card, editor, empty_state, page, row
 
 class PreferencesMixin:
     def build_settings(self):
-        widget, layout = page('设置', '选择模型服务，管理调用预算。保存后，仅在主动操作时连接。')
+        widget, layout = page('设置', '配置模型与调用预算；保存后仅在主动操作时连接。')
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         content = QWidget()
@@ -37,10 +37,6 @@ class PreferencesMixin:
         self.model_name.setPlaceholderText('服务商提供的模型名称')
         form.addRow('API 地址', self.model_url)
         form.addRow('模型名称', self.model_name)
-        connection_note = QLabel('兼容 OpenAI 接口。远程服务使用 HTTPS；本机服务可以免密钥。')
-        connection_note.setObjectName('muted')
-        connection_note.setWordWrap(True)
-        form.addRow(connection_note)
         content_layout.addWidget(group)
         security = QGroupBox('02  密钥与隐私')
         security_form = QFormLayout(security)
@@ -58,12 +54,12 @@ class PreferencesMixin:
         clear_key_button = button('清除已保存密钥', self.clear_key)
         clear_key_button.setMaximumWidth(180)
         security_form.addRow('', clear_key_button)
-        privacy = QLabel('密钥保存在系统凭据库或当前会话，不写入文章与训练数据库。文章、原答和训练记录保存在本机；批改与提炼时会发送相应内容。')
+        privacy = QLabel('密钥保存在系统凭据库或当前会话，不写入数据库。文章、原答和训练记录保存在本机；批改与提炼时发送相应内容。')
         privacy.setObjectName('muted')
         privacy.setWordWrap(True)
         security_form.addRow(privacy)
         content_layout.addWidget(security)
-        advanced = QGroupBox('03  调用预算与服务兼容')
+        advanced = QGroupBox('03  调用预算')
         advanced_form = QFormLayout(advanced)
         advanced_form.setSpacing(12)
         self.config_numbers = {}
@@ -106,7 +102,7 @@ class PreferencesMixin:
         self.token_parameter.currentTextChanged.connect(self.refresh_limit_guidance)
         self.send_temperature.toggled.connect(self.refresh_limit_guidance)
         self.temperature.valueChanged.connect(self.refresh_limit_guidance)
-        note = QLabel('预算按每次批改或提炼任务计算，按实际返回或估算的 token 记账；不是保证不超出的金额上限。远程服务须使用 HTTPS，本机服务可以免密钥。')
+        note = QLabel('预算按每次批改或提炼任务计算，按实际返回或估算的 token 记账；不是保证不超出的金额上限。')
         note.setWordWrap(True)
         note.setObjectName('muted')
         advanced_form.addRow(note)
@@ -132,7 +128,14 @@ class PreferencesMixin:
         local_layout.addWidget(location)
         backup_note = QLabel('数据库备份包含题库、草稿、训练记录、文章和设置，不包含系统凭据库密钥。恢复将替换当前本机数据库，并先创建安全备份。')
         backup_note.setWordWrap(True); backup_note.setObjectName('muted'); local_layout.addWidget(backup_note)
-        local_layout.addLayout(row(button('备份数据库…', self.backup_database), button('从备份恢复…', self.restore_database)))
+        local_layout.addLayout(row(button('备份数据库…', self.backup_database),
+                                   button('从备份恢复…', self.restore_database),
+                                   button('压缩数据库', self.compact_database)))
+        self.storage_note = QLabel()
+        self.storage_note.setObjectName('muted')
+        self.storage_note.setWordWrap(True)
+        local_layout.addWidget(self.storage_note)
+        self.refresh_storage_note()
         local_layout.addWidget(self.build_backup_controls())
         content_layout.addWidget(local)
         content_layout.addStretch()
@@ -240,6 +243,10 @@ class PreferencesMixin:
                    'JSON 样例通过不等于支持 JSON Schema 或保证后续结果完整。',
                    '模型实际输出上限：'+(str(result['output_limit']) if result.get('output_limit') is not None else '未知'),
                    '以上对应检测时设置；更改接口、模型或参数后请重新检测。用量已计入统计。']
+        accepted_parameter = result.get('token_parameter')
+        if accepted_parameter and accepted_parameter != tested_config.get('token_parameter'):
+            details.insert(1, f'服务实际接受 {accepted_parameter}：检测时已自动回退请求参数。'
+                              f'请把“输出上限参数名”改为 {accepted_parameter}，避免正式批改每次多一次请求。')
         self.compatibility_details.setPlainText('\n\n'.join(details))
         self.compatibility_details.show()
         self.notify(summary)
@@ -258,6 +265,34 @@ class PreferencesMixin:
             self.notify('其他任务或备份正在运行，请完成后再试。'); return
         self._start_backup_operation('manual', lambda: self.store.backup_to(Path(path), overwrite=True),
             lambda saved: self.backup_status.setText('数据库已备份：' + str(saved)))
+
+    def compact_database(self):
+        if self.workers or self._backup_job is not None:
+            self.notify('请先完成或取消当前任务，再压缩数据库。'); return
+        if not self.flush_workspace(): return
+        before = self.store.reclaimable()
+        if not before['free']:
+            self.notify('数据库中没有可回收的空白页。'); return
+        self.notify(f'正在压缩数据库，预计释放 {before["bytes"] / 1048576:.0f} MB…')
+        self.start_job('压缩数据库',
+                       lambda progress, cancelled: self.store.compact(),
+                       self._compaction_finished)
+
+    def _compaction_finished(self, result):
+        freed = (result['before']['pages'] - result['after']['pages']) * result['after']['page_size']
+        self.notify(f'数据库已压缩，文件缩小约 {freed / 1048576:.0f} MB。')
+        self.refresh_storage_note()
+        self.refresh_corpus_fresh()
+
+    def refresh_storage_note(self):
+        try:
+            reclaimable = self.store.reclaimable()
+        except Exception:
+            self.storage_note.setText(''); return
+        megabytes = reclaimable['bytes'] / 1048576
+        self.storage_note.setText(
+            f'数据库中有约 {megabytes:.0f} MB 空白页可回收，压缩后文件更小，内容不变。'
+            if megabytes >= 1 else '')
 
     def restore_database(self):
         if self.workers or self._backup_job is not None:
@@ -303,10 +338,11 @@ class PreferencesMixin:
             self.current_review = None
             self.result_report.setPlainText('数据库已恢复，请选择训练记录查看。')
             self.result_original.clear(); self.result_minimal.clear(); self.result_model.clear(); self.annotation_list.clear()
+            self.result_trace.clear(); self.generate_revision_button.setVisible(False); self.update_recheck_actions()
             self.export_report_button.setEnabled(False); self.export_pdf_button.setEnabled(False)
             self.apply_workspace(self.store.load_workspace() or {'submission':{}, 'question_id':None}, persist=False)
             self.set_workspace_paused(False); self.autosave_label.setText('已恢复 · 本机草稿')
-            self.refresh_connection_label(); self.refresh_corpus(); self.refresh_methods(); self.refresh_history()
+            self.refresh_connection_label(); self.refresh_corpus_fresh(); self.refresh_methods(); self.refresh_history()
             self.refresh_calibration(); self.refresh_usage(); self.refresh_questions()
             self.notify('数据库已恢复。恢复前安全备份：' + str(safety))
         except Exception as exc:
@@ -315,7 +351,7 @@ class PreferencesMixin:
             self.notify('数据库已恢复，但界面读取失败；自动保存已暂停，请重新打开应用：' + str(exc))
 
     def build_history(self):
-        widget, layout = page('训练记录', '保留每次提交的原答、训练评分与修改稿，回看具体进步。')
+        widget, layout = page('训练记录', '回看历次原答、训练评分与修改稿。')
         split = QSplitter(Qt.Orientation.Horizontal)
         split.setChildrenCollapsible(False)
         self.review_list = QListWidget()
@@ -329,10 +365,10 @@ class PreferencesMixin:
         detail_layout = QVBoxLayout(detail)
         detail_layout.setContentsMargins(12, 0, 0, 0)
         self.history_start_button = button('开始一次训练', self.start_history_training, True)
-        self.history_empty = empty_state('你的训练轨迹，从这里开始', '完成一次训练批改后，原题、原答、报告和修改稿会保存在本机，方便随时复盘。', self.history_start_button)
+        self.history_empty = empty_state('你的训练轨迹，从这里开始', '完成批改后，原题、原答、报告和修改稿会保存在本机。', self.history_start_button)
         detail_layout.addWidget(self.history_empty, 1)
         self.history_explanation = editor(readonly=True)
-        self.history_explanation.setPlainText('选择左侧记录，打开完整训练报告与原答对照。\n\n原答与修改稿分别保存，修改稿不会改变原答得分。\n\n可载入原题再次练习，也可导出 HTML、纯文本、JSON 或 PDF 报告。')
+        self.history_explanation.setPlainText('选择左侧记录，查看完整报告与原答对照。\n\n修改稿不会改变原答得分；可载入原题再练或导出报告。')
         detail_layout.addWidget(self.history_explanation, 1)
         split.addWidget(detail)
         split.setSizes([440, 540])

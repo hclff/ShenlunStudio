@@ -184,7 +184,7 @@ class PracticeMixin(ReviewPlanUiMixin):
                 self.notify('已恢复选中的本机草稿。')
 
     def build_practice(self):
-        widget, layout = page('我的题库', '保存题目，接着写未完成的原答；每次已批改的作答独立保留。')
+        widget, layout = page('我的题库', '保存题目与草稿，独立保留每次作答。')
         self.question_search = QLineEdit(); self.question_search.setPlaceholderText('搜索题名、题干、材料、标签或来源')
         self.question_status = QComboBox(); self.question_status.addItems(['全部状态', '未练', '已练', '待重练'])
         self.question_type_filter = QComboBox(); self.question_type_filter.addItems(['全部题型','归纳概括','综合分析','提出对策','应用写作','文章写作'])
@@ -263,7 +263,7 @@ class PracticeMixin(ReviewPlanUiMixin):
         self.question_list.blockSignals(False)
         self.select_question(self.question_list.currentItem())
         summary = self.store.practice_summary()
-        self.question_summary.setText(f'已保存 {summary["question_count"]} 题 · 已批改 {summary["attempt_count"]} 次 · 人工评分 {summary["human_count"]} 条。训练估分仅供复盘。')
+        self.question_summary.setText(f'已保存 {summary["question_count"]} 题 · 已批改 {summary["attempt_count"]} 次 · 人工评分 {summary["human_count"]} 条')
         self.refresh_practice_delete_actions()
 
     def select_question(self, current, previous=None):

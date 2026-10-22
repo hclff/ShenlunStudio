@@ -41,8 +41,8 @@ def test_saved_only_entry_and_default_unchecked_subset(window):
     rid, qid, original = show_saved(window)
     assert window.add_review_goals_button.isEnabled()
     d = dialog(window)
-    assert d.candidates.count() == 3
-    assert all(d.candidates.item(i).checkState() == Qt.CheckState.Unchecked for i in range(3))
+    assert d.candidates.count() == 4
+    assert all(d.candidates.item(i).checkState() == Qt.CheckState.Unchecked for i in range(4))
     d.save()
     assert '勾选' in d.message.text() and 'review_plan' not in window.store.get_question(qid)
     d.candidates.item(0).setCheckState(Qt.CheckState.Checked)

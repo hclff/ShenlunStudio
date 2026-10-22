@@ -86,7 +86,7 @@ class ExportMixin:
             try:
                 if not Path(path).suffix:
                     path += '.json' if 'JSON' in selected else '.txt' if '文本' in selected else '.html'
-                export_review(self.current_review, Path(path))
+                export_review(self.current_review, Path(path), self.current_rechecks())
                 self.notify('报告已导出：' + path)
             except (ValueError, OSError) as exc:
                 self.notify(str(exc))
@@ -110,7 +110,7 @@ class ExportMixin:
         printer.setPageLayout(QPageLayout(QPageSize(QPageSize.PageSizeId.A4), QPageLayout.Orientation.Portrait,
                                         QMarginsF(16, 16, 16, 16), QPageLayout.Unit.Millimeter))
         document = QTextDocument()
-        document.setHtml(review_html(self.current_review))
+        document.setHtml(review_html(self.current_review, self.current_rechecks()))
         document.print_(printer)
         if not Path(path).exists() or Path(path).stat().st_size == 0:
             raise OSError('PDF 未能写入，请检查路径。')

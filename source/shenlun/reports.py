@@ -66,7 +66,8 @@ def teaching_review_html(review):
     return ''.join(parts)
 
 
-def review_html(review: dict) -> str:
+def review_html(review: dict, rechecks: dict | None = None) -> str:
+    from .assessment_trace import trace_html, trace_rows
     from .review_learning import summary_html
     s, a, revisions = review.get("submission",{}), review.get("assessment",{}), review.get("revisions",{})
     total = a.get("total_score")
@@ -77,7 +78,7 @@ def review_html(review: dict) -> str:
               f'<h2>{score}</h2>', '<p class="muted">训练量表估评，尚未经过真实阅卷评分校准。字数按非空白字符含标点统计。</p>',
               f'<p>{_e(s.get("exam","通用训练"))} · {_e(s.get("year",""))} · {_e(s.get("category",""))} · {_e(s.get("question_type",""))}<br>模型：{_e(review.get("model",""))}　量表：{_e(a.get("rubric_version","training-1"))} / {_e(a.get("rubric_fingerprint","旧记录未标识"))}　字数：{_e(a.get("word_count",s.get("word_count","")))}</p>',
               f'<blockquote>{_text(a.get("summary",""))}</blockquote>']
-    result.append(summary_html(review))
+    result.append(summary_html(review, rechecks))
     template=a.get('rubric_template') or s.get('rubric_template')
     if isinstance(template,dict):
         result.extend(['<h2>实际使用的训练量表</h2>',
@@ -106,6 +107,7 @@ def review_html(review: dict) -> str:
         for d in a["dimensions"]:
             result.append(f'<tr><td>{_e(d.get("name",d.get("id")))}</td><td>{_e(d.get("score"))}</td><td>{_e(d.get("weight"))}%</td><td>{_text(d.get("reason"))}</td></tr>')
         result.append('</table>')
+    result.append(trace_html(trace_rows(review, rechecks)))
     result.append('<h2>逐处批注</h2>')
     for n, an in enumerate(a.get("annotations",[]),1):
         result.append(f'<section id="learning-annotation-{n-1}"><h3>{n}. {_e(an.get("issue"))}</h3><blockquote>{_text(an.get("quote"))}</blockquote><p>{_text(an.get("suggestion"))}</p>')
@@ -142,10 +144,15 @@ def review_html(review: dict) -> str:
         if not articles:result.append('<p>本次未使用文章提炼方法。</p>')
         result.append('<p class="muted">以上保留本次实际输入的方法快照；之后编辑、停用或删除不追溯改变本报告。</p>')
     result.append(teaching_review_html(review))
-    result.append('<h2>修改对照</h2><p class="muted">修改稿是另外生成的练习参考，不改变原答得分。</p>')
-    result.append(f'<h3>尽量保留原意的修改</h3><blockquote>{_text(revisions.get("minimal") or "尚无修改稿")}</blockquote>')
-    result.append(f'<h3>按题目重新组织的示范稿</h3><blockquote>{_text(revisions.get("model") or "尚无示范稿")}</blockquote>')
-    result.append(f'<p class="muted">修改状态：{_e(revisions.get("status","未生成"))}</p>')
+    status = str(revisions.get('status') or '')
+    has_revision = bool(str(revisions.get('minimal') or '').strip() or str(revisions.get('model') or '').strip())
+    grade_only = not has_revision and '仅精批' in status
+    empty_note = '本次选择仅精批，未生成修改稿；原答评分不受影响' if grade_only else None
+    result.append('<h2>修改对照</h2><p class="muted">修改稿是另外生成的练习参考，不改变原答得分。' +
+                  ('本次只生成评分与批注，之后可单独生成修改稿，不重新评分。' if grade_only else '') + '</p>')
+    result.append(f'<h3>尽量保留原意的修改</h3><blockquote>{_text(revisions.get("minimal") or empty_note or "尚无修改稿")}</blockquote>')
+    result.append(f'<h3>按题目重新组织的示范稿</h3><blockquote>{_text(revisions.get("model") or empty_note or "尚无示范稿")}</blockquote>')
+    result.append(f'<p class="muted">修改状态：{_e(status or "未生成")}</p>')
     result.append(f'<h2>下一次练习</h2><p>{_text(a.get("next_action",""))}</p>')
     if a.get('strengths'):
         result.append('<h3>保留的优点</h3><ul>'+''.join('<li>'+_text(x)+'</li>' for x in a['strengths'])+'</ul>')
@@ -161,13 +168,15 @@ def review_html(review: dict) -> str:
     return ''.join(result)
 
 
-def export_review(review, path):
+def export_review(review, path, rechecks=None):
     path=Path(path)
     safe=_redacted(review)
+    if rechecks:
+        safe['recheck_results'] = copy.deepcopy(rechecks)
     if path.suffix.lower()=='.json':
         text=json.dumps(safe,ensure_ascii=False,indent=2,allow_nan=False)
     elif path.suffix.lower() in ('.html','.htm'):
-        text=review_html(safe)
+        text=review_html(safe, rechecks)
     elif path.suffix.lower()=='.txt':
         from html.parser import HTMLParser
         class Text(HTMLParser):
@@ -183,7 +192,7 @@ def export_review(review, path):
                 if tag in ('p','h1','h2','h3','tr','blockquote','li'):self.parts.append('\n')
             def handle_data(self,data):
                 if not self.skip:self.parts.append(data)
-        parser=Text();parser.feed(review_html(safe));text=''.join(parser.parts)
+        parser=Text();parser.feed(review_html(safe, rechecks));text=''.join(parser.parts)
     else:
         raise ValueError('报告支持 .html、.txt、.json；PDF请使用打印导出')
     path.parent.mkdir(parents=True,exist_ok=True)

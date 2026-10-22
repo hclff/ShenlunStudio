@@ -75,9 +75,11 @@ class PracticeDeletionMixin:
 
     def clear_deleted_review_display(self):
         self.current_review = None
-        for name in ('result_report', 'result_original', 'result_minimal', 'result_model', 'annotation_list'):
+        for name in ('result_report', 'result_original', 'result_minimal', 'result_model', 'annotation_list', 'result_trace'):
             getattr(self, name).clear()
         self.revision_status.clear()
+        self.generate_revision_button.setVisible(False)
+        self.update_recheck_actions()
         self.export_report_button.setEnabled(False)
         self.export_pdf_button.setEnabled(False)
 

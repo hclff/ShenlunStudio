@@ -24,7 +24,7 @@ def test_summary_prioritizes_evidenced_missing_points_and_never_rescores_or_muta
     summary = module().learning_summary(value)
     assert summary[0]['refs'] == [{'id':'M2','quote':'保留人工窗口'}]
     assert summary[1]['action'] == '补充预约用途'
-    assert len(summary) <= 3
+    assert len(summary) <= 10
     assert value == before
 
 
@@ -37,10 +37,14 @@ def test_summary_rechecks_material_refs_even_in_legacy_or_modified_reports():
     assert '并不存在的事实' not in module().summary_html(value)
 
 
-def test_summary_caps_and_legacy_empty_report_stays_honest():
+def test_summary_caps_at_ten_and_legacy_empty_report_stays_honest():
     value = reviewed()
-    value['assessment']['annotations'] *= 10
-    assert len(module().learning_summary(value)) <= 3
+    template = value['assessment']['annotations'][0]
+    value['assessment']['annotations'] = [
+        {**template, 'issue': f'问题{index}', 'suggestion': f'建议{index}'} for index in range(12)]
+    summary = module().learning_summary(value)
+    assert len(summary) == 10
+    assert summary[-1]['action'] == '建议8'
     assert module().learning_summary({}) == []
     assert '暂无' in module().summary_html({})
 

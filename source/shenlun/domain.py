@@ -8,6 +8,29 @@ import math
 import re
 
 RUBRIC_VERSION = "training-1"
+# Annotation labels are a closed set so the evidence chain stays groupable and
+# the "needs material quote" rule below cannot drift with model wording.
+ISSUE_TYPE_LABELS = ("审题偏差", "要点遗漏", "材料未用", "表述空泛",
+                     "结构松散", "论证不足", "格式不符", "其他")
+MATERIAL_ISSUE_TYPES = frozenset({"审题偏差", "要点遗漏", "材料未用"})
+_ISSUE_TYPE_ALIASES = {"跑题": "审题偏差", "偏题": "审题偏差", "审题": "审题偏差",
+                       "漏点": "要点遗漏", "遗漏要点": "要点遗漏", "覆盖不足": "要点遗漏",
+                       "未用材料": "材料未用", "材料": "材料未用",
+                       "空泛": "表述空泛", "套话": "表述空泛", "口语": "表述空泛",
+                       "结构": "结构松散", "条理": "结构松散",
+                       "论证": "论证不足", "逻辑": "论证不足",
+                       "格式": "格式不符", "文体": "格式不符"}
+
+
+def normalise_issue_type(value):
+    """Fold model wording onto the closed label set; unknown input becomes 其他."""
+    text = value.strip() if isinstance(value, str) else ""
+    if text in ISSUE_TYPE_LABELS:
+        return text
+    for alias, label in _ISSUE_TYPE_ALIASES.items():
+        if text and alias in text:
+            return label
+    return "其他"
 RUBRICS = {
     "归纳概括": [("task", "任务对象", 15), ("coverage", "材料覆盖", 40), ("accuracy", "概括准确", 25), ("expression", "组织表达", 15), ("constraints", "字数与形式", 5)],
     "综合分析": [("task", "任务契合", 20), ("evidence", "材料依据", 25), ("reasoning", "关系与推理", 30), ("expression", "组织表达", 20), ("constraints", "字数与形式", 5)],
@@ -138,6 +161,10 @@ def validate_assessment(result: dict, submission: dict, corpus: list) -> dict:
     if not isinstance(result, dict):
         raise ValueError("模型批改结果不是结构化对象")
     out = copy.deepcopy(result)
+    # Traceability metadata: a dimension id must belong to this rubric, and the
+    # issue label must be one of the closed labels. Both are optional so reports
+    # written before the fields existed still validate.
+    rubric_ids = {d["id"] for d in submission["rubric"]} if submission.get("mode") == "full" else set()
     for field in ("summary", "task_analysis", "next_action"):
         require_text(out.get(field), field)
     for field in ("strengths", "uncertainties"):
@@ -158,6 +185,9 @@ def validate_assessment(result: dict, submission: dict, corpus: list) -> dict:
             raise ValueError("批注原文与所指位置不一致")
         require_text(a.get("issue"), "问题说明")
         require_text(a.get("suggestion"), "修改建议")
+        dimension = a.get("dimension")
+        a["dimension"] = dimension if isinstance(dimension, str) and dimension in rubric_ids else ""
+        a["issue_type"] = normalise_issue_type(a.get("issue_type"))
         signature = (start, end, a["issue"])
         if signature in seen:
             raise ValueError("存在重复批注，请重新批改")

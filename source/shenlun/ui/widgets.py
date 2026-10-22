@@ -5,9 +5,12 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from PySide6.QtCore import QUrl,Qt
-from PySide6.QtGui import QColor,QDesktopServices, QFont, QFontDatabase,QPalette
+from PySide6.QtGui import QColor,QDesktopServices, QFont, QFontDatabase,QFontMetrics,QPalette
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QLabel,
-    QPlainTextEdit, QPushButton, QTableView, QTableWidget, QVBoxLayout, QWidget,QSizePolicy)
+    QPlainTextEdit, QPushButton, QStyledItemDelegate, QStyle, QStyleOptionViewItem,
+    QTableView, QTableWidget, QVBoxLayout, QWidget,QSizePolicy)
+
+from .table_models import HighlightRole
 
 
 STYLE = r'''
@@ -72,10 +75,10 @@ QTabWidget::pane{border:1px solid #e0e7ef;border-radius:8px;background:white;top
 QTabBar::tab{background:transparent;color:#7d8da1;padding:11px 16px;border-bottom:2px solid transparent;margin-right:4px;}
 QTabBar::tab:selected{color:#118372;border-bottom:2px solid #199b87;font-weight:600;}
 QTabBar::tab:hover{color:#147d72;background:#edf6f3;}
-QTableWidget,QTableView,QListWidget,QListView{background:white;border:1px solid #e0e7ef;border-radius:7px;alternate-background-color:#f8fafc;selection-background-color:#e3f3f0;selection-color:#23594f;outline:none;}
-QTableWidget::item,QTableView::item{padding:5px 8px;border-bottom:1px solid #f0f3f7;}
-QTableWidget::item:selected,QTableView::item:selected{background:#e3f3f0;color:#205c50;}
-QTableWidget::item:hover,QTableView::item:hover{background:#f0f7f6;}
+QTableWidget,QTableView,QTreeWidget,QTreeView,QListWidget,QListView{background:white;border:1px solid #e0e7ef;border-radius:7px;alternate-background-color:#f8fafc;selection-background-color:#e3f3f0;selection-color:#23594f;outline:none;}
+QTableWidget::item,QTableView::item,QTreeWidget::item,QTreeView::item{padding:5px 8px;border-bottom:1px solid #f0f3f7;}
+QTableWidget::item:selected,QTableView::item:selected,QTreeWidget::item:selected,QTreeView::item:selected{background:#e3f3f0;color:#205c50;}
+QTableWidget::item:hover,QTableView::item:hover,QTreeWidget::item:hover,QTreeView::item:hover{background:#f0f7f6;}
 QListWidget::item,QListView::item{padding:9px;border-bottom:1px solid #f1f4f8;}
 QListWidget::item:selected,QListView::item:selected{background:#e3f3f0;color:#205c50;}
 QHeaderView::section{background:#f7f9fc;border:none;border-bottom:1px solid #e3e9f1;padding:10px 8px;color:#6a7b90;font-size:12px;font-weight:600;}
@@ -215,6 +218,77 @@ def table(headers):
     return result
 
 
+class HighlightDelegate(QStyledItemDelegate):
+    """Marks the search term inside the title cell.
+
+    Only ``paint`` is overridden and no geometry is recomputed: sizes still come
+    from the style, so row height and column widths stay exactly as before.
+    Selected rows fall back to the default painting to keep text legible.
+    """
+
+    MARK = QColor(255, 214, 102)
+
+    @staticmethod
+    def _spans(shown, needles):
+        """Merge every occurrence of every needle into sorted, non-overlapping spans."""
+        spans = []
+        for needle in needles:
+            position = shown.find(needle)
+            while position >= 0:
+                spans.append((position, position + len(needle)))
+                position = shown.find(needle, position + len(needle))
+        spans.sort()
+        merged = []
+        for start, end in spans:
+            if merged and start <= merged[-1][1]:
+                merged[-1] = (merged[-1][0], max(end, merged[-1][1]))
+            else:
+                merged.append((start, end))
+        return merged
+
+    def paint(self, painter, option, index):
+        needles = index.data(HighlightRole)
+        if not needles or option.state & QStyle.StateFlag.State_Selected:
+            super().paint(painter, option, index)
+            return
+        if isinstance(needles, str):
+            needles = (needles,)
+        needles = tuple(needle for needle in needles if needle)
+        opt = QStyleOptionViewItem(option)
+        self.initStyleOption(opt, index)
+        text = opt.text
+        opt.text = ''
+        widget = opt.widget
+        style = widget.style() if widget is not None else QApplication.style()
+        style.drawControl(QStyle.ControlElement.CE_ItemViewItem, opt, painter, widget)
+        if not text or not needles:
+            return
+        rect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemText, opt, widget)
+        metrics = QFontMetrics(opt.font)
+        shown = metrics.elidedText(text, opt.textElideMode, rect.width())
+        spans = self._spans(shown, needles)
+        painter.save()
+        painter.setClipRect(rect)
+        painter.setFont(opt.font)
+        painter.setPen(opt.palette.color(QPalette.ColorRole.Text))
+        baseline = rect.top() + (rect.height() - metrics.height()) // 2 + metrics.ascent()
+        x, cursor = rect.left(), 0
+        for start, end in spans:
+            if start > cursor:
+                piece = shown[cursor:start]
+                painter.drawText(x, baseline, piece)
+                x += metrics.horizontalAdvance(piece)
+            piece = shown[start:end]
+            width = metrics.horizontalAdvance(piece)
+            painter.fillRect(x, rect.top(), width, rect.height(), self.MARK)
+            painter.drawText(x, baseline, piece)
+            x += width
+            cursor = end
+        if cursor < len(shown):
+            painter.drawText(x, baseline, shown[cursor:])
+        painter.restore()
+
+
 class ModelTable(QTableView):
     """Model-backed table for long lists; only visible rows are laid out.
 
@@ -224,6 +298,7 @@ class ModelTable(QTableView):
     def __init__(self, model):
         super().__init__()
         self.setModel(model)
+        self.setItemDelegate(HighlightDelegate(self))
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.setAlternatingRowColors(True)

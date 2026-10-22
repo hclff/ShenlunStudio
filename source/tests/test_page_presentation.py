@@ -158,7 +158,7 @@ def test_work_areas_and_primary_actions_remain_reachable(window, app, size):
     window.show()
     controls = [
         [window.question_type, window.materials_edit, window.answer_edit, window.assess_button],
-        [window.corpus_table, window.article_tabs, window.extract_button],
+        [window.corpus_table, window.article_tabs, window.extract_button, window.filter_extract_button],
         [window.method_library_button],
         [window.history_start_button, window.calibration_label],
         [window.model_url, window.api_key],

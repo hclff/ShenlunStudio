@@ -19,7 +19,7 @@ class CoreService:
         self.key=key
         self.client=None
 
-    def _complete(self,system,payload,cancel,*,retry_json=True):
+    def _complete(self,system,payload,cancel,*,retry_json=True,prompt_version=None):
         check_cancel(cancel)
         if self.client is None:self.client=ModelClient(self.config,self.key)
         for attempt in range(2):
@@ -29,17 +29,18 @@ class CoreService:
                 response=self.client.complete(prompt,payload,cancel)
             except ModelError as exc:
                 metadata=getattr(exc,'response_metadata',None)
-                if metadata is not None:self._record_response_usage(metadata)
+                if metadata is not None:self._record_response_usage(metadata,prompt_version)
                 if retry_json and attempt == 0 and isinstance(exc, JSONOutputError):
                     continue
                 raise
-            self._record_response_usage(response)
+            self._record_response_usage(response,prompt_version)
             check_cancel(cancel)
             return response
 
-    def _record_response_usage(self,response):
+    def _record_response_usage(self,response,prompt_version=None):
         usage={**response['usage'],'model':response.get('model',self.config['model']),
-               'prompt_version':PROMPT_VERSION,'created_at':_now(),'estimated':response.get('usage_estimated',False)}
+               'prompt_version':prompt_version or PROMPT_VERSION,'created_at':_now(),
+               'estimated':response.get('usage_estimated',False)}
         # Usage is recorded even if semantic validation later rejects the output.
         self.store.record_usage(usage)
 

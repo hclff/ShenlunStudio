@@ -105,7 +105,7 @@ class EvaluationDialog(MethodComparisonUiMixin,QDialog):
         self.setWindowTitle('小规模评测 · 作答、盲评与重复评分')
         self.resize(1000, 680); self.setMinimumSize(900, 600)
         layout = QVBoxLayout(self)
-        notice = QLabel('本机评测与普通训练记录分开。公开作者自答、GPT 对照及机构示范分别统计；缺少独立人工评分时不计算准确性。小样本尚未校准。')
+        notice = QLabel('本机评测与训练记录分开；缺少独立人工评分时只比较分数与波动，不计算准确性。')
         notice.setWordWrap(True); layout.addWidget(notice)
         self.set_combo = QComboBox(); self.create_button = button('新建评测集', self.create_set)
         layout.addLayout(row(QLabel('评测集'),self.set_combo,self.create_button))

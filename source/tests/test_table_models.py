@@ -7,7 +7,7 @@ the workspace changes appearance without anyone asking for it.
 import pytest
 from PySide6.QtWidgets import QTableWidgetItem
 
-from shenlun.ui.table_models import ArticleSummaryModel
+from shenlun.ui.table_models import ArticleSummaryModel, HighlightRole
 from shenlun.ui.widgets import model_table, table
 
 HEADERS = list(ArticleSummaryModel.HEADERS)
@@ -76,3 +76,30 @@ def test_viewport_geometry_matches(pair):
     legacy, modern = pair
     assert modern.viewport().size() == legacy.viewport().size()
     assert modern.size() == legacy.size()
+
+
+def test_appending_a_page_keeps_rows_and_positions():
+    model = ArticleSummaryModel(ROWS[:2])
+    model.append_rows([ROWS[2]])
+    assert model.rowCount() == 3
+    assert model.index_of('a3') == 2
+    assert model.index_of('missing') == -1
+    model.append_rows([])
+    assert model.rowCount() == 3
+
+
+def test_highlight_is_exposed_only_for_the_title_column():
+    model = ArticleSummaryModel(ROWS)
+    assert model.data(model.index(0, 0), HighlightRole) is None
+    model.set_highlight('人民')
+    assert model.data(model.index(0, 0), HighlightRole) == ('人民',)
+    assert model.data(model.index(0, 1), HighlightRole) is None
+    model.set_highlight('')
+    assert model.data(model.index(0, 0), HighlightRole) is None
+
+
+def test_highlight_splits_a_query_into_terms():
+    model = ArticleSummaryModel(ROWS)
+    model.set_highlight('人民、治理')
+    assert model.data(model.index(0, 0), HighlightRole) == ('人民', '治理')
+    assert model.highlight_terms() == ('人民', '治理')

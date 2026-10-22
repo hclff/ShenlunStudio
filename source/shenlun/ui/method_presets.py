@@ -372,7 +372,6 @@ class MethodPresetUiMixin:
         self.method_preset_summary.setParent(self.exercise_settings_card)
         self.method_preset_summary.hide()  # Counts are visible on the preview button without consuming another input row.
         self.method_choice.currentIndexChanged.connect(self._method_choice_changed)
-        self.question_type.currentTextChanged.connect(self.refresh_method_preset_preview)
         self.refresh_method_presets()
 
     def refresh_method_presets(self, *args):
@@ -399,8 +398,7 @@ class MethodPresetUiMixin:
             self.method_preset_summary.setText('组合列表不可用：' + str(exc))
         finally:
             self.method_choice.blockSignals(False)
-        self.refresh_teaching_summary()
-        self.refresh_method_preset_preview(); self.refresh_method_preset_busy()
+        self.refresh_teaching_summary(); self.refresh_method_preset_busy()
 
     def _method_choice_changed(self, *args):
         if self.workers or getattr(self, '_closing', False):
@@ -412,7 +410,7 @@ class MethodPresetUiMixin:
             self.store.set_setting('method_choice', normalize_method_choice(value))
         except ERRORS as exc:
             self.refresh_method_presets(); self.notify('方法选择未保存。' + str(exc)); return
-        self.refresh_teaching_summary(); self.refresh_method_preset_preview(); self.refresh_method_preset_busy()
+        self.refresh_teaching_summary(); self.refresh_method_preset_busy()
 
     def method_preview(self, submission=None):
         from ..method_presets import resolve_method_choice
@@ -420,21 +418,52 @@ class MethodPresetUiMixin:
             submission = {'question_type': self.question_type.currentText()}
         return resolve_method_choice(self.store, submission)
 
+    def invalidate_method_context(self, *args):
+        """Mark the method preview stale without touching the library.
+
+        Method resolution validates every enabled card against its source
+        articles. Doing that inside the type combo's signal handler froze the
+        window on each switch, so the lists are resolved on demand instead.
+        """
+        if hasattr(self, 'method_preset_summary'):
+            self.method_preset_summary.setText('本次方法：题型已更改，打开“查看本次方法…”核对。')
+            self.method_preset_summary.setToolTip('')
+        if hasattr(self, 'method_preset_preview_button'):
+            self.method_preset_preview_button.setText('查看本次方法…')
+            self.method_preset_preview_button.setToolTip('题型已更改，打开后核对本次实际使用的方法名单。')
+        try:
+            from ..method_presets import normalize_method_choice
+            mode = normalize_method_choice(self.store.get_setting('method_choice'))['mode']
+        except (ValueError, TypeError):
+            mode = 'auto'
+        if mode != 'auto':
+            # Explicit presets only resolve their small member list, so keeping
+            # their counts current stays cheap.
+            self.refresh_teaching_summary()
+            return
+        if hasattr(self, 'teaching_summary'):
+            self.teaching_summary.setText('方法辅助：题型已更改，批改前将按当前题型核对。')
+            self.teaching_summary.setToolTip('')
+
+    def _apply_method_preview(self, resolved):
+        teaching = (resolved.get('teaching_snapshot') or {}).get('methods', [])
+        article = resolved.get('article_methods', [])
+        self.method_preset_summary.setText(f'本次方法：教学 {len(teaching)} 项 · 文章 {len(article)} 项 · 查看完整名单后批改。')
+        self.method_preset_summary.setToolTip(preview_text(resolved))
+        self.method_preset_preview_button.setText(f'查看方法（{len(teaching)+len(article)}）…')
+        self.method_preset_preview_button.setToolTip(preview_text(resolved))
+
     def refresh_method_preset_preview(self, *args):
         if not hasattr(self, 'method_preset_summary'): return
         try:
             resolved = self.method_preview()
-            teaching = (resolved.get('teaching_snapshot') or {}).get('methods', [])
-            article = resolved.get('article_methods', [])
-            self.method_preset_summary.setText(f'本次方法：教学 {len(teaching)} 项 · 文章 {len(article)} 项 · 查看完整名单后批改。')
-            self.method_preset_summary.setToolTip(preview_text(resolved))
-            self.method_preset_preview_button.setText(f'查看方法（{len(teaching)+len(article)}）…')
-            self.method_preset_preview_button.setToolTip(preview_text(resolved))
         except ERRORS as exc:
             self.method_preset_summary.setText('本次方法不可用：' + str(exc))
             self.method_preset_summary.setToolTip(str(exc))
             self.method_preset_preview_button.setText('方法不可用…')
             self.method_preset_preview_button.setToolTip(str(exc))
+            return
+        self._apply_method_preview(resolved)
 
     def refresh_method_preset_busy(self):
         if not hasattr(self, 'method_choice'): return
@@ -467,6 +496,8 @@ class MethodPresetUiMixin:
             resolved = self.method_preview()
         except ERRORS as exc:
             self.notify('本次方法不可用：' + str(exc)); return
+        if hasattr(self, 'method_preset_summary'):
+            self._apply_method_preview(resolved)
         dialog = QDialog(self); dialog.setWindowTitle('本次实际方法 · 只读预览'); dialog.resize(760, 560)
         layout = QVBoxLayout(dialog); text = editor(readonly=True)
         text.setPlainText(preview_text(resolved)); layout.addWidget(text, 1)

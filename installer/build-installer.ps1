@@ -7,7 +7,7 @@ $installerRoot = $PSScriptRoot
 $projectRoot = Split-Path -Parent $installerRoot
 $releaseDir = Join-Path $projectRoot 'source\dist\ShenlunStudio'
 $issPath = Join-Path $installerRoot 'ShenlunStudio.iss'
-$setupName = 'ShenlunStudio-0.9.5-Setup.exe'
+$setupName = 'ShenlunStudio-1.0.1-Setup.exe'
 
 if (-not (Test-Path -LiteralPath (Join-Path $releaseDir 'ShenlunStudio.exe') -PathType Leaf)) {
     throw 'Latest portable release is missing ShenlunStudio.exe.'

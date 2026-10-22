@@ -5,7 +5,7 @@ import threading
 import pytest
 from PySide6.QtCore import Qt,QTimer
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication,QDialog
+from PySide6.QtWidgets import QApplication,QDialog,QTextBrowser
 
 from shenlun.storage import Store
 
@@ -84,12 +84,33 @@ def test_help_dialog_opens_without_configuring_or_calling_model(window,app):
     def dismiss():
         dialog=app.activeModalWidget()
         if isinstance(dialog,QDialog):
-            seen.append(dialog.objectName());dialog.reject()
+            browser=dialog.findChild(QTextBrowser,'help_dialog_browser')
+            seen.append((dialog.objectName(),browser.toPlainText() if browser else ''))
+            dialog.reject()
     timer=QTimer();timer.timeout.connect(dismiss);timer.start(10)
     try:window.show_help()
     finally:timer.stop()
-    assert seen==['help_dialog'] and not window.workers
+    assert len(seen)==1 and seen[0][0]=='help_dialog' and not window.workers
+    assert '申论研习使用说明' in seen[0][1]
+    assert '## 一、安装与启动' not in seen[0][1]
     assert not window.store.usage_summary()['requests']
+
+
+def test_help_falls_back_when_bundled_guide_is_missing(window,app,monkeypatch,tmp_path):
+    monkeypatch.setattr('shenlun.ui.window.guide_path',lambda:tmp_path/'missing.md')
+    seen=[]
+    def dismiss():
+        dialog=app.activeModalWidget()
+        if isinstance(dialog,QDialog):
+            browser=dialog.findChild(QTextBrowser,'help_dialog_browser')
+            seen.append(browser.toPlainText() if browser else '')
+            dialog.reject()
+    timer=QTimer();timer.timeout.connect(dismiss);timer.start(10)
+    try:window.show_help()
+    finally:timer.stop()
+    assert seen and '使用指南暂不可用' in seen[0]
+    assert 'F1 使用指南' in seen[0]
+    assert not window.workers
 
 
 def test_empty_table_guide_clears_when_data_arrives(window,app):
@@ -122,6 +143,21 @@ def test_release_page_capture_preserves_navigation_and_window_size(window,tmp_pa
     assert len(report['pages'])==6 and len(report['minimum_pages'])==6
     assert all(item['width']==1050 and item['height']==720 for item in report['minimum_pages'])
     assert all((tmp_path/item['screenshot']).stat().st_size>5000 for item in report['pages'])
+
+
+def test_corpus_loads_one_page_then_more_on_demand(window,app):
+    window.PAGE_SIZE=3
+    for index in range(5):
+        window.store.upsert_article({'title': f'分页文章 {index}', 'body': f'正文 {index}'})
+    window.refresh_corpus()
+    app.processEvents()
+    assert window.corpus_table.rowCount()==3
+    assert not window.load_more_button.isHidden()
+    assert '共 5 篇' in window.corpus_count_label.text()
+    window.load_more_articles()
+    app.processEvents()
+    assert window.corpus_table.rowCount()==5
+    assert window.load_more_button.isHidden()
 
 
 def test_cancel_after_worker_emits_result_still_suppresses_pending_gui_callback(window,app):

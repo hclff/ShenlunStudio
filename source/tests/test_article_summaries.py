@@ -41,7 +41,7 @@ def test_summaries_omit_body_and_paragraphs(tmp_path):
     row = store.list_article_summaries()[0]
     assert 'body' not in row and 'paragraphs' not in row and 'data' not in row
     assert set(row) == {'id', 'title', 'journal', 'year', 'kind', 'status',
-                        'publication', 'has_body'}
+                        'publication', 'has_body', 'tags'}
     assert row['has_body'] is True and row['year'] == 2025
 
 
@@ -106,7 +106,7 @@ def test_summary_query_uses_covering_index(tmp_path):
         store.upsert_article(article(f'文章{index:02d}'))
     with sqlite3.connect(path) as conn:
         plan = ' '.join(row[3] for row in conn.execute(
-            'EXPLAIN QUERY PLAN SELECT id,title,journal,year,kind,status,publication,has_body '
+            'EXPLAIN QUERY PLAN SELECT id,title,journal,year,kind,status,publication,has_body,tags '
             'FROM articles ORDER BY publication DESC,title ASC,id ASC LIMIT 100000 OFFSET 0'))
     assert 'COVERING INDEX article_summary_scan' in plan
 
@@ -116,6 +116,7 @@ def strip_derived_columns(path):
     with sqlite3.connect(path) as conn:
         conn.execute('DROP INDEX IF EXISTS article_summary_scan')
         conn.execute('DROP INDEX IF EXISTS article_year')
+        conn.execute('ALTER TABLE articles DROP COLUMN tags')
         conn.execute('ALTER TABLE articles DROP COLUMN has_body')
         conn.execute('ALTER TABLE articles DROP COLUMN year')
         conn.execute('PRAGMA user_version=0')

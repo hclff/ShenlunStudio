@@ -182,6 +182,24 @@ def test_busy_closing_empty_and_post_confirmation_busy_do_not_delete(window, mon
     assert window.store.get_review(rid)
 
 
+def test_busy_poll_refreshes_only_when_worker_state_changes(window, monkeypatch):
+    calls = []
+    monkeypatch.setattr(window, 'refresh_teaching_busy', lambda: calls.append('teaching'))
+    monkeypatch.setattr(window, 'refresh_practice_delete_actions', lambda: calls.append('practice'))
+    window._last_busy_state = False
+    window._sync_busy_state()
+    assert calls == []
+    window.workers.add(object())
+    window._sync_busy_state()
+    assert calls == ['teaching', 'practice']
+    calls.clear()
+    window._sync_busy_state()
+    assert calls == []
+    window.workers.clear()
+    window._sync_busy_state()
+    assert calls == ['teaching', 'practice']
+
+
 def test_stale_data_conflict_is_reported_without_partial_delete(window, monkeypatch):
     rid = saved_review(window)
     window.refresh_history()

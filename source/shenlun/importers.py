@@ -9,10 +9,8 @@ from urllib.parse import urljoin, urlsplit, urldefrag
 
 from lxml import etree, html
 
-from .storage import normalize_article
-
-
-MAX_FILE_BYTES = 25 * 1024 * 1024
+from .document_readers import DOCUMENT_SUFFIXES, MAX_FILE_BYTES, read_document, read_json_articles
+from .storage import normalize_article, tag_list
 
 
 class ImportCancelled(Exception):
@@ -222,7 +220,7 @@ def _save(article, store, result, fingerprints, cancel):
 
 
 def _fingerprints(store):
-    return {a['fingerprint'] for a in store.list_articles(limit=1_000_000) if a.get('fingerprint')}
+    return store.article_fingerprints()
 
 
 def import_manifest(path: Path, store, progress=None, cancel=None) -> dict:
@@ -265,21 +263,127 @@ def import_manifest(path: Path, store, progress=None, cancel=None) -> dict:
 
 
 def read_text_file(path: Path) -> str:
+    """Raw text of a supported document; kept for callers that only need a string."""
     path = Path(path)
     if path.stat().st_size > MAX_FILE_BYTES:
         raise ValueError('文件超过25MB限制；官方来源清单请使用专用导入')
-    suffix = path.suffix.lower()
-    if suffix == '.pdf':
-        from pypdf import PdfReader
-        reader = PdfReader(path)
-        text = '\n'.join(page.extract_text() or '' for page in reader.pages)
-        if not text.strip():
-            raise ValueError('PDF没有可提取文字，扫描件需先使用外部OCR')
-    elif suffix in ('.txt', '.md', '.json'):
-        text = path.read_text(encoding='utf-8-sig')
-    else:
-        raise ValueError('仅支持TXT、MD、JSON、文字PDF')
-    return text.replace('\r\n', '\n').replace('\r', '\n')
+    if path.suffix.lower() in ('.txt', '.md', '.json'):
+        return path.read_text(encoding='utf-8-sig').replace('\r\n', '\n').replace('\r', '\n')
+    return read_document(path)['body']
+
+
+def expand_paths(paths):
+    """Flatten files and folders into a stable, filtered, de-duplicated list."""
+    collected = []
+    for item in paths:
+        path = Path(item)
+        if path.is_dir():
+            collected.extend(sorted((child for child in path.rglob('*') if child.is_file()),
+                                    key=lambda child: (str(child.parent).lower(), child.name.lower())))
+        elif path.is_file():
+            collected.append(path)
+        else:
+            raise ValueError(f'找不到文件或文件夹：{path}')
+    files, seen = [], set()
+    for path in collected:
+        name = path.name
+        if name.startswith(('.', '~$')) or name.lower() in ('thumbs.db', 'desktop.ini'):
+            continue
+        if path.suffix.lower() not in DOCUMENT_SUFFIXES:
+            continue
+        key = str(path.resolve()).lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        files.append(path)
+    return files
+
+
+def _preview_item(article, path, known, index):
+    value = normalize_article(article)
+    if value['publication'][:4].isdigit() and not value['year']:
+        value['year'] = int(value['publication'][:4])
+    fingerprint = value['fingerprint']
+    return {'path': str(path), 'name': path.name, 'index': index, 'article': value,
+            'title': value['title'], 'author': value['author'], 'journal': value['journal'],
+            'kind': value['kind'], 'publication': value['publication'], 'tags': value['tags'],
+            'characters': len(value['body']), 'fingerprint': fingerprint,
+            'duplicate': bool(fingerprint and fingerprint in known), 'error': ''}
+
+
+def preview_files(paths, store, progress=None, cancel=None) -> dict:
+    """Parse only: every candidate is returned for review before anything is written."""
+    files = expand_paths(paths)
+    known = _fingerprints(store)
+    items, failed = [], []
+    for position, path in enumerate(files, 1):
+        _check_cancel(cancel)
+        _progress(progress, f'正在读取 {position}/{len(files)}：{path.name}')
+        try:
+            if path.suffix.lower() == '.json':
+                articles = read_json_articles(path)
+            else:
+                articles = [read_document(path)]
+        except (ValueError, OSError) as exc:
+            failed.append({'path': str(path), 'name': path.name, 'error': str(exc)})
+            continue
+        for index, article in enumerate(articles):
+            article = dict(article)
+            if not article.get('body') and path.suffix.lower() != '.json':
+                failed.append({'path': str(path), 'name': path.name, 'error': '没有正文'})
+                continue
+            article.setdefault('source_format', path.suffix.lower().lstrip('.'))
+            article.setdefault('local_path', str(path.resolve()))
+            item = _preview_item(article, path, known, index)
+            if item['fingerprint']:
+                known.add(item['fingerprint'])
+            items.append(item)
+    _progress(progress, f'读取完成：待确认 {len(items)} 篇，失败 {len(failed)} 篇')
+    return {'items': items, 'failed': failed, 'total': len(items) + len(failed)}
+
+
+def commit_imports(items, store, progress=None, cancel=None) -> dict:
+    """Write reviewed items in one transaction; each row fails or succeeds alone."""
+    result = {'imported': 0, 'duplicates': 0, 'failed': [], 'article_ids': []}
+    known = _fingerprints(store)
+    values, sources = [], []
+    for position, item in enumerate(items, 1):
+        _check_cancel(cancel)
+        if position % 10 == 0:
+            _progress(progress, f'正在写入 {position}/{len(items)}')
+        source = str(item.get('path') or item.get('name') or '')
+        try:
+            article = dict(item.get('article') or {})
+            if not article:
+                raise ValueError('缺少文章数据')
+            for key in ('title', 'author', 'journal', 'kind'):
+                if item.get(key) is not None:
+                    article[key] = item[key]
+            publication = str(item.get('publication') or '').strip()
+            article['publication'] = publication
+            if publication[:4].isdigit():
+                article['year'] = int(publication[:4])
+            if item.get('tags') is not None:
+                article['tags'] = tag_list(item['tags'])
+            value = normalize_article(article)
+            if not value['body'].strip():
+                raise ValueError('没有正文')
+            if value['fingerprint'] in known:
+                result['duplicates'] += 1
+                continue
+            known.add(value['fingerprint'])
+            values.append(value)
+            sources.append(source)
+        except (ValueError, OSError) as exc:
+            result['failed'].append({'path': source, 'error': str(exc)})
+    if values:
+        try:
+            result['article_ids'] = store.upsert_articles(values)
+            result['imported'] = len(result['article_ids'])
+        except Exception as exc:  # noqa: BLE001 - a failed batch is reported, not raised
+            result['failed'].extend({'path': source, 'error': f'写入失败：{exc}'} for source in sources)
+    _progress(progress, f"导入完成：成功 {result['imported']} 篇，重复 {result['duplicates']} 篇，失败 {len(result['failed'])} 篇")
+    return result
 
 
 def import_file(path, store, progress=None, cancel=None) -> dict:
@@ -289,19 +393,17 @@ def import_file(path, store, progress=None, cancel=None) -> dict:
     if path.suffix.lower() == '.json' and path.name.lower() == 'manifest.json':
         if path.stat().st_size > MAX_FILE_BYTES:
             return import_manifest(path, store, progress, cancel)
-    text = read_text_file(path)
     _check_cancel(cancel)
     if path.suffix.lower() == '.json':
-        data = json.loads(text)
-        if isinstance(data, dict) and 'issues' in data:
-            return import_manifest(path, store, progress, cancel)
-        articles = data if isinstance(data, list) else data.get('articles', [data]) if isinstance(data, dict) else []
-        if not articles or any(not isinstance(article, dict) for article in articles):
-            raise ValueError('JSON必须包含文章对象或文章列表')
+        articles = read_json_articles(path)
     else:
-        if not text.strip():
+        document = read_document(path)
+        if not document['body'].strip():
             raise ValueError('文件没有正文')
-        articles = [{'title': path.stem, 'body': text, 'local_path': str(path.resolve())}]
+        articles = [{'title': document['title'], 'author': document['author'],
+                     'publication': document['publication'], 'tags': document['tags'],
+                     'body': document['body'], 'local_path': str(path.resolve()),
+                     'source_format': document['format']}]
     result, fingerprints = _result(), _fingerprints(store)
     for article in articles:
         _save(article, store, result, fingerprints, cancel)

@@ -34,6 +34,12 @@ def resolve_method_choice(store,submission,choice=None,retire_invalid=False):
     validator=AppService(store,{},'')
     if choice['mode']=='auto':
         for card in store.list_cards(enabled_only=True):
+            applicable=question_type in card.get('applicable_types',[])
+            # Preview only needs applicable methods. Real grading still checks
+            # every card once so stale evidence is retired even when its type no
+            # longer matches the submission.
+            if not applicable and not retire_invalid:
+                continue
             try:
                 validator._validate_card(card)
             except ValueError:
@@ -44,8 +50,12 @@ def resolve_method_choice(store,submission,choice=None,retire_invalid=False):
                     except MethodConflictError:
                         pass
                 continue
-            if question_type in card.get('applicable_types',[]) and len(result['article_methods'])<6:
+            if not applicable:
+                continue
+            if len(result['article_methods'])<6:
                 result['article_methods'].append(copy.deepcopy(card))
+            elif not retire_invalid:
+                break
         result['teaching_snapshot']=resolve_teaching_guidance(store,submission)
         return result
     preset=store.get_method_preset(choice['preset_id'])

@@ -25,6 +25,9 @@ def main():
     article_methods = ROOT / 'assets' / 'builtin_article_methods.json'
     if not article_methods.is_file():
         raise SystemExit('缺少内置文章方法 assets/builtin_article_methods.json')
+    user_guide = ROOT / 'assets' / '使用说明.md'
+    if not user_guide.is_file():
+        raise SystemExit('缺少使用说明 assets/使用说明.md')
     with sqlite3.connect(seed) as db:
         db.execute('PRAGMA wal_checkpoint(TRUNCATE)')
         if db.execute('PRAGMA quick_check').fetchone()[0] != 'ok':
@@ -61,6 +64,7 @@ def main():
                '--paths', str(ROOT), '--icon',str(app_icon_path),'--version-file',str(version_file),'--add-data', str(seed)+os.pathsep+'assets',
                '--add-data',str(ROOT/'assets'/'ui')+os.pathsep+'assets/ui',
                '--add-data',str(article_methods)+os.pathsep+'assets',
+               '--add-data',str(user_guide)+os.pathsep+'assets',
                '--hidden-import', 'keyring.backends.Windows', '--collect-submodules', 'keyring.backends',
                # Migration steps are imported by name at runtime; without this the
                # frozen application starts without them and fails on first open.

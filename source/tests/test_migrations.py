@@ -81,13 +81,15 @@ def test_legacy_database_gains_projection_columns_and_keeps_rows(tmp_path):
     path = legacy_article_database(tmp_path / 'legacy.db')
     result = ensure_schema(path)
     assert result['from'] == 0 and result['to'] == SCHEMA_VERSION
-    assert result['applied'] == [1, 2, 3]
+    assert result['applied'] == list(range(1, SCHEMA_VERSION + 1))
     assert user_version(path) == SCHEMA_VERSION
     with sqlite3.connect(path) as conn:
         article = conn.execute('SELECT year,has_body FROM articles').fetchone()
-        assert article == (2024, 1)
         rows = dict(conn.execute(
             'SELECT id,plan_status||"|"||plan_due FROM question_bank').fetchall())
+    assert article == (2024, 1)
+    # ``tags`` must be appended last: restore validation compares column order.
+    assert columns(path, 'articles')[-1] == 'tags'
     assert rows['q-plan'] == '复习中|2026-11-01'
     # A retry flag without an explicit plan reads as 待复习, matching question_plan().
     assert rows['q-plain'] == '待复习|'
@@ -126,7 +128,7 @@ def test_current_database_is_not_backed_up_again(tmp_path):
 def test_empty_database_is_stamped_without_a_backup(tmp_path):
     path = legacy_article_database(tmp_path / 'empty.db', with_rows=False)
     result = ensure_schema(path)
-    assert result['applied'] == [1, 2, 3]
+    assert result['applied'] == list(range(1, SCHEMA_VERSION + 1))
     assert result['backup'] is None
     assert user_version(path) == SCHEMA_VERSION
 
@@ -151,12 +153,28 @@ def test_failed_step_rolls_back_schema_and_version(tmp_path, monkeypatch):
         conn.execute('ALTER TABLE articles ADD COLUMN half_done TEXT')
         raise RuntimeError('合成迁移失败')
 
-    monkeypatch.setattr(migrations, 'STEPS', migrations.STEPS + ((4, 'broken', broken),))
+    monkeypatch.setattr(migrations, 'STEPS',
+                        migrations.STEPS + ((SCHEMA_VERSION + 1, 'broken', broken),))
     with pytest.raises(RuntimeError):
         ensure_schema(path)
     assert user_version(path) == 0
     assert 'half_done' not in columns(path, 'articles')
     assert 'year' not in columns(path, 'articles')
+
+
+def test_article_tags_are_backfilled_from_stored_json(tmp_path):
+    """A 0.9.6 database already carries tags inside ``data``; only the column is new."""
+    path = legacy_article_database(tmp_path / 'legacy.db')
+    tagged = {'id': 'a-1', 'title': '旧文章', 'journal': '求是', 'body': '正文',
+              'kind': '理论', 'status': 'available', 'publication': '2024-03',
+              'tags': ['生态', ' 民生 ', '生态']}
+    with sqlite3.connect(path) as conn:
+        conn.execute('UPDATE articles SET data=? WHERE id=?',
+                     (json.dumps(tagged, ensure_ascii=False), 'a-1'))
+        conn.commit()
+    ensure_schema(path)
+    assert row(path, 'SELECT tags FROM articles WHERE id=?', ('a-1',))[0] == '民生\n生态'
+    assert row(path, 'SELECT count(*) FROM articles')[0] == 1
 
 
 def test_store_opens_legacy_database_and_keeps_existing_rows(tmp_path):
@@ -211,6 +229,44 @@ def test_migrate_returns_only_newly_applied_steps(tmp_path):
     path = legacy_article_database(tmp_path / 'legacy.db')
     with sqlite3.connect(path) as conn:
         conn.execute('BEGIN IMMEDIATE')
-        assert migrate(conn) == [1, 2, 3]
+        assert migrate(conn) == list(range(1, SCHEMA_VERSION + 1))
         assert migrate(conn) == []
         conn.commit()
+
+
+def index_tables(path):
+    with sqlite3.connect(path) as conn:
+        return [row[0] for row in conn.execute(
+            "SELECT name FROM sqlite_master WHERE name LIKE 'article_search%'")]
+
+
+def test_upgrade_drops_the_legacy_trigram_index(tmp_path):
+    """A 0.9.5 database loses the 141.5 MB index; no other table is touched."""
+    path = legacy_article_database(tmp_path / 'legacy.db')
+    with sqlite3.connect(path) as conn:
+        conn.execute("CREATE VIRTUAL TABLE article_search USING fts5("
+                     "article_id UNINDEXED, text, tokenize='trigram')")
+        conn.execute("INSERT INTO article_search(article_id,text) VALUES ('a-1','旧文章')")
+    assert index_tables(path)
+    ensure_schema(path)
+    assert index_tables(path) == []
+    assert user_version(path) == SCHEMA_VERSION
+    assert row(path, 'SELECT count(*) FROM articles')[0] == 1
+
+
+def test_store_never_creates_a_fulltext_index(tmp_path):
+    store = Store(tmp_path / 'fresh.db')
+    assert index_tables(store.path) == []
+    store.upsert_article({'id': 'a-1', 'title': '标题', 'journal': '求是',
+                          'body': '正文', 'kind': '理论', 'status': 'available'})
+    assert index_tables(store.path) == []
+
+
+def test_v6_adds_review_rechecks_table_idempotently(tmp_path):
+    path = legacy_article_database(tmp_path / 'legacy.db')
+    first = ensure_schema(path)
+    assert first['applied'][-1] == 6
+    assert columns(path, 'review_rechecks') == ['id', 'review_id', 'created_at', 'data']
+    assert user_version(path) == SCHEMA_VERSION
+    assert ensure_schema(path)['applied'] == []
+    assert columns(path, 'review_rechecks') == ['id', 'review_id', 'created_at', 'data']

@@ -1,4 +1,7 @@
 """Native workbench shell with explicit task feedback and stable page routing."""
+import sys
+from pathlib import Path
+
 from PySide6.QtCore import QSize,QTimer,Qt
 from PySide6.QtGui import QAction,QKeySequence
 from PySide6.QtWidgets import (QDialog,QDialogButtonBox,QHBoxLayout,QLabel,QListWidget,
@@ -17,6 +20,11 @@ from .widgets import STYLE,badge,button,ensure_fonts
 from .icons import app_icon,icon
 from .workers import Job
 from .task_feedback import TaskFeedbackMixin
+
+
+def guide_path():
+    root = Path(getattr(sys, '_MEIPASS', Path(__file__).resolve().parents[2]))
+    return root / 'assets' / '使用说明.md'
 
 
 class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMixin,AssessmentMixin,LibraryMixin,PreferencesMixin,BackupMixin):
@@ -81,7 +89,7 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
         status=QWidget();status.setObjectName('statusbar');status.setMinimumHeight(40)
         status_layout=QHBoxLayout(status);status_layout.setContentsMargins(24,5,18,5);status_layout.setSpacing(10)
         self.status_symbol=QLabel('●');self.status_symbol.setObjectName('status_symbol');status_layout.addWidget(self.status_symbol)
-        self.status_label=QLabel('准备就绪 · 可导入题目开始练习，模型调用需先配置。');self.status_label.setObjectName('status_label')
+        self.status_label=QLabel('准备就绪');self.status_label.setObjectName('status_label')
         self.status_label.setTextFormat(Qt.TextFormat.PlainText);self.status_label.setWordWrap(True);self.status_label.setMaximumHeight(48)
         status_layout.addWidget(self.status_label,1)
         self.global_cancel=button('取消当前任务',self.cancel_jobs);self.global_cancel.hide();status_layout.addWidget(self.global_cancel)
@@ -90,11 +98,13 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
         self.navigation.setCurrentRow(0)
         self.build_menus()
         # Evaluation jobs also join workers directly; keep method controls locked
-        # for those jobs as well as jobs launched by start_job.
+        # for those jobs as well as jobs launched by start_job. Poll only the
+        # worker set here: the refresh routines scan large lists, so running them
+        # ten times a second made every click feel sluggish.
+        self._last_busy_state=None
         self.teaching_busy_timer=QTimer(self)
         self.teaching_busy_timer.setInterval(100)
-        self.teaching_busy_timer.timeout.connect(self.refresh_teaching_busy)
-        self.teaching_busy_timer.timeout.connect(self.refresh_practice_delete_actions)
+        self.teaching_busy_timer.timeout.connect(self._sync_busy_state)
         self.teaching_busy_timer.start()
         self.initialize_workspace()
         self.refresh_connection_label();self.refresh_corpus();self.refresh_methods();self.refresh_history();self.refresh_calibration();self.refresh_usage();self.refresh_questions()
@@ -127,15 +137,20 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
         help_menu.addAction('关于申论研习').triggered.connect(self.show_about)
 
     def show_help(self):
-        self.information_dialog('使用指南','help_dialog',
-            '<h2>从材料到一份更好的答案</h2><p>按自己的学习进度使用下面的工作区。</p>'
-            '<h3>01　导入与批改</h3><p>选择题型和考试，导入 Word、PDF、截图，或直接粘贴文字。核对后分别写入题干、给定材料与原答，再开始训练批改。</p>'
-            '<h3>02　阅读与方法</h3><p>在文章资料库检索原文、核对出处；选中文章提炼后，在写作方法库核验并启用有证据支持的方法。</p>'
-            '<h3>03　复盘与设置</h3><p>训练记录保留原答和修改稿，可重新练习或导出报告。使用模型前，请先在设置中保存接口、模型和密钥。</p>'
-            '<p style="color:#718096">训练分数并非官方阅卷结果。图片识别需核对数字、专名与手写内容；资料阅读和本机OCR无需模型接口。</p>'
-            '<h3>04　题库与草稿</h3><p>在我的题库保存当前题目、继续草稿或开始新作答；选择两次已批改作答可比较原答与评分条件。编辑后自动保存，最近草稿可以恢复。人工评分绑定训练记录；备份与恢复位于设置。</p>'
-            '<p>训练记录与题库均可删除当前项，或勾选后批量删除；全选只作用于当前列表。删除前会列出范围，默认取消，永久删除无法撤销。删除训练记录会同时删除绑定的人工评分，保留题目；删除题目会清除专属草稿和参考要点，保留训练报告及当前编辑文字。</p>'
-            '<hr><p><b>快捷操作</b>　Ctrl+O 导入　·　Ctrl+S 保存草稿　·　Alt+1—6 切换工作区　·　F1 使用指南</p>')
+        guide = guide_path()
+        try:
+            text = guide.read_text(encoding='utf-8')
+        except OSError:
+            text = ('# 使用指南暂不可用\n\n'
+                    '未找到随软件分发的《使用说明.md》。\n\n'
+                    '可先按以下步骤使用：\n\n'
+                    '1. 在「设置」保存模型接口、模型名和密钥。\n'
+                    '2. 在「训练批改」导入题目、材料和原答，核对后开始批改。\n'
+                    '3. 在「训练记录」查看评分依据、修改稿和人工评分。\n'
+                    '4. 「文章资料库」和「写作方法库」分别用于阅读积累与有据方法。\n'
+                    '5. 「我的题库」保存题目和草稿。\n\n'
+                    '快捷操作：Ctrl+O 导入，Ctrl+S 保存草稿，Alt+1—6 切换工作区，F1 使用指南。')
+        self.markdown_dialog('使用指南', 'help_dialog', text)
 
     def show_about(self):
         self.information_dialog('关于申论研习','about_dialog',
@@ -146,16 +161,32 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
     def information_dialog(self,title,name,html):
         dialog=QDialog(self);dialog.setWindowTitle(title);dialog.setObjectName(name);dialog.resize(650,570)
         layout=QVBoxLayout(dialog);layout.setContentsMargins(20,20,20,16)
-        browser=QTextBrowser();browser.setOpenExternalLinks(False);browser.setHtml(html);layout.addWidget(browser,1)
+        browser=QTextBrowser();browser.setObjectName(name+'_browser');browser.setOpenExternalLinks(False)
+        browser.setHtml(html);layout.addWidget(browser,1)
+        buttons=QDialogButtonBox(QDialogButtonBox.StandardButton.Close);buttons.button(QDialogButtonBox.StandardButton.Close).setText('关闭')
+        buttons.rejected.connect(dialog.reject);layout.addWidget(buttons);dialog.exec()
+
+    def markdown_dialog(self,title,name,markdown):
+        dialog=QDialog(self);dialog.setWindowTitle(title);dialog.setObjectName(name);dialog.resize(820,680)
+        layout=QVBoxLayout(dialog);layout.setContentsMargins(20,20,20,16)
+        browser=QTextBrowser();browser.setObjectName(name+'_browser');browser.setOpenExternalLinks(False)
+        browser.document().setDefaultStyleSheet(
+            'h1{font-size:24px;color:#152d45;margin:0 0 10px;}'
+            'h2{font-size:18px;color:#1b3a52;margin:20px 0 8px;}'
+            'h3{font-size:15px;color:#24536b;margin:14px 0 6px;}'
+            'p,li{line-height:1.65;}'
+            'code{background:#f1f5f9;}'
+            'blockquote{color:#64748b;margin-left:0;padding-left:10px;}')
+        browser.setMarkdown(markdown);layout.addWidget(browser,1)
         buttons=QDialogButtonBox(QDialogButtonBox.StandardButton.Close);buttons.button(QDialogButtonBox.StandardButton.Close).setText('关闭')
         buttons.rejected.connect(dialog.reject);layout.addWidget(buttons);dialog.exec()
 
     def refresh_connection_label(self):
         if self.config.get('base_url') and self.config.get('model'):
-            self.connection_label.setText('●  模型已配置\n' + self.config['model'] + '\n调用时才连接服务')
+            self.connection_label.setText('●  模型已配置\n' + self.config['model'] + '\n仅在调用时连接')
             self.model_badge.setText('模型已配置');self.model_badge.setProperty('tone','success')
         else:
-            self.connection_label.setText('●  本地模式\n阅读与题目识别可用\n批改前请配置模型')
+            self.connection_label.setText('●  本地模式\n批改前请配置模型')
             self.model_badge.setText('模型待配置');self.model_badge.setProperty('tone','warning')
         self.model_badge.style().unpolish(self.model_badge);self.model_badge.style().polish(self.model_badge)
 
@@ -191,6 +222,13 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
         except Exception as exc:
             self.job_failed(job,str(exc) or type(exc).__name__)
 
+    def _sync_busy_state(self):
+        busy=bool(self.workers)
+        if busy==self._last_busy_state:return
+        self._last_busy_state=busy
+        self.refresh_teaching_busy()
+        self.refresh_practice_delete_actions()
+
     def start_job(self, title, operation, on_result, *, retry=None, domains=None):
         if self.workers:
             self.notify('已有任务正在运行，请完成或取消后再开始。')
@@ -207,8 +245,7 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
         job.failure_message=''
         self.clear_task_feedback()
         self.workers.add(job)
-        self.refresh_teaching_busy()
-        self.refresh_practice_delete_actions()
+        self._sync_busy_state()
         job.progress.connect(lambda message:self.job_progress(job,message))
         job.failed.connect(lambda message:self.job_failed(job,message))
         job.result.connect(lambda result:self.job_result(job,on_result,result))
@@ -224,8 +261,7 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
 
     def finish_job(self, job):
         self.workers.discard(job)
-        self.refresh_teaching_busy()
-        self.refresh_practice_delete_actions()
+        self._sync_busy_state()
         cancelled = job.cancel_event.is_set()
         job.deleteLater()
         self.assess_button.setEnabled(True)
@@ -247,7 +283,7 @@ class MainWindow(QMainWindow,TaskFeedbackMixin,PracticeDeletionMixin,PracticeMix
         if self._closing and not self.workers:
             QTimer.singleShot(0, self.close)
 
-    DOMAIN_REFRESHES = {'corpus': 'refresh_corpus', 'methods': 'refresh_methods',
+    DOMAIN_REFRESHES = {'corpus': 'refresh_corpus_fresh', 'methods': 'refresh_methods',
                         'history': 'refresh_history', 'usage': 'refresh_usage',
                         'questions': 'refresh_questions', 'calibration': 'refresh_calibration'}
 

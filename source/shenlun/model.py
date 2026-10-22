@@ -54,6 +54,9 @@ def _safe_http_error(exc):
         if upper is not None: detail += f'服务本次声明上限为 {upper}；请降低单次输出上限。'
         elif parameter == 'response_format': detail += '请检测 JSON 兼容性或核对模型。'
         elif parameter == 'temperature': detail += '可在设置中取消发送 temperature 后重新检测。'
+        elif parameter in ('max_tokens', 'max_completion_tokens'):
+            alternative = 'max_completion_tokens' if parameter == 'max_tokens' else 'max_tokens'
+            detail += f'部分模型只接受另一个参数名；可在设置把“输出上限参数名”改为 {alternative} 后重试。'
         else: detail += '请核对输出参数名称和额度后重新检测。'
     elif code in (401, 403): detail = '模型服务拒绝访问；请核对 API 密钥、模型权限和账户状态。'
     else: detail = '请核对连接、参数、模型权限或稍后重试。'
@@ -210,13 +213,19 @@ class ModelClient:
             raise ModelError("本次任务的估算 token 预算不足，已停止后续调用")
         user_content = content if image_url is None else [
             {'type': 'text', 'text': content}, {'type': 'image_url', 'image_url': {'url': image_url}}]
-        body = {"model": self.model, "messages": [{"role": "system", "content": system}, {"role": "user", "content": user_content}],
-                self.config['token_parameter']: self.max_output}
-        if self.config.get('send_temperature',True):
-            body['temperature']=self.config['temperature']
-        if self.config.get("json_mode", True):
-            body["response_format"] = {"type": "json_object"}
-        encoded = json.dumps(body, ensure_ascii=False).encode("utf8")
+        token_parameter = self.config['token_parameter']
+
+        def encode(parameter):
+            body = {"model": self.model,
+                    "messages": [{"role": "system", "content": system}, {"role": "user", "content": user_content}],
+                    parameter: self.max_output}
+            if self.config.get('send_temperature', True):
+                body['temperature'] = self.config['temperature']
+            if self.config.get("json_mode", True):
+                body["response_format"] = {"type": "json_object"}
+            return json.dumps(body, ensure_ascii=False).encode("utf8")
+
+        encoded = encode(token_parameter)
         if image_url is not None and len(encoded) > MAX_IMAGE_REQUEST_BYTES:
             raise ModelError("图像请求超过6MB，请裁剪图片或减少文字说明")
         self.spent_tokens += reservation
@@ -224,17 +233,31 @@ class ModelClient:
         # local cancellation return promptly even while a remote inference is pending.
         outcome = queue.Queue(maxsize=1)
         def send():
-            for attempt in range(2):
+            nonlocal token_parameter, encoded
+            transient_retried = parameter_retried = False
+            for attempt in range(3):
                 try:
                     result = self._post(encoded)
+                    self.config['token_parameter'] = token_parameter
                     outcome.put((True, result)); return
                 except urllib.error.HTTPError as exc:
                     code = exc.code
                     error = _safe_http_error(exc)
-                    if code in (429, 503) and attempt == 0:
+                    if code in (429, 503) and not transient_retried:
+                        transient_retried = True
                         time.sleep(.5)
                         if cancel is not None and cancel.is_set():
                             outcome.put((False, CancelledError("任务已取消"))); return
+                        continue
+                    alternative = 'max_completion_tokens' if token_parameter == 'max_tokens' else 'max_tokens'
+                    if (code in (400, 422) and error.parameter == token_parameter
+                            and error.upper_limit is None and not parameter_retried):
+                        # Some OpenAI-compatible models renamed the output cap.
+                        # A rejection of the name (not the value) is safe to retry
+                        # once without double-charging: the service returned no usage.
+                        parameter_retried = True
+                        token_parameter = alternative
+                        encoded = encode(alternative)
                         continue
                     outcome.put((False, error)); return
                 except (TimeoutError, socket.timeout):

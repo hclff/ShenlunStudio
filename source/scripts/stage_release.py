@@ -281,7 +281,7 @@ def stage(raw_folder, dest, root, version):
     finally:
         bundled.close()
     # Required user-facing documentation: a missing entry aborts the build.
-    _copy_entry(root / 'README.md', dest / '使用说明.md', missing, '使用说明.md')
+    _copy_entry(root / 'assets' / '使用说明.md', dest / '使用说明.md', missing, '使用说明.md')
     _copy_entry(root / 'assets' / 'community_teaching_sources.md',
                 dest / 'GitHub社区方法来源与许可.md', missing, 'GitHub社区方法来源与许可.md')
     if missing:

@@ -91,6 +91,7 @@ class PracticeDeletionStoreMixin:
                     conn.execute('INSERT INTO deleted_practice_reviews VALUES(?,?)', (rid, timestamp))
                     conn.execute('DELETE FROM human_scores WHERE review_id=?', (rid,))
                     conn.execute('DELETE FROM review_questions WHERE review_id=?', (rid,))
+                    conn.execute('DELETE FROM review_rechecks WHERE review_id=?', (rid,))
                     conn.execute('DELETE FROM reviews WHERE id=?', (rid,))
             else:
                 selected = set(ids)

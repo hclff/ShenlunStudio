@@ -20,6 +20,7 @@ TARGETS = (
     ('source/shenlun/__init__.py', r"""__version__ = ['"]([0-9][0-9.]*)['"]""", '__version__ = "{version}"'),
     ('source/pyproject.toml', r'(?m)^version = "([0-9][0-9.]*)"$', 'version = "{version}"'),
     ('source/README.md', r'(?m)^# 申论研习 ([0-9][0-9.]*)$', '# 申论研习 {version}'),
+    ('source/assets/使用说明.md', r'(?m)^适用版本：[0-9][0-9.]*', '适用版本：{version}'),
     ('installer/ShenlunStudio.iss', r'#define MyAppVersion "([0-9][0-9.]*)"',
      '#define MyAppVersion "{version}"'),
     ('installer/ShenlunStudio.iss', r'(?m)^VersionInfoVersion=([0-9][0-9.]*)$',

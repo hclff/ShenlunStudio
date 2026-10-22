@@ -138,6 +138,7 @@ def test_extraction_resumes_and_never_auto_enables_method(store):
     assert not store.list_cards(enabled_only=True)
     result2=svc.extract(['a'])
     assert result2['skipped']==1
+    assert result2['skipped_ids']==['a']
 
 
 def test_invented_extraction_quote_is_not_saved(store):
@@ -157,6 +158,7 @@ def test_image_only_available_entry_is_not_fabricated_as_analysis(store):
     assert svc.estimate_extraction(['image'])['articles']==0
     r=svc.extract(['image'])
     assert r['processed']==0
+    assert r['image_only_ids']==['image']
     assert store.get_analysis('image') is None
 
 

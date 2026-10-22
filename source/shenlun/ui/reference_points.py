@@ -27,7 +27,7 @@ class ReferencePointsDialog(QDialog):
         self.setWindowTitle('人工参考要点 · ' + question['title'])
         self.resize(1000, 680); self.setMinimumSize(850, 580)
         layout = QVBoxLayout(self)
-        notice = QLabel('要点用于训练复盘，并非官方评分标准。草稿不会替代已确认版本；确认、撤回均另存版本。请引用右侧实际 M 段落原文。')
+        notice = QLabel('要点用于训练复盘，并非官方评分标准；请引用右侧实际 M 段落原文。')
         notice.setWordWrap(True); layout.addWidget(notice)
         self.state_label = QLabel(); self.state_label.setTextFormat(Qt.TextFormat.PlainText); self.state_label.setWordWrap(True)
         layout.addWidget(self.state_label)

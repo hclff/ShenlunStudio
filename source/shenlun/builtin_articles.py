@@ -27,7 +27,9 @@ def _read_catalog(path, seed):
     if not isinstance(data, dict):
         raise ValueError('内置文章方法格式不正确。')
     catalog_id = require_text(data.get('catalog_id'), '内置方法目录标识')
-    cards = require_list(data.get('cards'), '内置文章方法', 200)
+    # The catalog now ships the merged library, so the ceiling is headroom for
+    # future rounds rather than the model-output limit of 200.
+    cards = require_list(data.get('cards'), '内置文章方法', 400)
     identities = set()
     wanted = set()
     for card in cards:
@@ -41,7 +43,9 @@ def _read_catalog(path, seed):
             require_text(card.get(field), '内置方法' + field)
         steps = require_list(card.get('steps'), '内置方法步骤', 15)
         types = require_list(card.get('applicable_types'), '内置方法题型', 5)
-        sources = require_list(card.get('source_article_ids'), '内置方法来源', 30)
+        # Merged methods cite every absorbed source, so the catalog needs far
+        # more headroom than a single extraction round (30) allows.
+        sources = require_list(card.get('source_article_ids'), '内置方法来源', 120)
         if not steps or not types or not sources or any(t not in RUBRICS for t in types):
             raise ValueError('内置方法缺少步骤、题型或来源。')
         for text in steps + sources:
@@ -63,6 +67,9 @@ def _read_catalog(path, seed):
     result = []
     for original in cards:
         card = copy.deepcopy(original)
+        # Built-in methods always arrive as candidates: activation stays a
+        # deliberate choice, and a swapped catalog file cannot enable anything.
+        card.pop('enabled', None)
         service._validate_card(card)
         card.update(enabled=False, status='软件内置文章方法',
                     builtin_catalog=catalog_id, builtin_catalog_version=data.get('version', 1))
@@ -100,8 +107,6 @@ def install_bundled_article_methods(store, catalog_path, seed_path, *, backup_ex
                 article = articles[identity]
                 search_text = '\n'.join(article[key] for key in ('title', 'author', 'journal', 'body'))
                 insert_article_row(conn, article, search_text)
-                if store.fts_available:
-                    conn.execute('INSERT INTO article_search(article_id,text) VALUES (?,?)', (identity, search_text))
                 actual[identity] = article
             try:
                 AppService(_ArticleLookup(actual), {}, '')._validate_card(card)

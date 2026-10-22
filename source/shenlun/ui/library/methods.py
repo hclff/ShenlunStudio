@@ -20,17 +20,20 @@ from ..widgets import button, card, editor, empty_state, page, row, table
 from ..teaching import TeachingPanel
 from ..article_method_editor import ArticleMethodEditorDialog, MethodTrashDialog
 from ..method_filters import MethodFilterBar
+from .candidate_pool import CandidatePoolDialog
 
 
 class MethodsMixin:
     def build_methods(self):
-        widget, outer = page('写作方法库', '分别核对文章提炼与教学来源；启用前须检查证据及适用边界。')
+        widget, outer = page('写作方法库', '核对文章提炼与教学来源；启用前检查证据和适用边界。')
         self.methods_tabs = QTabWidget()
         self.teaching_panel = TeachingPanel(self)
         self.methods_tabs.addTab(self.teaching_panel, '教学方法 · 名师来源')
         publication = QWidget()
         layout = QVBoxLayout(publication)
-        layout.addWidget(QLabel('文章提炼方法须有至少两篇不同正文支持，沿用原有核验规则。'))
+        rule = QLabel('至少两篇不同正文支持。')
+        rule.setToolTip('文章提炼方法须有至少两篇不同正文支持，沿用原有核验规则。')
+        layout.addWidget(rule)
         self.methods_tabs.addTab(publication, '文章提炼方法')
         if self.store.list_cards():
             self.methods_tabs.setCurrentIndex(1)
@@ -40,6 +43,9 @@ class MethodsMixin:
         self.method_status.setObjectName('muted')
         summary.addWidget(self.method_status)
         summary.addStretch()
+        self.candidate_pool_button = button('候选池…', self.open_candidate_pool)
+        self.candidate_pool_button.setToolTip('审核提炼出的停用候选：查看证据篇数、合并相近方法、批量启用。')
+        summary.addWidget(self.candidate_pool_button)
         self.new_method_button = button('新建方法', self.new_article_method, True)
         self.deleted_methods_button = button('已删除…', self.show_deleted_article_methods)
         summary.addWidget(self.new_method_button)
@@ -180,6 +186,14 @@ class MethodsMixin:
 
     def new_article_method(self):
         self.edit_article_method(new=True)
+
+    def open_candidate_pool(self):
+        if self.method_crud_guarded():
+            return
+        dialog = CandidatePoolDialog(self.store, self)
+        dialog.changed.connect(self.refresh_methods)
+        dialog.exec()
+        self.refresh_methods()
 
     def edit_article_method(self, new=False):
         if self.method_crud_guarded():

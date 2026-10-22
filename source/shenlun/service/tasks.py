@@ -11,6 +11,16 @@ from .text import _notify
 
 
 class TaskMixin:
+    @staticmethod
+    def _revision_mode(task):
+        context = task.get('context') if isinstance(task.get('context'), dict) else {}
+        return 'grade_only' if context.get('revision_mode') == 'grade_only' else 'with_revision'
+
+    @staticmethod
+    def _grade_only_revisions():
+        return {'minimal': '', 'model': '',
+                'status': '仅精批完成，未生成修改稿；需要时再单独生成'}
+
     def run_assessment_task(self, task_id, progress=None, cancel=None, *, expected_generation=None):
         """Explicit durable run; an already saved grade is never sent again."""
         if expected_generation is None:
@@ -32,6 +42,12 @@ class TaskMixin:
                     if review.get('revisions', {}).get('minimal') and review.get('revisions', {}).get('model'):
                         self.store.save_assessment_review(task_id, token, review, state='completed', expected_review=expected)
                         return review
+                    if self._revision_mode(task) == 'grade_only':
+                        review['revisions'] = self._grade_only_revisions()
+                        self.store.save_assessment_review(task_id, token, review, state='completed',
+                                                          expected_review=expected)
+                        _notify(progress, '仅精批任务已完成：评分与批注已保存，未调用改写模型。')
+                        return review
                     review['revision_config_snapshot'] = dict(self.config)
                 else:
                     context = task['context']
@@ -40,6 +56,12 @@ class TaskMixin:
                     review['revisions']['status'] = '原答已保存，准备生成修改稿'
                     review['id'] = self.store.save_assessment_review(task_id, token, review, state='scored')
                     expected = copy.deepcopy(review)
+                    if self._revision_mode(task) == 'grade_only':
+                        review['revisions'] = self._grade_only_revisions()
+                        self.store.save_assessment_review(task_id, token, review, state='completed',
+                                                          expected_review=expected)
+                        _notify(progress, '仅精批完成：评分与批注已保存，未调用改写模型。')
+                        return review
                 self.store.update_assessment_task(task_id, token, 'revising')
                 return self._revise_review(review, progress, cancel, expected_review=expected, task_claim=(task_id, token))
             except CancelledError:

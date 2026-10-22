@@ -386,12 +386,13 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
                       'method_library_trash':('kind','method_id','deleted_at'),
                       'method_library_purged':('kind','method_id','purged_at','version_hashes'),
                       'method_comparisons':('id','data'),
+                      'review_rechecks':('id','review_id','created_at','data'),
                       'deleted_practice_reviews':('review_id','deleted_at'),
                       'assessment_tasks':('id','state','claim_token','review_id','created_at','updated_at','error_summary','data')}
             tables={row[0] for row in source.execute("SELECT name FROM sqlite_master WHERE type='table'")}
             # Additive trailing columns; a backup either lacks them (upgraded in
             # place after the copy) or carries them in this exact order.
-            derived={'articles':('year','has_body'),
+            derived={'articles':('year','has_body','tags'),
                      'question_bank':('question_type','needs_retry','plan_status','plan_due')}
             for table,columns in {**required,**{k:v for k,v in optional.items() if k in tables}}.items():
                 if table not in tables:raise ValueError('这不是兼容的申论研习数据库。')
@@ -419,6 +420,7 @@ class PracticeStoreMixin(ReviewPlanStoreMixin):
             self._validate_practice_restore(source,tables)
             self._validate_practice_deletion_restore(source,tables)
             self._validate_assessment_restore(source,tables)
+            self._validate_recheck_restore(source,tables)
             self._validate_rubric_library_restore(source,tables)
             if 'reference_point_versions' in tables:
                 if 'question_bank' not in tables:raise ValueError('参考要点备份缺少题库。')

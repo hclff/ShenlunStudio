@@ -43,6 +43,7 @@ def check_compatibility(service, progress=None, cancel=None):
               'max_input_chars':4000, 'timeout':min(service.config['timeout'], 30)}
     report = {'checks':[], 'output_limit':None, 'tested_output_tokens':128,
               'configured_output_tokens':service.config['max_output_tokens']}
+    accepted_parameters = set()
     stop = False
     for name, label, options in (
         ('connection', '连接与基础响应', {'json_mode':False, 'send_temperature':False}),
@@ -56,6 +57,7 @@ def check_compatibility(service, progress=None, cancel=None):
         client = ModelClient({**config, **options}, service.key)
         try:
             response = client.complete(PROBE_SYSTEM, PROBE_PAYLOAD, cancel)
+            accepted_parameters.add(client.config['token_parameter'])
             service._record_response_usage(response)
             # A JSON sample cannot prove server-side schema enforcement.
             valid = response['data'].get('ok') is True
@@ -80,4 +82,7 @@ def check_compatibility(service, progress=None, cancel=None):
             if getattr(exc, 'parameter', None) in ('max_tokens', 'max_completion_tokens'):
                 report['output_limit'] = getattr(exc, 'upper_limit', None)
         report['checks'].append({'id':name, 'label':label, 'status':status, 'detail':detail})
+    configured = config['token_parameter']
+    if accepted_parameters and configured not in accepted_parameters:
+        report['token_parameter'] = sorted(accepted_parameters)[0]
     return report

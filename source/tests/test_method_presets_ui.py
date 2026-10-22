@@ -270,3 +270,19 @@ def test_legacy_auto_teaching_setting_refresh_updates_actual_method_summary(host
     host.store.set_setting('teaching_selection', {'mode': 'off', 'owner_ids': []})
     host.refresh_teaching_summary()
     assert '教学 0 项' in host.method_preset_summary.text()
+
+
+def test_type_switch_defers_method_resolution_until_preview(host, monkeypatch):
+    ui(); module = importlib.import_module('shenlun.method_presets')
+    original = module.resolve_method_choice
+    calls = []
+    def counted(*args, **kwargs):
+        calls.append(args)
+        return original(*args, **kwargs)
+    monkeypatch.setattr(module, 'resolve_method_choice', counted)
+    host.question_type.setCurrentText('文章写作')
+    assert calls == []
+    assert '查看本次方法' in host.method_preset_preview_button.text()
+    assert '题型已更改' in host.method_preset_summary.text()
+    host.refresh_method_preset_preview()
+    assert calls and '查看方法（' in host.method_preset_preview_button.text()

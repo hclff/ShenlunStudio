@@ -68,13 +68,28 @@ def learning_summary(review):
         key = (item['title'],item['action'])
         if key not in seen:
             seen.add(key); result.append({k:v for k,v in item.items() if k!='priority'})
-        if len(result)==3: break
+        if len(result)==10: break
     return result
 
 
-def summary_html(review):
+def summary_html(review, rechecks=None):
+    from .assessment_trace import DECISION_LABELS, trace_counts, trace_rows
     rows = learning_summary(review)
-    parts = ['<section id="learning-summary"><h2>优先改进</h2><p class="muted">按本次报告整理，最多三项；不重新评分。</p>']
+    pending = trace_counts(trace_rows(review, rechecks))['pending_total']
+    parts = ['<section id="learning-summary"><h2>优先改进</h2><p class="muted">按本次报告整理，最多十项；不重新评分。</p>']
+    if pending:
+        parts.append(f'<p class="muted">本次有 {pending} 项判断依据不足，已在「评分依据」中标为待核实，可先核对再决定是否修改。</p>')
+    if isinstance(rechecks, dict) and rechecks:
+        counts = {key: 0 for key in DECISION_LABELS}
+        for verdict in rechecks.values():
+            decision = verdict.get('decision') if isinstance(verdict, dict) else None
+            if decision in counts:
+                counts[decision] += 1
+        total = sum(counts.values())
+        if total:
+            parts.append(f'<p class="muted">已单独复核 {total} 条批注：维持 {counts["uphold"]} 条，'
+                         f'建议修正 {counts["revise"]} 条，存疑 {counts["unclear"]} 条；'
+                         '原报告分数与批注未改动。</p>')
     if not rows: parts.append('<p>暂无可整理的改进项，可查看下方完整报告。</p>')
     for n,row in enumerate(rows,1):
         title = _preview(row['title'],60)

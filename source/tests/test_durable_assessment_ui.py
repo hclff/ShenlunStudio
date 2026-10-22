@@ -52,6 +52,7 @@ def test_startup_lists_pending_task_without_calls_and_declined_confirmation_is_n
 def test_window_restart_resumes_revisions_and_completed_resume_opens_report(window, app, monkeypatch):
     payloads = []
     window.service_factory = offline_factory(window, [ai_assessment, ModelError('timeout')], payloads)
+    window.revision_mode.setCurrentIndex(window.revision_mode.findData('with_revision'))
     window._set_submission_fields(raw())
     window.begin_assessment()
     drain(app, lambda: not window.workers)

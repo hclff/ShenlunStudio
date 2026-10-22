@@ -53,7 +53,7 @@ class IntakePreviewDialog(QDialog):
         heading.addStretch()
         heading.addWidget(badge('本机读取 · 待确认', 'neutral'))
         layout.addLayout(heading)
-        notice = QLabel('勾选要写入的页面，可修改文字、调整顺序或移除。识别结果请对照原图核对；取消不会改动原文。')
+        notice = QLabel('勾选页面，可修改、排序或移除；识别结果请对照原图核对，取消不会改动原文。')
         notice.setWordWrap(True)
         layout.addWidget(notice)
         controls = QHBoxLayout()

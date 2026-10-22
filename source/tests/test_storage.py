@@ -47,3 +47,20 @@ def test_json_roundtrip_and_worker_connections(tmp_path):
     assert store.stats()['analyses'] == 1
     assert store.stats()['reviews'] == 1
     assert store.stats()['cards'] == 1
+
+
+def test_compact_returns_pages_freed_by_a_drop(tmp_path):
+    store = Store(tmp_path / 'app.db')
+    for index in range(40):
+        store.upsert_article({'title': f'文章 {index}', 'body': f'正文 {index} ' * 400})
+    with sqlite3.connect(store.path) as conn:
+        conn.execute('CREATE TABLE scratch AS SELECT * FROM articles')
+    assert store.reclaimable()['free'] == 0
+    with sqlite3.connect(store.path) as conn:
+        conn.execute('DROP TABLE scratch')
+    before = store.reclaimable()
+    assert before['free'] > 0
+    result = store.compact()
+    assert result['after']['free'] == 0
+    assert result['after']['pages'] < before['pages']
+    assert store.stats()['articles'] == 40

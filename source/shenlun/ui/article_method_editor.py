@@ -142,6 +142,34 @@ class ArticleMethodEditorDialog(QDialog):
         else:
             self.message.setText('结果过多，请缩小搜索范围。')
 
+    def preselect(self, article_id, paragraph_id=None):
+        """Open with a known article (and paragraph) already selected."""
+        try:
+            article = self.store.get_article(article_id)
+        except (ValueError, OSError, sqlite3.Error) as exc:
+            self.message.setText(str(exc))
+            return False
+        if not article:
+            self.message.setText('找不到这篇文章。')
+            return False
+        self.article_search.setText(str(article.get('title') or '')[:60])
+        self.search_articles()
+        for position in range(self.article_list.count()):
+            item = self.article_list.item(position)
+            if item.data(Qt.ItemDataRole.UserRole) != article_id:
+                continue
+            self.article_list.setCurrentItem(item)
+            if paragraph_id:
+                for index in range(self.paragraph_select.count()):
+                    data = self.paragraph_select.itemData(index) or {}
+                    if data.get('id') == paragraph_id:
+                        self.paragraph_select.setCurrentIndex(index)
+                        break
+            self.message.setText('已定位到所选文章，选择原句后剪取为引文。')
+            return True
+        self.message.setText('该文章没有可引用正文，请手动选择其他文章。')
+        return False
+
     def select_article(self, current=None, previous=None):
         self.paragraph_select.clear()
         self.paragraph_text.clear()

@@ -3,7 +3,7 @@ import json
 import uuid
 from datetime import datetime, timezone
 
-from .domain import RUBRICS
+from .domain import RUBRICS, check_refs, corpus_paragraphs
 from .teaching import _text, _strings, _identity, validate_teaching_method
 from .method_purge import MethodPurgeMixin
 
@@ -185,3 +185,91 @@ class MethodLibraryMixin(MethodPurgeMixin):
                 record=json.loads(row[0]) if row else builtin.get(identity)
                 if record is None or record.get('enabled') is not False:
                     raise ValueError('已删除教学方法缺失或仍被启用。')
+
+
+def validate_article_card(store, card):
+    """Raise the same reason the enable path uses; return None when usable.
+
+    Shared by the candidate pool preview and ``enable_card`` so the badge a user
+    sees before clicking cannot disagree with the check after clicking.
+    """
+    actual = {}; paragraph_fingerprints = {}; paragraph_sources = {}; current_versions = {}
+    for aid in card.get('source_article_ids', []):
+        article = store.get_article(aid)
+        if article and article.get('status') == 'available' and article.get('training_eligible', True):
+            paragraphs = corpus_paragraphs([article])
+            actual.update(paragraphs)
+            paragraph_fingerprints.update({pid: article['fingerprint'] for pid in paragraphs})
+            paragraph_sources.update({pid: aid for pid in paragraphs})
+            current_versions[aid] = article['fingerprint']
+    check_refs(card.get('refs', []), actual, '方法依据')
+    fingerprints = {paragraph_fingerprints[ref['id']] for ref in card.get('refs', [])}
+    if len(fingerprints) < 2:
+        raise ValueError('通用方法至少需要两篇不同正文的文章证据；当前可作为单篇分析参考。')
+    if card.get('source_fingerprints') and not fingerprints.issubset(set(card['source_fingerprints'])):
+        raise ValueError('方法依据的原文已更新，请重新提炼并核对。')
+    if card.get('source_versions'):
+        cited_sources = {paragraph_sources[ref['id']] for ref in card.get('refs', [])}
+        if any(card['source_versions'].get(aid) != current_versions[aid] for aid in cited_sources):
+            raise ValueError('方法依据的原文版本已更新，请重新提炼并核对。')
+    return None
+
+
+def merge_article_methods(store, target_id, source_ids):
+    """Fold candidate cards into one, keeping the target's wording and all refs.
+
+    Merging is for near-duplicate candidates whose wording differs slightly, so
+    the same method can reach the two-article bar without a second paid pass.
+    Sources move to the deleted list (restorable), never hard-deleted.
+    """
+    source_ids = [sid for sid in dict.fromkeys(source_ids) if sid != target_id]
+    if not source_ids:
+        raise ValueError('请再选择至少一张要合并的候选方法。')
+    if len(source_ids) > 50:
+        raise ValueError('一次最多合并 50 张候选方法。')
+    cards = {card['id']: card for card in store.list_cards()}
+    target = cards.get(target_id)
+    if not target:
+        raise ValueError('要保留的方法不存在，请刷新候选池。')
+    if target.get('enabled'):
+        raise ValueError('请先停用要保留的方法再合并。')
+    sources = []
+    for sid in source_ids:
+        card = cards.get(sid)
+        if not card:
+            raise ValueError('要合并的方法不存在，请刷新候选池。')
+        if card.get('enabled'):
+            raise ValueError(f'“{card.get("name", "")}”已启用，请先停用再合并。')
+        sources.append(card)
+    merged = json.loads(json.dumps(target))
+    refs = list(merged.get('refs', []))
+    for card in sources:
+        for ref in card.get('refs', []):
+            if ref not in refs:
+                refs.append(ref)
+    merged['refs'] = refs
+    versions = dict(merged.get('source_versions', {}))
+    article_ids = list(merged.get('source_article_ids', []))
+    variants = list(merged.get('variants', []))
+    for card in sources:
+        article_ids.extend(card.get('source_article_ids', []))
+        versions.update(card.get('source_versions', {}))
+        for variant in card.get('variants', []):
+            if variant not in variants:
+                variants.append(variant)
+    merged['source_article_ids'] = list(dict.fromkeys(article_ids))
+    merged['source_versions'] = versions
+    merged['source_fingerprints'] = list(dict.fromkeys(versions.values()))
+    merged['variants'] = variants
+    merged['merged_from'] = list(dict.fromkeys(merged.get('merged_from', []) + source_ids))
+    merged['enabled'] = False
+    merged['status'] = '候选方法，尚未启用'
+    merged['updated_at'] = datetime.now(timezone.utc).isoformat()
+    store.save_card(merged, expected_card=target)
+    failed = []
+    for card in sources:
+        try:
+            store.delete_method('article', card['id'])
+        except ValueError as exc:
+            failed.append({'id': card['id'], 'error': str(exc)})
+    return {'id': target_id, 'merged': len(sources), 'refs': len(refs), 'failed': failed}

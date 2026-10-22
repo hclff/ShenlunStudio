@@ -130,6 +130,7 @@ def test_revision_retry_only_regenerates_revisions_and_preserves_grade(window, a
     def factory(config, key):
         service = AppService(window.store, config, key); service.client = Client(); return service
     window.service_factory = factory
+    window.revision_mode.setCurrentIndex(window.revision_mode.findData('with_revision'))
     window._set_submission_fields(raw())
     window.begin_assessment()
     drain(app, lambda:not window.workers)

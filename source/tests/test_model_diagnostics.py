@@ -40,6 +40,22 @@ def endpoint():
     server.shutdown(); server.server_close(); thread.join()
 
 
+def test_diagnostics_reports_auto_switched_token_parameter(endpoint, tmp_path):
+    url, handler = endpoint
+    def respond(body):
+        if 'max_tokens' in body:
+            return 400, {'error':{'param':'max_tokens',
+                                  'message':"Unsupported parameter: 'max_tokens' is not supported with this model."}}
+        return 200, {'choices':[{'finish_reason':'stop','message':{'content':'{"ok":true}'}}],
+                     'usage':{'prompt_tokens':10,'completion_tokens':4,'total_tokens':14}}
+    handler.response = staticmethod(respond)
+    report = AppService(Store(tmp_path/'fallback.db'),
+                        {'base_url':url,'model':'fixture','token_parameter':'max_tokens'}, '').check_compatibility()
+    assert [c['status'] for c in report['checks']] == ['passed', 'passed', 'passed']
+    assert report['token_parameter'] == 'max_completion_tokens'
+    assert len(handler.requests) == 6
+
+
 def test_diagnostics_caps_probes_records_usage_and_does_not_change_config(endpoint, tmp_path):
     url, handler = endpoint
     config = {'base_url':url, 'model':'fixture', 'max_output_tokens':9999999,

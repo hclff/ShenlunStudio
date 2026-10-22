@@ -59,7 +59,7 @@ class BackupMixin:
         self.backup_status = QLabel(status)
         self.backup_status.setObjectName('backup_status'); self.backup_status.setWordWrap(True)
         form.addRow(self.backup_status)
-        note = QLabel('仅轮换超额的已登记自动备份；手动/安全备份保留。更换目录不迁移或清理旧文件。卸载清理安装及默认数据目录，范围外备份保留。含私密训练资料，未加密。')
+        note = QLabel('仅轮换超额的自动备份；手动和安全备份保留。备份含私密训练资料，未加密。')
         note.setWordWrap(True); note.setObjectName('muted'); form.addRow(note)
         return group
 
@@ -156,7 +156,7 @@ class BackupMixin:
         dialog.setObjectName('backup_manager_dialog')
         dialog.setWindowTitle('备份管理'); dialog.resize(780,450)
         layout = QVBoxLayout(dialog)
-        notice = QLabel('仅显示本机登记。手动/安全备份不自动删除。卸载清理安装及默认数据目录，范围外备份保留。含私密训练资料，未加密。')
+        notice = QLabel('仅显示本机登记；手动和安全备份不自动删除。备份含私密训练资料，未加密。')
         notice.setWordWrap(True); layout.addWidget(notice)
         listing = QListWidget(); listing.setObjectName('backup_list')
         dialog.backup_list = listing; layout.addWidget(listing,1)

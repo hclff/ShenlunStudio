@@ -19,7 +19,7 @@ from ..rubric_editor import RubricEditor
 
 class EditorMixin:
     def build_assessment(self):
-        widget, layout = page('训练批改', '审清题意，核对材料，保留自己的原答。每次训练都可保存与回看。')
+        widget, layout = page('训练批改', '审清题意，核对材料，保留自己的原答。')
         settings_card, settings_layout = card()
         self.exercise_settings_card = settings_card
         controls = QHBoxLayout()
@@ -58,7 +58,10 @@ class EditorMixin:
         self.teaching_summary.setWordWrap(True)
         self.teaching_summary.hide()  # Retain legacy state for callers; visible summary is shared below.
         self.teaching_select_button = button('方法辅助…', self.show_teaching_selection, name='teaching_select_button')
-        self.question_type.currentTextChanged.connect(self.refresh_teaching_summary)
+        # Defer method resolution: changing type only invalidates the preview.
+        # Resolving every enabled method here made each type switch wait on the
+        # whole method library, even though the names are only needed on demand.
+        self.question_type.currentTextChanged.connect(self.invalidate_method_context)
         self.refresh_teaching_summary()
         self.init_method_presets(settings_layout)
         layout.addWidget(settings_card)
@@ -83,8 +86,9 @@ class EditorMixin:
         right_layout = QVBoxLayout(right)
         right_layout.setContentsMargins(6, 0, 0, 0)
         self.answer_edit = self.intake_editor('answer', 'answer_edit', '请输入或粘贴内容…')
-        self.word_count = QLabel('原答 0 字 · 含标点，不含空白')
-        self.answer_edit.textChanged.connect(lambda: self.word_count.setText(f'原答 {sum(not c.isspace() for c in self.answer_edit.toPlainText())} 字 · 含标点，不含空白'))
+        self.word_count = QLabel('原答 0 字')
+        self.word_count.setToolTip('按字符计数，含标点，不含空白。')
+        self.answer_edit.textChanged.connect(lambda: self.word_count.setText(f'原答 {sum(not c.isspace() for c in self.answer_edit.toPlainText())} 字'))
         right_layout.addWidget(section_label('03  我的原答'))
         right_layout.addWidget(self.answer_edit, 1)
         right_layout.addWidget(self.word_count)
@@ -173,7 +177,7 @@ class EditorMixin:
         self.result_widget = self.build_result()
         self.assessment_tabs.addTab(self.result_widget, '03 批改与对照')
         layout.addWidget(self.assessment_tabs, 1)
-        self.scope_label = QLabel('主动点击才调用模型：发送本题内容及至多 8 个本地参考段落。训练估评未经真实阅卷评分校准。')
+        self.scope_label = QLabel('仅在你主动点击后调用模型；发送本题内容及至多 8 个本地参考段落。')
         self.scope_label.setObjectName('muted')
         self.scope_label.setWordWrap(True)
         layout.addWidget(self.scope_label)
@@ -183,6 +187,16 @@ class EditorMixin:
         self.assessment_actions = QWidget()
         actions = QHBoxLayout(self.assessment_actions)
         actions.setContentsMargins(0, 0, 0, 0)
+        self.revision_mode = QComboBox()
+        self.revision_mode.setObjectName('revision_mode')
+        self.revision_mode.setAccessibleName('本次输出')
+        self.revision_mode.addItem('仅精批', 'grade_only')
+        self.revision_mode.addItem('精批＋修改稿', 'with_revision')
+        self.revision_mode.setToolTip('仅精批只生成评分与批注，不调用改写模型；需要修改稿时可在结果区单独生成，且不重新评分。')
+        saved = self.store.get_setting('revision_mode')
+        self.revision_mode.setCurrentIndex(max(0, self.revision_mode.findData(saved)))
+        self.revision_mode.currentIndexChanged.connect(self.save_revision_mode)
+        actions.addWidget(self.revision_mode)
         actions.addWidget(self.assess_button)
         actions.addWidget(self.cancel_button)
         actions.addWidget(button('我的题库', lambda:self.navigation.setCurrentRow(5)))
@@ -195,6 +209,15 @@ class EditorMixin:
         self.assessment_tabs.currentChanged.connect(self.update_assessment_mode)
         self.update_assessment_mode(self.assessment_tabs.currentIndex())
         return widget
+
+    def save_revision_mode(self, *args):
+        value = self.revision_mode.currentData()
+        if value not in ('grade_only', 'with_revision'):
+            return
+        try:
+            self.store.set_setting('revision_mode', value)
+        except (ValueError, OSError) as exc:
+            self.notify('本次输出选择未能保存：' + str(exc))
 
     def update_assessment_mode(self, index):
         editing = index != 2

@@ -10,7 +10,7 @@ import sqlite3
 from datetime import datetime
 from pathlib import Path
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 6
 
 
 class MigrationError(RuntimeError):
@@ -40,6 +40,9 @@ STEPS = (
     (1, 'article_index', _step('0001_article_index')),
     (2, 'question_columns', _step('0002_question_columns')),
     (3, 'review_plan_columns', _step('0003_review_plan_columns')),
+    (4, 'drop_article_search', _step('0004_drop_article_search')),
+    (5, 'article_tags', _step('0005_article_tags')),
+    (6, 'review_rechecks', _step('0006_review_rechecks')),
 )
 
 

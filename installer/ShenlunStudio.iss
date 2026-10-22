@@ -1,8 +1,8 @@
 #define MyAppName "申论研习"
-#define MyAppVersion "0.9.5"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "申论研习"
 #define MyAppExeName "ShenlunStudio.exe"
-#define MySetupBaseName "ShenlunStudio-0.9.5-Setup"
+#define MySetupBaseName "ShenlunStudio-1.0.1-Setup"
 
 [Setup]
 AppId={{B4EC883B-606E-4DB8-94B0-C496D56B0101}
@@ -10,7 +10,7 @@ AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
-VersionInfoVersion=0.9.5.0
+VersionInfoVersion=1.0.1.0
 VersionInfoProductName={#MyAppName}
 VersionInfoProductVersion={#MyAppVersion}
 VersionInfoDescription={#MyAppName} 安装程序

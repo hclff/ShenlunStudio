@@ -26,7 +26,7 @@ def main():
                    characters=sum(len(article['body']) for article in articles),
                    text_articles=sum(bool(article['body']) for article in articles),
                    image_only=sum(article.get('text_status') == 'image_only' for article in articles),
-                   fts5_trigram=store.fts_available)
+                   fulltext_index=False)
     with sqlite3.connect(args.output) as conn:
         conn.execute('PRAGMA wal_checkpoint(TRUNCATE)')
         conn.execute('VACUUM')

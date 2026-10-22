@@ -39,7 +39,7 @@ def test_subset_exact_evidence_dedup_and_original_snapshots(store):
     module = api(store)
     rid, qid, original = setup_report(store)
     candidates = module.review_goal_candidates(original)
-    assert len(candidates) == 3
+    assert len(candidates) == 4
     result = add(store, rid, original, [candidates[0]['id'], candidates[0]['id']])
     assert result['goals'][0]['title'] == '未覆盖：保留人工窗口'
     assert result['goals'][0]['action'] == '核对并补充该材料要点。'

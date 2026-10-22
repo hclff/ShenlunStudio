@@ -119,17 +119,29 @@ def test_normal_entry_uses_bundled_catalog_by_default(tmp_path, monkeypatch):
     assert len(entry.create_store(tmp_path / 'default').list_cards()) == 1
 
 
-def test_real_bundled_catalog_has_twenty_evidence_valid_methods(tmp_path):
+def test_real_bundled_catalog_methods_are_evidence_valid(tmp_path):
     root = Path(__file__).resolve().parents[1]
+    catalog = root / 'assets' / 'builtin_article_methods.json'
+    expected = json.loads(catalog.read_text(encoding='utf-8'))['cards']
     # An existing empty database exercises upgrade without copying the full corpus.
     Store(tmp_path / 'real' / 'studio.db')
-    store = create_store(tmp_path / 'real', root / 'assets/seed.db',
-                         method_catalog=root / 'assets/builtin_article_methods.json')
-    assert len(store.list_cards()) == 20 and not store.list_cards(True)
+    store = create_store(tmp_path / 'real', root / 'assets/seed.db', method_catalog=catalog)
+    assert len(store.list_cards()) == len(expected)
     service = AppService(store, {}, '')
     for card in store.list_cards():
         service._validate_card(card)
     assert store.usage_summary()['requests'] == 0
+
+
+def test_first_launch_installs_whole_catalog_as_candidates(tmp_path):
+    """Every built-in method lands as a candidate, so activation stays explicit."""
+    root = Path(__file__).resolve().parents[1]
+    catalog = root / 'assets' / 'builtin_article_methods.json'
+    expected = json.loads(catalog.read_text(encoding='utf-8'))['cards']
+    store = create_store(tmp_path / 'fresh', root / 'assets' / 'seed.db', method_catalog=catalog)
+    assert len(store.list_cards()) == len(expected)
+    assert not store.list_cards(True)
+    assert all(card.get('builtin_catalog') for card in store.list_cards())
 
 
 def test_failed_upgrade_rolls_back_sources_cards_and_search_index(tmp_path):

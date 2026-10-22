@@ -11,7 +11,8 @@ TASK_COLUMNS = ('id', 'state', 'claim_token', 'review_id', 'created_at', 'update
 STATES = {'pending', 'grading', 'scored', 'revising', 'completed', 'failed', 'cancelled', 'abandoned'}
 SAFE_ERRORS = {'', '评分未完成，请确认后重试。', '修改稿未完成，原答评分已保存。', '任务已取消，可明确选择继续。'}
 CONTEXT_FIELDS = {'payload', 'sources', 'method_snapshot', 'reference_points_snapshot',
-                  'prompt_version', 'system_hash', 'method_choice_snapshot'}
+                  'prompt_version', 'system_hash', 'method_choice_snapshot', 'revision_mode'}
+REVISION_MODES = {'grade_only', 'with_revision'}
 PAYLOAD_FIELDS = {'submission', 'answer_segments', 'corpus_context', 'method_guidance',
                   'output_schema', 'training_notice', 'confirmed_reference_points', 'teaching_guidance'}
 
@@ -64,10 +65,12 @@ def validate_snapshot(value, *, compatible=True):
     context = value['context']
     if not isinstance(context, dict) or set(context) - CONTEXT_FIELDS:
         raise ValueError('任务上下文损坏，无法继续。')
+    if context.get('revision_mode') is not None and context['revision_mode'] not in REVISION_MODES:
+        raise ValueError('任务输出模式损坏，无法继续。')
     if compatible and (value['prompt_version'] != PROMPT_VERSION or context.get('prompt_version') != PROMPT_VERSION
                        or context.get('system_hash') != canonical_hash(ASSESSMENT_SYSTEM)
                        or value['revision_prompt_hash'] != canonical_hash(REVISION_SYSTEM)):
-        raise ValueError('任务提示版本不兼容，无法继续。')
+        raise ValueError('提示已升级，请重新发起本次批改。')
     submission = prepare_submission(value['submission'])
     payload = context.get('payload')
     if (submission != value['submission'] or not isinstance(payload, dict) or set(payload) - PAYLOAD_FIELDS
